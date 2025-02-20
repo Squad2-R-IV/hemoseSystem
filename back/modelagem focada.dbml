@@ -1,0 +1,232 @@
+Table Paciente {
+  id_paciente int [pk] 
+  nome_paciente varchar(100)
+  dt_nascimento date
+  idade int
+  sexo varchar(20)
+  estado_civil varchar(20)
+  endereco varchar(50)
+  cpf varchar(11) [unique] 
+  cpf_acompanhante varchar(11) [unique]
+  id_usuario int [ref: > Usuarios.id_usuario] // Add foreign key to Usuarios
+}
+
+Table Funcionario {
+  id_funcionario int [pk]
+  nome_funcionario varchar(100)
+  contato varchar(20)
+  id_usuario int [ref: > Usuarios.id_usuario] // Add foreign key to Usuarios
+}
+
+Table Funcionario_Saude {
+    id_funcionario int [ref: > Funcionario.id_funcionario]
+    especialidade varchar(50)
+    conselho cargo_enum
+    registro_profissional varchar(20) 
+} 
+
+
+Table Perfis {
+  id_perfil int [pk]
+  nome_perfil perfil_enum
+}
+
+Table Permissoes {
+  id_permissao int [pk]
+  nome_permissao varchar(100)  
+  descricao text  
+}
+
+Table Perfis_Permissoes {
+  id_perfil int [ref: > Perfis.id_perfil]
+  id_permissao int [ref: > Permissoes.id_permissao]
+
+  Indexes {
+    (id_perfil, id_permissao) [pk] 
+  }
+}
+
+
+Table AltaMedica {
+  id_alta int [pk]
+  id_visita int [ref: > Visita.id_visita]
+  id_medico int [ref: > Funcionario_Saude.id_funcionario]
+  dt_alta datetime
+  tipo_alta enum_tipo_alta_enum
+  observacoes text
+}
+
+Table Disponibilidade {
+  id_disponibilidade int [pk]
+  id_funcionario int [ref: > Funcionario_Saude.id_funcionario]
+  data date  
+  hora time
+  status enum_disponibilidade  
+}
+
+Table Usuarios {
+  id_usuario int [pk]
+  nome_usuario varchar(100)
+  id_perfil int [ref: > Perfis.id_perfil] 
+  email varchar(400) [unique]
+  senha varchar(255)
+  status status_enum
+}
+
+Table Chamados {
+  id_chamado int [pk]
+  id_usuario int [ref: > Usuarios.id_usuario]
+  tipo_problema varchar(255)
+  descricao text
+  status enum_status_chamado_enum
+  dt_abertura datetime
+  dt_resolucao datetime
+}
+
+Table Auditoria {
+  id_auditoria int [pk]
+  id_usuario int [ref: > Usuarios.id_usuario]
+  acao varchar(255)
+  descricao text
+  dt_registro datetime
+}
+
+Table Visita {
+  id_visita int [pk]
+  id_paciente int [ref: > Paciente.id_paciente]
+  dt_entrada datetime
+  dt_saida datetime
+  status varchar(50)
+  observacoes text
+}
+
+
+
+
+Table Registro_Prescricao {
+  id_registro_prescricao int [pk]
+  id_prescricao int [ref: > Prescricao.id_prescricao]
+  id_funcionario int [ref: > Funcionario_Saude.id_funcionario]
+  nome_medicamento varchar(500)
+  apresentacao varchar(500)
+  via_administracao varchar(100)
+  dose int
+  unidade varchar(50)
+  reconstituicao varchar(50)
+  diluicao varchar(50)
+  tempo_infusao varchar(50)
+  tipo_infusao varchar(50)
+  frequencia int
+  unidade_frequencia varchar(50)
+  duracao_tratamento int
+}
+
+Table Prescricao {
+  id_prescricao int [pk]
+  id_visita int [ref: > Visita.id_visita]
+  dt_prescricao date
+  dieta varchar(50)
+  decubito varchar(50)
+  cuidados_especiais varchar(500)
+  fisioterapia varchar(500)
+  balanco_hidrico boolean
+  observacoes varchar(5000)
+}
+
+Table Exames {
+  id_exame int [pk]
+  id_visita int [ref: > Visita.id_visita]
+  id_funcionario_saude int [ref: > Funcionario_Saude.id_funcionario]
+  tipo_do_exame varchar(500)
+  resultado varchar(1000)
+  dt_exame date
+  profissional_responsavel varchar(100)
+  status varchar(50)
+}
+
+Table Evolucao_Medica {
+  id_evolucao int [pk]
+  id_visita int [ref: > Visita.id_visita]
+  id_funcionario int [ref: > Funcionario_Saude.id_funcionario]
+  dt_evolucao datetime
+  frequencia_cardiaca int
+  frequencia_respiratoria int
+  pressao_arterial varchar(50)
+  saturacao_oxigenio int
+  ausculta_cardiaca varchar(5000)
+  ausculta_pulmonar varchar(5000)
+  ausculta_abdominal varchar(5000)
+  oroscopia varchar(5000)
+  genitalia varchar(5000)
+  sistema_nervoso varchar(5000)
+  temperatura int
+  sintomas varchar(500)
+  observacoes varchar(5000)
+}
+
+Enum cargo_enum {
+  CRM
+  COREN
+  CRO
+  CRP
+}
+
+Enum nome_perfil_enum {
+  Administrador
+  Medico
+  Enfermeiro
+  Recepcionista
+}
+
+Enum tipo_alta_enum {
+  Com_Atestado
+  Sem_Atestado
+  Transferencia
+  Evasao
+  Outro
+}
+
+Enum enum_disponibilidade {
+  Disponivel
+  Ocupado
+  Em_Pausa
+}
+
+Enum status_chamado_enum {
+  Aberto
+  Em_Andamento
+  Resolvido
+  Fechado
+}
+
+Enum perfil_enum {
+  Administrador
+  Profissional_de_Saude
+  Recepcionista
+}
+
+Enum status_enum {
+  Ativo
+  Inativo
+}
+
+Enum prioridade_enum {
+  Baixa
+  Media
+  Alta
+  Emergencia
+}
+
+Enum status_agendamento_enum {
+  Agendado
+  Confirmado
+  Realizado
+  Cancelado
+  Reagendado 
+}
+
+Enum tipo_agendamento_enum {
+  Consulta
+  Exame
+  Procedimento
+}
