@@ -9,8 +9,10 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@heroui/react": "^2.7.2",
     "@react-router/node": "^7.2.0",
     "@react-router/serve": "^7.2.0",
+    "framer-motion": "^12.4.7",
     "isbot": "^5.1.17",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
