@@ -149,6 +149,29 @@ Table Evolucao_Medica {
   id_visita int [ref: > Visita.id_visita]
   id_funcionario int [ref: > Funcionario_Saude.id_funcionario]
   dt_evolucao datetime
+  sintomas varchar(500)
+  observacoes varchar(5000)
+}
+
+Table Anamnese {
+  id_anamnese int [pk]
+  id_visita int [ref: > Visita.id_visita]
+  id_funcionario int [ref: > Funcionario_Saude.id_funcionario]
+  queixa_principal varchar(5000)
+  historia_doenca_atual varchar(5000)
+  antecedentes_pessoais varchar(5000)
+  antecedentes_familiares varchar(5000)
+  habitos_vida varchar(5000)
+  medicamentos_em_uso varchar(5000)
+  alergias varchar(5000)
+  cirurgias_previas varchar(5000)
+  observacoes varchar(5000)
+}
+
+Table Exame_Fisico {
+  id_exame_fisico int [pk]
+  id_anamnese int [ref: > Anamnese.id_anamnese] // Add foreign key to Anamnese
+  id_evolucao int [ref: > Evolucao_Medica.id_evolucao] // Add foreign key to Evolucao_Medica
   frequencia_cardiaca int
   frequencia_respiratoria int
   pressao_arterial varchar(50)
@@ -160,7 +183,6 @@ Table Evolucao_Medica {
   genitalia varchar(5000)
   sistema_nervoso varchar(5000)
   temperatura int
-  sintomas varchar(500)
   observacoes varchar(5000)
 }
 

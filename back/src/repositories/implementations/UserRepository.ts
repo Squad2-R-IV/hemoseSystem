@@ -1,8 +1,8 @@
 
 
 import { injectable, registry } from "tsyringe";
-import prisma from "../config/prisma";
-import { IUserRepository } from "../interfaces/IUserRepositroy";
+import prisma from "../../config/prisma";
+import { IUserRepository } from "../interfaces/IUserRepository";
 import { GenericRepository } from "./GenericRepository";
 import { User } from "@prisma/client";
 

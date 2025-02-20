@@ -4,8 +4,8 @@ import { User } from "@prisma/client";
 import { GenericService } from "./GenericService";
 
 import { IUserService } from "../interfaces/IUserService";
-import { IUserRepository } from "../interfaces/IUserRepositroy";
-import { UserRepository } from "../repositories/UserRepository";
+import { IUserRepository } from "../../repositories/interfaces/IUserRepository";
+import { UserRepository } from "../../repositories/implementations/UserRepository";
 
 @injectable()
 @registry([
@@ -18,4 +18,9 @@ export class UserService extends GenericService<User> implements IUserService {
   constructor(@inject("UserRepository") userRepository: UserRepository) {
     super(userRepository);
   }
+
+  async findByEmail(email: string): Promise<User | null> {
+    return this.repository.findByField("email", email); // Ensure repository is protected in GenericService
+  }
+
 }

@@ -1,5 +1,5 @@
 import { inject, injectable, registry } from "tsyringe";
-import { IGenericRepository } from "../interfaces/IGenericRepository";
+import { IGenericRepository } from "../../repositories/interfaces/IGenericRepository";
 import { IGenericService } from "../interfaces/IGenericService";
 
 @registry([
@@ -10,7 +10,11 @@ import { IGenericService } from "../interfaces/IGenericService";
 ])
 @injectable()
 export class GenericService<T> implements IGenericService<T> {
-  constructor(@inject("GenericRepository") private repository: IGenericRepository<T>) {}
+  protected repository: IGenericRepository<T>; // Change from private to protected
+
+  constructor(@inject("GenericRepository") repository: IGenericRepository<T>) {
+    this.repository = repository;
+  }
 
   async getAll(): Promise<T[]> {
     return this.repository.findAll();
