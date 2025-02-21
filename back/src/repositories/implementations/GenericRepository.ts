@@ -23,6 +23,10 @@ export class GenericRepository<T> implements IGenericRepository<T> {
     return this.model.findUnique({ where: { id } });
   }
 
+  async findByField(field: string, value: string): Promise<T | null> {
+    return this.model.findUnique({ where: { [field]: value } });
+  }
+
   async create(data: any): Promise<T> {
     return this.model.create({ data });
   }
