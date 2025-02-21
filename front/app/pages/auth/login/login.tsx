@@ -7,7 +7,7 @@ import logoDark from "@/assets/images/logo-dark.png";
 
 export function Login() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#F0F4F7] py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">
         <div className="flex flex-col items-center mb-8">
           <img
@@ -17,13 +17,13 @@ export function Login() {
             height={80}
             className="mb-4"
           />
-          <h2 className="text-gray-500 text-lg">
+          <h2 className="text-[#768caa] text-lg">
             Design do Painel de Administração
           </h2>
         </div>
 
         <div className="bg-white p-8 rounded-lg shadow-sm">
-          <h1 className="text-2xl font-semibold text-center text-gray-900 mb-8">
+          <h1 className="text-2xl font-semibold text-center text-[#4f4f5f] mb-8">
             Faça login na sua conta
           </h1>
 
@@ -69,9 +69,9 @@ export function Login() {
               <div className="flex items-center">
                 <Checkbox
                   defaultSelected
-                  radius="md"
+                  radius="full"
                   color="primary"
-                  className="text-gray-600"
+                  className="text-gray-600 rounded-r-full "
                 >
                   Lembrar de mim
                 </Checkbox>
@@ -95,7 +95,7 @@ export function Login() {
           <div className="mt-6 text-center text-sm">
             <span className="text-gray-500">Não tem uma conta?</span>{" "}
             <Link
-              href="/register"
+              href="/cadastro"
               className="text-[#2196F3] hover:text-[#1976D2]"
             >
               Cadastrar-se!
