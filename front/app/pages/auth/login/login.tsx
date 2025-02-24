@@ -6,6 +6,7 @@ import { Checkbox } from "@heroui/checkbox";
 import logoDark from "@/assets/images/logo-dark.png";
 
 export function Login() {
+  const [isSelected, setIsSelected] = React.useState(false);
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#F0F4F7] py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">
@@ -68,8 +69,9 @@ export function Login() {
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <Checkbox
-                  defaultSelected
-                  radius="full"
+                  isSelected={isSelected}
+                  onValueChange={setIsSelected}
+                  radius="md"
                   color="primary"
                   className="text-gray-600 rounded-r-full "
                 >
