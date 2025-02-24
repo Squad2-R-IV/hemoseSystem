@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IGenericService } from "../services/interfaces/IGenericService";
+import { IGenericService } from "../interfaces/IGenericService";
 import { inject } from "tsyringe";
 
 export class GenericController<T> {
