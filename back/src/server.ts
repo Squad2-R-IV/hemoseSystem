@@ -3,16 +3,17 @@ import * as express from "express";
 import * as cors from "cors";
 import userRoutes from "./routes/user.routes";
 import { setupSwagger } from "./config/swagger";
+import * as cookieParser from "cookie-parser";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-// Configurar Swagger
-setupSwagger(app);
+app.use(cookieParser());
 
 // Configurar Rotas
 app.use("/users", userRoutes);
+// Configurar Swagger
+setupSwagger(app);
 
 app.listen(3000, () => {
   console.log("🚀 Server running on http://localhost:3000");

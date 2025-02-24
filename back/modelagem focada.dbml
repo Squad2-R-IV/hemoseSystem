@@ -8,7 +8,6 @@ Table Paciente {
   endereco varchar(50)
   cpf varchar(11) [unique] 
   cpf_acompanhante varchar(11) [unique]
-  id_usuario int [ref: > Usuarios.id_usuario] // Add foreign key to Usuarios
 }
 
 Table Funcionario {
@@ -25,7 +24,17 @@ Table Funcionario_Saude {
     registro_profissional varchar(20) 
 } 
 
-
+Table Agendamento {
+  id_agendamento int [pk]
+  id_paciente int [ref: > Paciente.id_paciente]
+  id_funcionario int [ref: > Funcionario_Saude.id_funcionario]
+  data_agendamento date
+  hora_agendamento time
+  tipo_agendamento tipo_agendamento_enum
+  status_agendamento status_agendamento_enum
+  prioridade prioridade_enum
+  observacoes text
+}
 Table Perfis {
   id_perfil int [pk]
   nome_perfil perfil_enum
@@ -49,7 +58,7 @@ Table Perfis_Permissoes {
 
 Table AltaMedica {
   id_alta int [pk]
-  id_visita int [ref: > Visita.id_visita]
+  id_historico int [ref: > Historico.id_historico]
   id_medico int [ref: > Funcionario_Saude.id_funcionario]
   dt_alta datetime
   tipo_alta enum_tipo_alta_enum
@@ -91,9 +100,10 @@ Table Auditoria {
   dt_registro datetime
 }
 
-Table Visita {
-  id_visita int [pk]
-  id_paciente int [ref: > Paciente.id_paciente]
+Table Historico {
+  id_historico int [pk]
+  id_agendamento int [ref: > Agendamento.id_agendamento]
+  procedimento tipo_procedimento_enum
   dt_entrada datetime
   dt_saida datetime
   status varchar(50)
@@ -123,7 +133,7 @@ Table Registro_Prescricao {
 
 Table Prescricao {
   id_prescricao int [pk]
-  id_visita int [ref: > Visita.id_visita]
+  id_historico int [ref: > Historico.id_historico]
   dt_prescricao date
   dieta varchar(50)
   decubito varchar(50)
@@ -135,7 +145,7 @@ Table Prescricao {
 
 Table Exames {
   id_exame int [pk]
-  id_visita int [ref: > Visita.id_visita]
+  id_historico int [ref: > Historico.id_historico]
   id_funcionario_saude int [ref: > Funcionario_Saude.id_funcionario]
   tipo_do_exame varchar(500)
   resultado varchar(1000)
@@ -146,7 +156,7 @@ Table Exames {
 
 Table Evolucao_Medica {
   id_evolucao int [pk]
-  id_visita int [ref: > Visita.id_visita]
+  id_historico int [ref: > Historico.id_historico]
   id_funcionario int [ref: > Funcionario_Saude.id_funcionario]
   dt_evolucao datetime
   sintomas varchar(500)
@@ -155,8 +165,9 @@ Table Evolucao_Medica {
 
 Table Anamnese {
   id_anamnese int [pk]
-  id_visita int [ref: > Visita.id_visita]
+  id_historico int [ref: > Historico.id_historico]
   id_funcionario int [ref: > Funcionario_Saude.id_funcionario]
+  cid varchar(10)
   queixa_principal varchar(5000)
   historia_doenca_atual varchar(5000)
   antecedentes_pessoais varchar(5000)
@@ -167,7 +178,20 @@ Table Anamnese {
   cirurgias_previas varchar(5000)
   observacoes varchar(5000)
 }
+Table Leito {
+  id_leito int [pk]
+  numero_leito int
+  status varchar(50)
+  observacoes varchar(5000)
+}
 
+Table LeitoHistorico{
+  id_leito_historico int [pk]
+  id_historico int [ref: > Historico.id_historico]
+  id_leito int [ref: > Leito.id_leito]
+  dt_entrada datetime
+  dt_saida datetime
+}
 Table Exame_Fisico {
   id_exame_fisico int [pk]
   id_anamnese int [ref: > Anamnese.id_anamnese] // Add foreign key to Anamnese
@@ -184,6 +208,11 @@ Table Exame_Fisico {
   sistema_nervoso varchar(5000)
   temperatura int
   observacoes varchar(5000)
+}
+Enum tipo_procedimento_enum {
+  Internacao
+  Consulta
+  ProntoSocorro
 }
 
 Enum cargo_enum {
