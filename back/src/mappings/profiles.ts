@@ -7,10 +7,14 @@ import { UpdateUserDto } from '../Dtos/User/UpdateUser.dto';
 
 
 export const initializeProfiles = () => {
+
     createMap(mapper, UserEntity, ReadUserDto);
     createMap(mapper, ReadUserDto, UserEntity);
+    
     createMap(mapper, UserEntity, CreateUserDto);
     createMap(mapper, CreateUserDto, UserEntity);
+
     createMap(mapper, UserEntity, UpdateUserDto);
     createMap(mapper, UpdateUserDto, UserEntity);
+    
 }

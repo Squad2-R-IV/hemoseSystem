@@ -65,13 +65,13 @@ Table AltaMedica {
   observacoes text
 }
 
-Table Disponibilidade {
-  id_disponibilidade int [pk]
-  id_funcionario int [ref: > Funcionario_Saude.id_funcionario]
-  data date  
-  hora time
-  status enum_disponibilidade  
-}
+//Table Disponibilidade {
+ // id_disponibilidade int [pk]
+  //id_funcionario int [ref: > Funcionario_Saude.id_funcionario]
+  //data date  
+  //hora time
+  //status enum_disponibilidade  
+//}
 
 Table Usuarios {
   id_usuario int [pk]
