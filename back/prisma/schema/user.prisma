@@ -3,6 +3,6 @@ model User {
   name          String
   password      String
   email         String @unique
-  refreshToken  String
+  refreshToken  String?
   roles         UserToRole[]
 }

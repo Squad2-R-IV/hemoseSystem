@@ -11,8 +11,11 @@
   "type": "commonjs",
   "description": "",
   "dependencies": {
+    "@automapper/classes": "^8.8.1",
+    "@automapper/core": "^8.8.1",
     "@prisma/client": "^6.4.0",
     "bcrypt": "^5.1.1",
+    "class-transformer": "^0.5.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

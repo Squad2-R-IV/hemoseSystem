@@ -1,6 +1,7 @@
 import { inject, injectable, registry } from "tsyringe";
 import { PrismaClient } from "@prisma/client";
 import { IGenericRepository } from "../interfaces/IGenericRepository";
+import { plainToInstance } from "class-transformer";
 
 @registry([
   {
@@ -12,53 +13,61 @@ import { IGenericRepository } from "../interfaces/IGenericRepository";
 export class GenericRepository<T> implements IGenericRepository<T> {
   constructor(
     @inject("PrismaClient") private prisma: PrismaClient,
-    private model: any
+    private model: any,
+    private entityClass: new () => T
   ) {}
 
   async findAll(): Promise<T[]> {
-    return this.model.findMany();
+    const results = await this.model.findMany();
+    return plainToInstance(this.entityClass, results) as T[];
   }
 
   async findById(id: string): Promise<T | null> {
-    return this.model.findUnique({ where: { id } });
+    const result = await this.model.findUnique({ where: { id } });
+    return result ? plainToInstance(this.entityClass, result) : null;
   }
 
   async findByField(field: string, value: string): Promise<T | null> {
-    return this.model.findFirst({ where: { [field]: value } });
+    const result = await this.model.findFirst({ where: { [field]: value } });
+    return result ? plainToInstance(this.entityClass, result) : null;
   }
 
   async findManyByField(field: string, value: string): Promise<T[]> {
-    return this.model.findMany({ where: { [field]: value } });
+    const results = await this.model.findMany({ where: { [field]: value } });
+    return plainToInstance(this.entityClass, results) as T[];
   }
 
-  async findByFields(fields: { field: string, value: string }[]): Promise<T | null> {
+  async findByFields(fields: { field: string; value: string }[]): Promise<T | null> {
     const whereClause: { [key: string]: string } = fields.reduce((acc, { field, value }) => {
       acc[field] = value;
       return acc;
-    }, {} as { [key: string]: string }); // Explicitly type the accumulator
-    return this.model.findFirst({ where: whereClause });
+    }, {} as { [key: string]: string });
+    const result = await this.model.findFirst({ where: whereClause });
+    return result ? plainToInstance(this.entityClass, result) : null;
   }
 
-  async findManyByFields(fields: { field: string, value: string }[]): Promise<T[]> {
+  async findManyByFields(fields: { field: string; value: string }[]): Promise<T[]> {
     const whereClause: { [key: string]: string } = fields.reduce((acc, { field, value }) => {
       acc[field] = value;
       return acc;
-    }, {} as { [key: string]: string }); // Explicitly type the accumulator
-    return this.model.findMany({ where: whereClause });
+    }, {} as { [key: string]: string });
+    const results = await this.model.findMany({ where: whereClause });
+    return plainToInstance(this.entityClass, results) as T[];
   }
 
   async create(data: any): Promise<T> {
-    return this.model.create({ data });
+    const result = await this.model.create({ data });
+    return plainToInstance(this.entityClass, result);
   }
 
   async update(id: string, data: Partial<T>): Promise<T | null> {
     const entity = await this.findById(id);
     if (!entity) return null;
-    return this.model.update({ where: { id: id }, data });
+    const result = await this.model.update({ where: { id: id }, data });
+    return plainToInstance(this.entityClass, result);
   }
 
   async delete(id: string): Promise<void> {
     await this.model.delete({ where: { id } });
   }
 }
-

@@ -1,7 +1,8 @@
+import { UserEntity } from "../../models/user.entity";
 import { IGenericService } from "./IGenericService";
 import { Role, User, UserToRole } from "@prisma/client";
 
-export interface IUserService extends IGenericService<User> {
+export interface IUserService extends IGenericService<UserEntity> {
 
     findByRefreshToken(refreshToken: string): Promise<User | null>;
     findByEmail(email: string): Promise<User | null>;

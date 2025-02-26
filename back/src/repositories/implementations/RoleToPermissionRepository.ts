@@ -1,8 +1,9 @@
-import { injectable, inject, registry } from "tsyringe";
-import { PrismaClient, RoleToPermission } from "@prisma/client";
+import { injectable, registry } from "tsyringe";
+import { RoleToPermission } from "@prisma/client";
 import { GenericRepository } from "./GenericRepository";
 import { IRoleToPermissionRepository } from "../interfaces/IRoleToPermissionRepository";
 import prisma from "../../config/prisma";
+import { RoleToPermissionEntity } from "../../models/roleToPermission.entity";
 
 
 
@@ -16,6 +17,6 @@ import prisma from "../../config/prisma";
   
 export class RoleToPermissionRepository  extends GenericRepository<RoleToPermission> implements IRoleToPermissionRepository {
   constructor() {
-    super(prisma, prisma.roleToPermission);
+    super(prisma, prisma.roleToPermission, RoleToPermissionEntity);
   }
 }
