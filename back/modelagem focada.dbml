@@ -37,7 +37,6 @@ Table Agendamento {
   hora_agendamento time
   tipo_agendamento tipo_agendamento_enum
   status_agendamento status_agendamento_enum
-  prioridade prioridade_enum
   observacoes text
 }
 Table Perfis {
@@ -149,6 +148,7 @@ Table Triagem {
   temperatura float
   saturacao_oxigenio int
   glicemia int
+  classificacao_risco varchar(50)
   observacoes varchar(5000)
 }
 
