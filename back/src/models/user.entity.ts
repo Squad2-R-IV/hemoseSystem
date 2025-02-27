@@ -14,14 +14,12 @@ export class UserEntity {
     @AutoMap()
     contato!: string;
     @AutoMap()
-    status: string = 'A';
+    status!: string;
     @AutoMap()
-    especialidade: string | null = null;
+    especialidade!: string;
     @AutoMap()
-    conselho: string | null = null; 
+    conselho!: string; 
     @AutoMap()
-    registro : string| null = null;
-    refreshToken: string | null = null; // Use `string | null` em vez de `string | undefined`
-
-
+    registro! : string;
+    refreshToken!: string; 
 }

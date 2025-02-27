@@ -6,9 +6,9 @@ model User {
   cpf           String @unique
   contato       String
   status        String @default("A")
-  especialidade String?
-  conselho      String?
-  registro      String?
-  refreshToken  String?
+  especialidade String @default("")
+  conselho      String @default("")
+  registro      String @default("")
+  refreshToken  String @default("")
   roles         UserToRole[]
 }

@@ -12,9 +12,9 @@ export class CreateUserDto{
     @AutoMap()
     contato!: string;
     @AutoMap()
-    especialidade: string | null = null;
+    especialidade?: string;
     @AutoMap()
-    conselho: string | null = null;
+    conselho?: string;
     @AutoMap()
-    registro: string | null = null;
+    registro?: string;
 }
