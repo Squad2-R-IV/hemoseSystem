@@ -7,4 +7,14 @@ export class CreateUserDto{
     password!: string;
     @AutoMap()
     email!: string;
+    @AutoMap()
+    cpf!: string;
+    @AutoMap()
+    contato!: string;
+    @AutoMap()
+    especialidade: string | null = null;
+    @AutoMap()
+    conselho: string | null = null;
+    @AutoMap()
+    registro: string | null = null;
 }

@@ -3,6 +3,12 @@ model User {
   name          String
   password      String
   email         String @unique
+  cpf           String @unique
+  contato       String
+  status        String @default("A")
+  especialidade String?
+  conselho      String?
+  registro      String?
   refreshToken  String?
   roles         UserToRole[]
 }

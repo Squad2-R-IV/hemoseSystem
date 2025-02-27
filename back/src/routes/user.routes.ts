@@ -22,7 +22,6 @@ const userController = container.resolve(UserController);
  *       required:
  *         - name
  *         - email
- *         - roles
  *       properties:
  *         id:
  *           type: string
@@ -31,17 +30,31 @@ const userController = container.resolve(UserController);
  *         name:
  *           type: string
  *           description: Nome do usuário
- *           example: "João Silva"
+ *           example: "Maria Oliveira"
  *         email:
  *           type: string
  *           description: Email do usuário
- *           example: "joao@email.com"
- *         roles:
- *           type: array
- *           items:
- *             type: string
- *           description: Lista de roles do usuário
- *           example: ["admin", "user"]
+ *           example: "maria.oliveira@email.com"
+ *         cpf:
+ *           type: string
+ *           description: CPF do usuário
+ *           example: "123.456.789-00"
+ *         contato:
+ *           type: string
+ *           description: Contato do usuário
+ *           example: "(81) 98765-4321"
+ *         especialidade:
+ *           type: string
+ *           description: Especialidade do usuário
+ *           example: "Cardiologia"
+ *         conselho:
+ *           type: string
+ *           description: Conselho do usuário
+ *           example: "CRM"
+ *         registro:
+ *           type: string
+ *           description: Registro do usuário no conselho
+ *           example: "123456"
  */
 
 /**
@@ -110,21 +123,35 @@ router.get("/:id", authMiddleware, asyncHandler(userController.getById.bind(user
  *               name:
  *                 type: string
  *                 description: Nome do usuário
- *                 example: "João Silva"
+ *                 example: "Maria Oliveira"
  *               email:
  *                 type: string
  *                 description: Email do usuário
- *                 example: "joao@email.com"
+ *                 example: "maria.oliveira@email.com"
  *               password:
  *                 type: string
  *                 description: Senha do usuário
- *                 example: "senha123"
- *               roles:
- *                 type: array
- *                 items:
- *                   type: string
- *                 description: Lista de roles do usuário
- *                 example: ["admin", "user"]
+ *                 example: "senhaSegura123"
+ *               cpf:
+ *                 type: string
+ *                 description: CPF do usuário
+ *                 example: "123.456.789-00"
+ *               contato:
+ *                 type: string
+ *                 description: Contato do usuário
+ *                 example: "(81) 98765-4321"
+ *               especialidade:
+ *                 type: string
+ *                 description: Especialidade do usuário
+ *                 example: "Cardiologia"
+ *               conselho:
+ *                 type: string
+ *                 description: Conselho do usuário
+ *                 example: "CRM"
+ *               registro:
+ *                 type: string
+ *                 description: Registro do usuário no conselho
+ *                 example: "123456"
  *     responses:
  *       201:
  *         description: Usuário criado com sucesso
@@ -160,17 +187,31 @@ router.post("/", asyncHandler(userController.create.bind(userController)));
  *               name:
  *                 type: string
  *                 description: Nome do usuário
- *                 example: "João Silva"
+ *                 example: "Maria Oliveira"
  *               email:
  *                 type: string
  *                 description: Email do usuário
- *                 example: "joao@email.com"
- *               roles:
- *                 type: array
- *                 items:
- *                   type: string
- *                 description: Lista de roles do usuário
- *                 example: ["admin", "user"]
+ *                 example: "maria.oliveira@email.com"
+ *               cpf:
+ *                 type: string
+ *                 description: CPF do usuário
+ *                 example: "123.456.789-00"
+ *               contato:
+ *                 type: string
+ *                 description: Contato do usuário
+ *                 example: "(81) 98765-4321"
+ *               especialidade:
+ *                 type: string
+ *                 description: Especialidade do usuário
+ *                 example: "Cardiologia"
+ *               conselho:
+ *                 type: string
+ *                 description: Conselho do usuário
+ *                 example: "CRM"
+ *               registro:
+ *                 type: string
+ *                 description: Registro do usuário no conselho
+ *                 example: "123456"
  *     responses:
  *       200:
  *         description: Usuário atualizado com sucesso
@@ -224,11 +265,11 @@ router.delete("/:id", authMiddleware, adminOnlyMiddleware, asyncHandler(userCont
  *               email:
  *                 type: string
  *                 description: Email do usuário
- *                 example: "joao@email.com"
+ *                 example: "maria.oliveira@email.com"
  *               password:
  *                 type: string
  *                 description: Senha do usuário
- *                 example: "senha123"
+ *                 example: "senhaSegura123"
  *     responses:
  *       200:
  *         description: Login realizado com sucesso
@@ -269,9 +310,11 @@ router.post("/login", asyncHandler(userController.login.bind(userController)));
  *                 token:
  *                   type: string
  *                   description: Novo token de acesso
+ *                   example: "novoTokenDeAcesso"
  *                 refreshToken:
  *                   type: string
  *                   description: Novo refresh token
+ *                   example: "novoRefreshToken"
  *       401:
  *         description: Refresh token não informado ou inválido
  *       403:
@@ -322,7 +365,7 @@ router.post("/logout",
  *                 items:
  *                   type: string
  *                 description: Lista de roles do usuário
- *                 example: ["admin", "user"]
+ *                 example: ["admin", "medico","enfermeiro","dentista"]
  *     responses:
  *       200:
  *         description: Roles atualizadas com sucesso

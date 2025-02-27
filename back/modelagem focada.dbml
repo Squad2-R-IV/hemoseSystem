@@ -10,24 +10,29 @@ Table Paciente {
   cpf_acompanhante varchar(11) [unique]
 }
 
-Table Funcionario {
-  id_funcionario int [pk]
-  nome_funcionario varchar(100)
+Table Usuario {
+  id_usuario int [pk]
+  nome_usuario varchar(100)
+  id_perfil int [ref: > Perfis.id_perfil] 
+  email varchar(400) [unique]
   contato varchar(20)
-  id_usuario int [ref: > Usuarios.id_usuario] // Add foreign key to Usuarios
+  senha varchar(255)
+  status status_enum
+  especialidade varchar(50)
+  conselho cargo_enum
+  registro_profissional varchar(20)
+  cpf varchar(11) [unique]
 }
 
-Table Funcionario_Saude {
-    id_funcionario int [ref: > Funcionario.id_funcionario]
-    especialidade varchar(50)
-    conselho cargo_enum
-    registro_profissional varchar(20) 
-} 
 
+Enum status_enum {
+  Ativo
+  Inativo
+}
 Table Agendamento {
   id_agendamento int [pk]
   id_paciente int [ref: > Paciente.id_paciente]
-  id_funcionario int [ref: > Funcionario_Saude.id_funcionario]
+  id_funcionario int [ref: > Usuario.id_usuario]
   data_agendamento date
   hora_agendamento time
   tipo_agendamento tipo_agendamento_enum
@@ -59,7 +64,7 @@ Table Perfis_Permissoes {
 Table AltaMedica {
   id_alta int [pk]
   id_historico int [ref: > Historico.id_historico]
-  id_medico int [ref: > Funcionario_Saude.id_funcionario]
+  id_medico int [ref: > Usuario.id_usuario]
   dt_alta datetime
   tipo_alta enum_tipo_alta_enum
   observacoes text
@@ -67,24 +72,17 @@ Table AltaMedica {
 
 //Table Disponibilidade {
  // id_disponibilidade int [pk]
-  //id_funcionario int [ref: > Funcionario_Saude.id_funcionario]
+  //id_usuario int [ref: > Usuario.id_usuario]
   //data date  
   //hora time
   //status enum_disponibilidade  
 //}
 
-Table Usuarios {
-  id_usuario int [pk]
-  nome_usuario varchar(100)
-  id_perfil int [ref: > Perfis.id_perfil] 
-  email varchar(400) [unique]
-  senha varchar(255)
-  status status_enum
-}
+
 
 Table Chamados {
   id_chamado int [pk]
-  id_usuario int [ref: > Usuarios.id_usuario]
+  id_usuario int [ref: > Usuario.id_usuario]
   tipo_problema varchar(255)
   descricao text
   status enum_status_chamado_enum
@@ -94,7 +92,7 @@ Table Chamados {
 
 Table Auditoria {
   id_auditoria int [pk]
-  id_usuario int [ref: > Usuarios.id_usuario]
+  id_usuario int [ref: > Usuario.id_usuario]
   acao varchar(255)
   descricao text
   dt_registro datetime
@@ -116,7 +114,7 @@ Table Historico {
 Table Registro_Prescricao {
   id_registro_prescricao int [pk]
   id_prescricao int [ref: > Prescricao.id_prescricao]
-  id_funcionario int [ref: > Funcionario_Saude.id_funcionario]
+  id_funcionario int [ref: > Usuario.id_usuario]
   nome_medicamento varchar(500)
   apresentacao varchar(500)
   via_administracao varchar(100)
@@ -146,7 +144,7 @@ Table Prescricao {
 Table Exames {
   id_exame int [pk]
   id_historico int [ref: > Historico.id_historico]
-  id_funcionario_saude int [ref: > Funcionario_Saude.id_funcionario]
+  id_funcionario int [ref: > Usuario.id_usuario]
   tipo_do_exame varchar(500)
   resultado varchar(1000)
   dt_exame date
@@ -157,7 +155,7 @@ Table Exames {
 Table Evolucao_Medica {
   id_evolucao int [pk]
   id_historico int [ref: > Historico.id_historico]
-  id_funcionario int [ref: > Funcionario_Saude.id_funcionario]
+  id_funcionario int [ref: > Usuario.id_usuario]
   dt_evolucao datetime
   sintomas varchar(500)
   observacoes varchar(5000)
@@ -166,7 +164,7 @@ Table Evolucao_Medica {
 Table Anamnese {
   id_anamnese int [pk]
   id_historico int [ref: > Historico.id_historico]
-  id_funcionario int [ref: > Funcionario_Saude.id_funcionario]
+  id_funcionario int [ref: > Usuario.id_usuario]
   cid varchar(10)
   queixa_principal varchar(5000)
   historia_doenca_atual varchar(5000)
@@ -256,10 +254,6 @@ Enum perfil_enum {
   Recepcionista
 }
 
-Enum status_enum {
-  Ativo
-  Inativo
-}
 
 Enum prioridade_enum {
   Baixa
