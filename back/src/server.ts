@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import * as express from "express";
-import * as cors from "cors";
+import express from "express";
+import cors from "cors";
 import userRoutes from "./routes/user.routes";
 import { setupSwagger } from "./config/swagger";
-import * as cookieParser from "cookie-parser";
+import cookieParser from "cookie-parser";
 import { initializeProfiles } from "./mappings/profiles";
 
 

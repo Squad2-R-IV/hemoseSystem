@@ -7,7 +7,13 @@
       "strict": true,
       "resolveJsonModule": true,
       "experimentalDecorators": true,
-      "emitDecoratorMetadata": true
-    }
+      "emitDecoratorMetadata": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "types": ["node"]
+    },
+    "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
   }
   
