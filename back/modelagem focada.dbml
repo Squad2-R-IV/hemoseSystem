@@ -13,7 +13,6 @@ Table Paciente {
 Table Usuario {
   id_usuario int [pk]
   nome_usuario varchar(100)
-  id_perfil int [ref: > Perfis.id_perfil] 
   email varchar(400) [unique]
   contato varchar(20)
   senha varchar(255)
@@ -22,6 +21,15 @@ Table Usuario {
   conselho cargo_enum
   registro_profissional varchar(20)
   cpf varchar(11) [unique]
+}
+
+Table Usuario_Role {
+  id_usuario int [ref: > Usuario.id_usuario]
+  id_role int [ref: > Role.id_role]
+
+  Indexes {
+    (id_usuario, id_role) [pk] 
+  }
 }
 
 
@@ -39,19 +47,19 @@ Table Agendamento {
   status_agendamento status_agendamento_enum
   observacoes text
 }
-Table Perfis {
-  id_perfil int [pk]
-  nome_perfil perfil_enum
+Table Role {
+  id_role int [pk]
+  nome_role varchar(100)
 }
 
-Table Permissoes {
+Table Permissao {
   id_permissao int [pk]
   nome_permissao varchar(100)  
   descricao text  
 }
 
-Table Perfis_Permissoes {
-  id_perfil int [ref: > Perfis.id_perfil]
+Table Role_Permissao {
+  id_role int [ref: > Role.id_role]
   id_permissao int [ref: > Permissoes.id_permissao]
 
   Indexes {

@@ -17,4 +17,5 @@ export class CreateUserDto{
     conselho?: string;
     @AutoMap()
     registro?: string;
+    roles?: string[];
 }

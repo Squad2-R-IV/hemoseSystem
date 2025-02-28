@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { inject, injectable } from "tsyringe";
+import { container, inject, injectable } from "tsyringe";
 import { GenericController } from "./GenericController";
 import { IUserService } from "../services/interfaces/IUserService";
 import { UserEntity } from "../models/user.entity";
@@ -11,6 +11,9 @@ import * as jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import * as bcrypt from "bcrypt";
 import { Role } from "@prisma/client";
+import { randomUUID } from "crypto";
+import { RoleRepository } from "../repositories/implementations/RoleRepository";
+import { UserToRoleRepository } from "../repositories/implementations/UserToRoleRepository";
 
 dotenv.config();
 
@@ -116,6 +119,29 @@ export class UserController extends GenericController<UserEntity, CreateUserDto,
       res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
 
       return res.status(200).json({ message: "Logout realizado com sucesso" });
+    } catch (error: any) {
+      return res.status(500).json({ error: error.message });
+    }
+  }
+  
+  async create(req: Request, res: Response): Promise<Response> {
+    try {
+      const dto : CreateUserDto = req.body;
+      const createDto = mapper.map(dto, CreateUserDto, UserEntity);
+      createDto.password = await bcrypt.hash(createDto.password
+        , parseInt(process.env.SALT_ROUNDS as string));
+      createDto.id = randomUUID();
+      createDto.status = "A";
+      const newItem = await this.userService.create(createDto);
+      const userToRoleRepository = container.resolve(UserToRoleRepository);
+      const roleRepository = container.resolve(RoleRepository);
+      const role = await roleRepository.findByField("name", "semRole");
+      if (!role) {
+        return res.status(404).json({ message: "Role padrão não encontrada, informe ao administrador do sistema" });
+      }
+      await userToRoleRepository.create({ userId: newItem.id, roleId: role.id });
+      const readDto = mapper.map(newItem, ReadUserDto, UserEntity);
+      return res.status(201).json(readDto);
     } catch (error: any) {
       return res.status(500).json({ error: error.message });
     }
