@@ -5,6 +5,7 @@ import userRoutes from "./routes/user.routes";
 import { setupSwagger } from "./config/swagger";
 import cookieParser from "cookie-parser";
 import { initializeProfiles } from "./mappings/profiles";
+import historicoRoutes from "./routes/historico.routes";
 
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(cookieParser());
 initializeProfiles();
 // Configurar Rotas
 app.use("/users", userRoutes);
+app.use("/historico", historicoRoutes);
 // Configurar Swagger
 setupSwagger(app);
 

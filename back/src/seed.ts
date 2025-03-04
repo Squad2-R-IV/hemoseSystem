@@ -19,6 +19,10 @@ async function main() {
         { name: "pacientes_read", description: "Permissão para ler pacientes" },
         { name: "pacientes_update", description: "Permissão para atualizar pacientes" },
         { name: "pacientes_delete", description: "Permissão para deletar pacientes" },
+        { name: "historicos_create", description: "Permissão para criar históricos" },
+        { name: "historicos_read", description: "Permissão para ler históricos" },
+        { name: "historicos_update", description: "Permissão para atualizar históricos" },
+        { name: "historicos_delete", description: "Permissão para deletar históricos" },
     ];
 
     for (const role of roles) {
@@ -46,6 +50,11 @@ async function main() {
     const pacientesCreatePermission = await prisma.permission.findUnique({ where: { name: "pacientes_create" } });
     const pacientesUpdatePermission = await prisma.permission.findUnique({ where: { name: "pacientes_update" } });
     const pacientesDeletePermission = await prisma.permission.findUnique({ where: { name: "pacientes_delete" } });
+
+    const historicosReadPermission = await prisma.permission.findUnique({ where: { name: "historicos_read" } });
+    const historicosCreatePermission = await prisma.permission.findUnique({ where: { name: "historicos_create" } });
+    const historicosUpdatePermission = await prisma.permission.findUnique({ where: { name: "historicos_update" } });
+    const historicosDeletePermission = await prisma.permission.findUnique({ where: { name: "historicos_delete" } });
 
     if (adminRole && pacientesReadPermission) {
         await prisma.roleToPermission.upsert({
@@ -77,6 +86,42 @@ async function main() {
             update: {},
             create: { roleId: adminRole.id, permissionId: pacientesDeletePermission.id },
         });
+    }
+
+    // Adicionar permissões de leitura para todas as roles em histórico
+    for (const role of [adminRole, gestorRole, recepcionistaRole, semRole]) {
+        if (role && historicosReadPermission) {
+            await prisma.roleToPermission.upsert({
+                where: { roleId_permissionId: { roleId: role.id, permissionId: historicosReadPermission.id } },
+                update: {},
+                create: { roleId: role.id, permissionId: historicosReadPermission.id },
+            });
+        }
+    }
+
+    // Adicionar permissões de criar, atualizar e deletar históricos para gestor, admin e recepcionista
+    for (const role of [adminRole, gestorRole, recepcionistaRole]) {
+        if (role && historicosCreatePermission) {
+            await prisma.roleToPermission.upsert({
+                where: { roleId_permissionId: { roleId: role.id, permissionId: historicosCreatePermission.id } },
+                update: {},
+                create: { roleId: role.id, permissionId: historicosCreatePermission.id },
+            });
+        }
+        if (role && historicosUpdatePermission) {
+            await prisma.roleToPermission.upsert({
+                where: { roleId_permissionId: { roleId: role.id, permissionId: historicosUpdatePermission.id } },
+                update: {},
+                create: { roleId: role.id, permissionId: historicosUpdatePermission.id },
+            });
+        }
+        if (role && historicosDeletePermission) {
+            await prisma.roleToPermission.upsert({
+                where: { roleId_permissionId: { roleId: role.id, permissionId: historicosDeletePermission.id } },
+                update: {},
+                create: { roleId: role.id, permissionId: historicosDeletePermission.id },
+            });
+        }
     }
 }
 

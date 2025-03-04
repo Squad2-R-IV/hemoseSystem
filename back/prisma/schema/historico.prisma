@@ -1,0 +1,16 @@
+enum tipo_procedimento_enum {
+  PROCEDIMENTO_A
+  PROCEDIMENTO_B
+  // Adicione outros valores conforme necessário
+}
+
+model Historico {
+  id_historico     Int                   @id @default(autoincrement())
+  id_agendamento   Int
+  //Agendamento      Agendamento           @relation(fields: [id_agendamento], references: [id_agendamento])
+  procedimento     tipo_procedimento_enum
+  dt_entrada       DateTime              @default(now())
+  dt_saida         DateTime?              
+  status           String                @db.VarChar(50) @default("A")
+  observacoes      String                
+}
