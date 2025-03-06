@@ -15,4 +15,8 @@ export default [
     "atendimento-medico-paciente/:id",
     "./routes/modulos/atendimento-medico/paciente.tsx"
   ),
+  route(
+    "atendimento-geral",
+    "./routes/modulos/atendimento-geral/atendimento-geral.tsx"
+  ),
 ] satisfies RouteConfig;
