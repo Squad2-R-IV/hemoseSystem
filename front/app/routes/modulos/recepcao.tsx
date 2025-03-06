@@ -8,6 +8,6 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function CadastroRoute() {
+export default function RecepcaoRoute() {
   return <Recepcao />;
 }

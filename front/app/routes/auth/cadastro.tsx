@@ -1,4 +1,4 @@
-import type { Route } from "./+types/home";
+import type { Route } from "../+types/home";
 import { Cadastro } from "app/pages/auth/cadastro/cadastro";
 
 export function meta({}: Route.MetaArgs) {
