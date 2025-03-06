@@ -22,9 +22,11 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "reflect-metadata": "^0.2.2",
+    "swagger-autogen": "^2.23.7",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "tsyringe": "^4.8.0"
+    "tsyringe": "^4.8.0",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
