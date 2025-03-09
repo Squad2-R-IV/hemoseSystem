@@ -23,6 +23,10 @@ async function main() {
         { name: "historicos_read", description: "Permissão para ler históricos" },
         { name: "historicos_update", description: "Permissão para atualizar históricos" },
         { name: "historicos_delete", description: "Permissão para deletar históricos" },
+        { name: "agendamento_create", description: "Permissão para criar agendamento" },
+        { name: "agendamento_read", description: "Permissão para ler agendamento" },
+        { name: "agendamento_update", description: "Permissão para atualizar agendamento" },
+        { name: "agendamento_delete", description: "Permissão para deletar agendamento" },
     ];
 
     for (const role of roles) {
@@ -55,6 +59,11 @@ async function main() {
     const historicosCreatePermission = await prisma.permission.findUnique({ where: { name: "historicos_create" } });
     const historicosUpdatePermission = await prisma.permission.findUnique({ where: { name: "historicos_update" } });
     const historicosDeletePermission = await prisma.permission.findUnique({ where: { name: "historicos_delete" } });
+
+    const agendamentoReadPermission = await prisma.permission.findUnique({ where: { name: "agendamento_read" } });
+    const agendamentoCreatePermission = await prisma.permission.findUnique({ where: { name: "agendamento_create" } });
+    const agendamentoUpdatePermission = await prisma.permission.findUnique({ where: { name: "agendamento_update" } });
+    const agendamentoDeletePermission = await prisma.permission.findUnique({ where: { name: "agendamento_delete" } });
 
     if (adminRole && pacientesReadPermission) {
         await prisma.roleToPermission.upsert({
@@ -120,6 +129,31 @@ async function main() {
                 where: { roleId_permissionId: { roleId: role.id, permissionId: historicosDeletePermission.id } },
                 update: {},
                 create: { roleId: role.id, permissionId: historicosDeletePermission.id },
+            });
+        }
+    }
+
+    // Adicionar permissões de criar, atualizar e deletar agendamento para gestor, admin e recepcionista
+    for (const role of [adminRole, gestorRole, recepcionistaRole]) {
+        if (role && agendamentoCreatePermission) {
+            await prisma.roleToPermission.upsert({
+                where: { roleId_permissionId: { roleId: role.id, permissionId: agendamentoCreatePermission.id } },
+                update: {},
+                create: { roleId: role.id, permissionId: agendamentoCreatePermission.id },
+            });
+        }
+        if (role && agendamentoUpdatePermission) {
+            await prisma.roleToPermission.upsert({
+                where: { roleId_permissionId: { roleId: role.id, permissionId: agendamentoUpdatePermission.id } },
+                update: {},
+                create: { roleId: role.id, permissionId: agendamentoUpdatePermission.id },
+            });
+        }
+        if (role && agendamentoDeletePermission) {
+            await prisma.roleToPermission.upsert({
+                where: { roleId_permissionId: { roleId: role.id, permissionId: agendamentoDeletePermission.id } },
+                update: {},
+                create: { roleId: role.id, permissionId: agendamentoDeletePermission.id },
             });
         }
     }
