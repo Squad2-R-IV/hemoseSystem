@@ -11,4 +11,5 @@ model User {
   registro      String @default("")
   refreshToken  String @default("")
   roles         UserToRole[]
+  agendamentos  Agendamento[]
 }

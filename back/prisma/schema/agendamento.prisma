@@ -1,0 +1,28 @@
+model Agendamento {
+  id_agendamento      Int                   @id @default(autoincrement())
+  id_paciente         Int
+  id_funcionario      String
+  data_agendamento    DateTime
+  hora_agendamento    DateTime
+  tipo_agendamento    TipoAgendamentoEnum
+  status_agendamento  StatusAgendamentoEnum
+  observacoes         String?
+
+  //Paciente            Paciente              @relation(fields: [id_paciente], references: [id_paciente])
+  Usuario             User                  @relation(fields: [id_funcionario], references: [id])
+  historico          Historico[]
+}
+
+enum StatusAgendamentoEnum {
+  Agendado
+  Confirmado
+  Realizado
+  Cancelado
+  Reagendado 
+}
+
+enum TipoAgendamentoEnum {
+  Consulta
+  Exame
+  Procedimento
+}
