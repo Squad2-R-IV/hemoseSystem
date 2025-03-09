@@ -7,7 +7,10 @@ import { UpdateUserDto } from '../Dtos/User/UpdateUser.dto';
 import { HistoricoEntity } from '../models/historico.entity';
 import { ReadHistoricoDto } from '../Dtos/Historico/ReadHistoricoDto';
 import { CreateHistoricoDto } from '../Dtos/Historico/CreateHistoricoDto';
-
+import { AgendamentoEntity } from '../models/agendamento.entity';
+import { CreateAgendamentoDto } from '../Dtos/Agendamento/CreateAgendamentoDto';
+import { ReadAgendamentoDto } from '../Dtos/Agendamento/ReadAgendamentoDto';
+import { UpdateAgendamentoDto } from '../Dtos/Agendamento/UpdateAgendamentoDto';
 
 export const initializeProfiles = () => {
 
@@ -28,5 +31,13 @@ export const initializeProfiles = () => {
 
     createMap(mapper, HistoricoEntity, ReadHistoricoDto);
     createMap(mapper, ReadHistoricoDto, HistoricoEntity);
-    
+
+    createMap(mapper, AgendamentoEntity, ReadAgendamentoDto);
+    createMap(mapper, ReadAgendamentoDto, AgendamentoEntity);
+
+    createMap(mapper, AgendamentoEntity, CreateAgendamentoDto);
+    createMap(mapper, CreateAgendamentoDto, AgendamentoEntity);
+
+    createMap(mapper, AgendamentoEntity, UpdateAgendamentoDto);
+    createMap(mapper, UpdateAgendamentoDto, AgendamentoEntity);
 }
