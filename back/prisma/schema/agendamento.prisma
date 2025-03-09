@@ -2,8 +2,7 @@ model Agendamento {
   id_agendamento      Int                   @id @default(autoincrement())
   id_paciente         Int
   id_funcionario      String
-  data_agendamento    DateTime
-  hora_agendamento    DateTime
+  data_hora_agendamento    DateTime
   tipo_agendamento    TipoAgendamentoEnum
   status_agendamento  StatusAgendamentoEnum
   observacoes         String?

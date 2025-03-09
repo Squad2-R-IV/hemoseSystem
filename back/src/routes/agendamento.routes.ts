@@ -23,8 +23,7 @@ const agendamentoController = container.resolve(AgendamentoController);
  *       required:
  *         - id_paciente
  *         - id_funcionario
- *         - data_agendamento
- *         - hora_agendamento
+ *         - data_hora_agendamento
  *         - tipo_agendamento
  *         - status_agendamento
  *       properties:
@@ -40,16 +39,11 @@ const agendamentoController = container.resolve(AgendamentoController);
  *           type: string
  *           description: ID do funcionário relacionado
  *           example: "some-uuid-1"
- *         data_agendamento:
+ *         data_hora_agendamento:
  *           type: string
- *           format: date
- *           description: Data do agendamento
- *           example: "2025-03-10"
- *         hora_agendamento:
- *           type: string
- *           format: time
- *           description: Hora do agendamento
- *           example: "10:00:00"
+ *           format: date-time
+ *           description: Data e hora do agendamento
+ *           example: "2025-03-10T10:00:00Z"
  *         tipo_agendamento:
  *           type: string
  *           enum: [Consulta, Exame, Procedimento]
@@ -132,8 +126,7 @@ router.get("/:id", authMiddleware, checkPermission("agendamento_read"), asyncHan
  *             required:
  *               - id_paciente
  *               - id_funcionario
- *               - data_agendamento
- *               - hora_agendamento
+ *               - data_hora_agendamento
  *               - tipo_agendamento
  *               - status_agendamento
  *             properties:
@@ -143,14 +136,10 @@ router.get("/:id", authMiddleware, checkPermission("agendamento_read"), asyncHan
  *               id_funcionario:
  *                 type: string
  *                 example: "some-uuid-1"
- *               data_agendamento:
+ *               data_hora_agendamento:
  *                 type: string
- *                 format: date
- *                 example: "2025-03-10"
- *               hora_agendamento:
- *                 type: string
- *                 format: time
- *                 example: "10:00:00"
+ *                 format: date-time
+ *                 example: "2025-03-10T10:00:00Z"
  *               tipo_agendamento:
  *                 type: string
  *                 enum: [Consulta, Exame, Procedimento]
@@ -198,8 +187,7 @@ router.post("/", authMiddleware, checkPermission("agendamento_create"), asyncHan
  *             required:
  *               - id_paciente
  *               - id_funcionario
- *               - data_agendamento
- *               - hora_agendamento
+ *               - data_hora_agendamento
  *               - tipo_agendamento
  *               - status_agendamento
  *             properties:
@@ -209,14 +197,10 @@ router.post("/", authMiddleware, checkPermission("agendamento_create"), asyncHan
  *               id_funcionario:
  *                 type: string
  *                 example: "some-uuid-1"
- *               data_agendamento:
+ *               data_hora_agendamento:
  *                 type: string
- *                 format: date
- *                 example: "2025-03-10"
- *               hora_agendamento:
- *                 type: string
- *                 format: time
- *                 example: "10:00:00"
+ *                 format: date-time
+ *                 example: "2025-03-10T10:00:00Z"
  *               tipo_agendamento:
  *                 type: string
  *                 enum: [Consulta, Exame, Procedimento]
