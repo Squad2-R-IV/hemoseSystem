@@ -135,6 +135,13 @@ async function main() {
 
     // Adicionar permissões de criar, atualizar e deletar agendamento para gestor, admin e recepcionista
     for (const role of [adminRole, gestorRole, recepcionistaRole]) {
+        if (role && agendamentoReadPermission) {
+            await prisma.roleToPermission.upsert({
+                where: { roleId_permissionId: { roleId: role.id, permissionId: agendamentoReadPermission.id } },
+                update: {},
+                create: { roleId: role.id, permissionId: agendamentoReadPermission.id },
+            });
+        }
         if (role && agendamentoCreatePermission) {
             await prisma.roleToPermission.upsert({
                 where: { roleId_permissionId: { roleId: role.id, permissionId: agendamentoCreatePermission.id } },
@@ -156,6 +163,7 @@ async function main() {
                 create: { roleId: role.id, permissionId: agendamentoDeletePermission.id },
             });
         }
+
     }
 }
 

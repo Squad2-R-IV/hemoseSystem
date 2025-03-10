@@ -1,6 +1,8 @@
 import { inject, injectable, registry } from "tsyringe";
 import { IGenericRepository } from "../../repositories/interfaces/IGenericRepository";
 import { IGenericService } from "../interfaces/IGenericService";
+import { IAuditoriaService } from "../interfaces/IAuditoriaService";
+import { AuditoriaEntity } from "../../models/auditoria.entity";
 
 @registry([
   {
@@ -11,8 +13,9 @@ import { IGenericService } from "../interfaces/IGenericService";
 @injectable()
 export class GenericService<T> implements IGenericService<T> {
   protected repository: IGenericRepository<T>; // Change from private to protected
-
-  constructor(@inject("GenericRepository") repository: IGenericRepository<T>) {
+  constructor(
+    @inject("GenericRepository") repository: IGenericRepository<T>,
+  ) {
     this.repository = repository;
   }
 
@@ -20,7 +23,7 @@ export class GenericService<T> implements IGenericService<T> {
     return this.repository.findAll();
   }
 
-  async getById(id: string): Promise<T | null> {
+  async getById(id: string | number): Promise<T | null> {
     return this.repository.findById(id);
   }
 
@@ -28,11 +31,11 @@ export class GenericService<T> implements IGenericService<T> {
     return this.repository.create(data);
   }
 
-  async update(id: string, data: Partial<T>): Promise<T | null> {
+  async update(id: string | number, data: Partial<T>): Promise<T | null> {
     return this.repository.update(id, data);
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string | number): Promise<void> {
     return this.repository.delete(id);
   }
 }

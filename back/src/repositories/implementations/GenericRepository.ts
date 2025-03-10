@@ -22,7 +22,7 @@ export class GenericRepository<T> implements IGenericRepository<T> {
     return plainToInstance(this.entityClass, results) as T[];
   }
 
-  async findById(id: string): Promise<T | null> {
+  async findById(id: string | number): Promise<T | null> {
     const result = await this.model.findUnique({ where: { id } });
     return result ? plainToInstance(this.entityClass, result) : null;
   }
@@ -60,14 +60,14 @@ export class GenericRepository<T> implements IGenericRepository<T> {
     return plainToInstance(this.entityClass, result);
   }
 
-  async update(id: string, data: Partial<T>): Promise<T | null> {
+  async update(id: string | number, data: Partial<T>): Promise<T | null> {
     const entity = await this.findById(id);
     if (!entity) return null;
     const result = await this.model.update({ where: { id: id }, data });
     return plainToInstance(this.entityClass, result);
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string | number): Promise<void> {
     await this.model.delete({ where: { id } });
   }
 }

@@ -1,0 +1,10 @@
+model Auditoria {
+  id     Int                   @id @default(autoincrement())
+  id_usuario         String
+  data_hora          DateTime
+  acao               String
+  tabela             String
+  dados_anteriores   Json? 
+  dados_novos        Json? 
+  Usuario            User                  @relation(fields: [id_usuario], references: [id])
+}

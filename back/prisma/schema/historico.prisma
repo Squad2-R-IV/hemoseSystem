@@ -5,9 +5,9 @@ enum tipo_procedimento_enum {
 }
 
 model Historico {
-  id_historico     Int                   @id @default(autoincrement())
+  id   Int                   @id @default(autoincrement())
   id_agendamento   Int
-  Agendamento      Agendamento           @relation(fields: [id_agendamento], references: [id_agendamento])
+  Agendamento      Agendamento           @relation(fields: [id_agendamento], references: [id])
   procedimento     tipo_procedimento_enum
   dt_entrada       DateTime              @default(now())
   dt_saida         DateTime?              

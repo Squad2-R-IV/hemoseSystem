@@ -3,7 +3,7 @@ import { tipo_procedimento_enum } from "@prisma/client";
 
 export class HistoricoEntity {
     @AutoMap()
-    id_historico!: number;
+    id!: number;
     @AutoMap()
     id_agendamento!: number;
     @AutoMap()

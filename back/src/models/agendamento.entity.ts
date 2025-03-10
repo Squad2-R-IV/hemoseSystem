@@ -3,7 +3,7 @@ import { TipoAgendamentoEnum, StatusAgendamentoEnum } from "@prisma/client";
 
 export class AgendamentoEntity {
     @AutoMap()
-    id_agendamento!: number;
+    id!: number;
     @AutoMap()
     id_paciente!: number;
     @AutoMap()

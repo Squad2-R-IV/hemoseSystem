@@ -12,4 +12,5 @@ model User {
   refreshToken  String @default("")
   roles         UserToRole[]
   agendamentos  Agendamento[]
+  auditorias    Auditoria[]
 }

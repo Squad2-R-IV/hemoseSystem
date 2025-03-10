@@ -14,6 +14,8 @@ import { Role } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { RoleRepository } from "../repositories/implementations/RoleRepository";
 import { UserToRoleRepository } from "../repositories/implementations/UserToRoleRepository";
+import { IAuditoriaService } from "../services/interfaces/IAuditoriaService";
+import { AuditoriaService } from "../services/implementations/AuditoriaService";
 
 dotenv.config();
 
@@ -21,8 +23,9 @@ dotenv.config();
 export class UserController extends GenericController<UserEntity, CreateUserDto, UpdateUserDto, ReadUserDto> {
   constructor(
     @inject("UserService") private readonly userService: IUserService,
+    @inject(AuditoriaService) auditoriaService: IAuditoriaService
   ) {
-    super(userService, UserEntity, CreateUserDto, UpdateUserDto, ReadUserDto);
+    super(userService, UserEntity, CreateUserDto, UpdateUserDto, ReadUserDto, auditoriaService);
   }
 
   async login(req: Request, res: Response): Promise<Response> {
@@ -124,7 +127,7 @@ export class UserController extends GenericController<UserEntity, CreateUserDto,
     }
   }
   
-  async create(req: Request, res: Response): Promise<Response> {
+  override async create(req: Request, res: Response): Promise<Response> {
     try {
       const dto : CreateUserDto = req.body;
       const createDto = mapper.map(dto, CreateUserDto, UserEntity);
