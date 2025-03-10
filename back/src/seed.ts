@@ -27,6 +27,10 @@ async function main() {
         { name: "agendamento_read", description: "Permissão para ler agendamento" },
         { name: "agendamento_update", description: "Permissão para atualizar agendamento" },
         { name: "agendamento_delete", description: "Permissão para deletar agendamento" },
+        { name: "paciente_create", description: "Permissão para criar paciente" },
+        { name: "paciente_read", description: "Permissão para ler paciente" },
+        { name: "paciente_update", description: "Permissão para atualizar paciente" },
+        { name: "paciente_delete", description: "Permissão para deletar paciente" },
     ];
 
     for (const role of roles) {
@@ -64,6 +68,11 @@ async function main() {
     const agendamentoCreatePermission = await prisma.permission.findUnique({ where: { name: "agendamento_create" } });
     const agendamentoUpdatePermission = await prisma.permission.findUnique({ where: { name: "agendamento_update" } });
     const agendamentoDeletePermission = await prisma.permission.findUnique({ where: { name: "agendamento_delete" } });
+
+    const pacienteReadPermission = await prisma.permission.findUnique({ where: { name: "paciente_read" } });
+    const pacienteCreatePermission = await prisma.permission.findUnique({ where: { name: "paciente_create" } });
+    const pacienteUpdatePermission = await prisma.permission.findUnique({ where: { name: "paciente_update" } });
+    const pacienteDeletePermission = await prisma.permission.findUnique({ where: { name: "paciente_delete" } });
 
     if (adminRole && pacientesReadPermission) {
         await prisma.roleToPermission.upsert({
@@ -133,6 +142,18 @@ async function main() {
         }
     }
 
+
+    // Adicionar permissões de leitura para todas as roles em agendamento
+    for (const role of [adminRole, gestorRole, recepcionistaRole, semRole]) {
+        if (role && agendamentoReadPermission) {
+            await prisma.roleToPermission.upsert({
+                where: { roleId_permissionId: { roleId: role.id, permissionId: agendamentoReadPermission.id } },
+                update: {},
+                create: { roleId: role.id, permissionId: agendamentoReadPermission.id },
+            });
+        }
+    }
+
     // Adicionar permissões de criar, atualizar e deletar agendamento para gestor, admin e recepcionista
     for (const role of [adminRole, gestorRole, recepcionistaRole]) {
         if (role && agendamentoReadPermission) {
@@ -164,6 +185,43 @@ async function main() {
             });
         }
 
+    }
+
+
+    // Adicionar permissões de leitura para todas as roles em paciente
+    for (const role of [adminRole, gestorRole, recepcionistaRole, semRole]) {
+        if (role && pacienteReadPermission) {
+            await prisma.roleToPermission.upsert({
+                where: { roleId_permissionId: { roleId: role.id, permissionId: pacienteReadPermission.id } },
+                update: {},
+                create: { roleId: role.id, permissionId: pacienteReadPermission.id },
+            });
+        }
+    }
+
+    // Adicionar permissões de criar, atualizar e deletar paciente para gestor, admin e recepcionista
+    for (const role of [adminRole, gestorRole, recepcionistaRole]) {
+        if (role && pacienteCreatePermission) {
+            await prisma.roleToPermission.upsert({
+                where: { roleId_permissionId: { roleId: role.id, permissionId: pacienteCreatePermission.id } },
+                update: {},
+                create: { roleId: role.id, permissionId: pacienteCreatePermission.id },
+            });
+        }
+        if (role && pacienteUpdatePermission) {
+            await prisma.roleToPermission.upsert({
+                where: { roleId_permissionId: { roleId: role.id, permissionId: pacienteUpdatePermission.id } },
+                update: {},
+                create: { roleId: role.id, permissionId: pacienteUpdatePermission.id },
+            });
+        }
+        if (role && pacienteDeletePermission) {
+            await prisma.roleToPermission.upsert({
+                where: { roleId_permissionId: { roleId: role.id, permissionId: pacienteDeletePermission.id } },
+                update: {},
+                create: { roleId: role.id, permissionId: pacienteDeletePermission.id },
+            });
+        }
     }
 }
 

@@ -11,6 +11,11 @@ import { AgendamentoEntity } from '../models/agendamento.entity';
 import { CreateAgendamentoDto } from '../Dtos/Agendamento/CreateAgendamentoDto';
 import { ReadAgendamentoDto } from '../Dtos/Agendamento/ReadAgendamentoDto';
 import { UpdateAgendamentoDto } from '../Dtos/Agendamento/UpdateAgendamentoDto';
+import { PacienteEntity } from '../models/paciente.entity';
+import { CreatePacienteDto } from '../Dtos/Paciente/CreatePacienteDto';
+import { ReadPacienteDto } from '../Dtos/Paciente/ReadPacienteDto';
+import { UpdatePacienteDto } from '../Dtos/Paciente/UpdatePacienteDto';
+
 
 export const initializeProfiles = () => {
 
@@ -40,4 +45,13 @@ export const initializeProfiles = () => {
 
     createMap(mapper, AgendamentoEntity, UpdateAgendamentoDto);
     createMap(mapper, UpdateAgendamentoDto, AgendamentoEntity);
+
+    createMap(mapper, PacienteEntity, ReadPacienteDto);
+    createMap(mapper, ReadPacienteDto, PacienteEntity);
+
+    createMap(mapper, PacienteEntity, CreatePacienteDto);
+    createMap(mapper, CreatePacienteDto, PacienteEntity);
+
+    createMap(mapper, PacienteEntity, UpdatePacienteDto);
+    createMap(mapper, UpdatePacienteDto, PacienteEntity);
 }
