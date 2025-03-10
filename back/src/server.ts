@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import { initializeProfiles } from "./mappings/profiles";
 import historicoRoutes from "./routes/historico.routes";
 import agendamentoRoutes from "./routes/agendamento.routes";
+import pacienteRoutes from "./routes/paciente.routes";
 
 
 const app = express();
@@ -19,6 +20,7 @@ initializeProfiles();
 app.use("/users", userRoutes);
 app.use("/historico", historicoRoutes);
 app.use("/agendamento", agendamentoRoutes);
+app.use("/paciente", pacienteRoutes);
 // Configurar Swagger
 setupSwagger(app);
 
