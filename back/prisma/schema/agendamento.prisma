@@ -7,7 +7,7 @@ model Agendamento {
   status_agendamento  StatusAgendamentoEnum
   observacoes         String?
 
-  Paciente            Paciente              @relation(fields: [id_paciente], references: [id_paciente])
+  Paciente            Paciente              @relation(fields: [id_paciente], references: [id])
   Usuario             User                  @relation(fields: [id_funcionario], references: [id])
   historico          Historico[]
 }

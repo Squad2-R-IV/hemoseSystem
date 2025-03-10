@@ -1,5 +1,5 @@
 model Paciente {
-  id_paciente        Int      @id @default(autoincrement())
+  id                 Int      @id @default(autoincrement())
   nome_paciente      String   @db.VarChar(100)
   dt_nascimento      DateTime
   idade              Int
