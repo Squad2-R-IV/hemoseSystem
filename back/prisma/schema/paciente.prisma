@@ -1,0 +1,13 @@
+model Paciente {
+  id_paciente        Int      @id @default(autoincrement())
+  nome_paciente      String   @db.VarChar(100)
+  dt_nascimento      DateTime
+  idade              Int
+  sexo               String   @db.VarChar(20)
+  estado_civil       String   @db.VarChar(20)
+  endereco           String   @db.VarChar(50)
+  cpf                String   @unique @db.VarChar(11)
+  cpf_acompanhante   String   @unique @db.VarChar(11)
+
+  agendamentos       Agendamento[]
+}
