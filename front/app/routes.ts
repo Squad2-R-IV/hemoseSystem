@@ -19,4 +19,8 @@ export default [
     "atendimento-geral",
     "./routes/modulos/atendimento-geral/atendimento-geral.tsx"
   ),
+  route(
+    "atendimento-enfermagem",
+    "./routes/modulos/atendimento-enfermagem/selecao-paciente.tsx"
+  ),
 ] satisfies RouteConfig;
