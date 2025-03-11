@@ -60,7 +60,7 @@ Table Permissao {
 
 Table Role_Permissao {
   id_role int [ref: > Role.id_role]
-  id_permissao int [ref: > Permissoes.id_permissao]
+  id_permissao int [ref: > Permissao.id_permissao]
 
   Indexes {
     (id_perfil, id_permissao) [pk] 
@@ -116,7 +116,17 @@ Table Historico {
 }
 
 
-
+Table Prescricao {
+  id_prescricao int [pk]
+  id_historico int [ref: > Historico.id_historico]
+  dt_prescricao date
+  dieta varchar(500) //optional
+  decubito varchar(500)//optional
+  cuidados_especiais varchar(500)//optional
+  fisioterapia varchar(500)//optional
+  balanco_hidrico boolean//optional
+  observacoes varchar(5000)
+}
 
 Table Registro_Prescricao {
   id_registro_prescricao int [pk]
@@ -160,17 +170,7 @@ Table Triagem {
   observacoes varchar(5000)
 }
 
-Table Prescricao {
-  id_prescricao int [pk]
-  id_historico int [ref: > Historico.id_historico]
-  dt_prescricao date
-  dieta varchar(50)
-  decubito varchar(50)
-  cuidados_especiais varchar(500)
-  fisioterapia varchar(500)
-  balanco_hidrico boolean
-  observacoes varchar(5000)
-}
+
 
 Table Exames {
   id_exame int [pk]

@@ -2,7 +2,7 @@ import { AutoMap } from "@automapper/classes";
 
 export class PacienteEntity {
     @AutoMap()
-    id_paciente!: number;
+    id!: number;
     @AutoMap()
     nome_paciente!: string;
     @AutoMap()
