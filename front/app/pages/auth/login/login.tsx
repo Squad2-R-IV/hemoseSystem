@@ -37,7 +37,31 @@ export function Login() {
         });
       }
     } catch (error) {
-      console.error("Error:", error);
+      const err = error as { status?: number };
+      if (err.status === 404) {
+        addToast({
+          title: "Erro",
+          description: "Usuário não encontrado",
+          color: "danger",
+        });
+      }
+      else if (err.status === 401) {
+        addToast({
+          title: "Erro",
+          description: "Senha inválida",
+          color: "danger",
+        });
+      }
+      else if (err.status === 500) {
+        addToast({
+          title: "Erro",
+          description: "Erro interno no servidor",
+          color: "danger",
+        });
+      } 
+      else {
+        console.error("Error:", error);
+      }
     }
   };
 
