@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "react-router build",
-    "dev": "react-router dev",
+    "dev": "concurrently \"react-router dev\" \"npx tailwindcss -i ./app/input.css -o ./app/app.css --watch\"",
+    "dev-api": "concurrently \"react-router dev\" \"npx tailwindcss -i ./app/input.css -o ./app/app.css --watch\" \"npx ts-node ../back/src/server.ts\"",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc"
   },
@@ -12,16 +13,22 @@
     "@heroicons/react": "^2.2.0",
     "@heroui/drawer": "^2.2.13",
     "@heroui/navbar": "^2.2.14",
+    "@heroui/progress": "^2.2.12",
     "@heroui/react": "^2.7.2",
     "@heroui/system": "^2.4.12",
     "@heroui/theme": "^2.4.12",
+    "@heroui/toast": "^2.0.6",
     "@react-router/node": "^7.2.0",
     "@react-router/serve": "^7.2.0",
+    "@reduxjs/toolkit": "^2.6.1",
+    "concurrently": "^9.1.2",
     "framer-motion": "^12.5.0",
     "isbot": "^5.1.17",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router": "^7.2.0"
+    "react-redux": "^9.2.0",
+    "react-router": "^7.2.0",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@react-router/dev": "^7.2.0",
@@ -31,6 +38,7 @@
     "autoprefixer": "^10.4.21",
     "react-router-devtools": "^1.1.0",
     "tailwindcss": "^3.4.17",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.2",
     "vite": "^5.4.11",
     "vite-tsconfig-paths": "^5.1.4"
