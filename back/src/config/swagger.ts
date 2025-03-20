@@ -1,6 +1,7 @@
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { Express } from "express";
+import path from "path";
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -26,7 +27,7 @@ const options: swaggerJsdoc.Options = {
       },
     },
   },
-  apis: ["./src/routes/*.ts"], // Caminho para os arquivos com anotações Swagger
+  apis: [path.join(__dirname, "..", "routes", "*.ts")],
 };
 
 const swaggerSpec = swaggerJsdoc(options);
