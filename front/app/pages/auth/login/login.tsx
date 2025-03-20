@@ -3,7 +3,7 @@ import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Link } from "@heroui/link";
 import { Checkbox } from "@heroui/checkbox";
-import logoDark from "@/assets/images/logo-dark.png";
+import logoDark from "@/assets/images/logo.svg";
 
 export function Login() {
   const [isSelected, setIsSelected] = React.useState(false);

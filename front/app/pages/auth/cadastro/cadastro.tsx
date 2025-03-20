@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Link } from "@heroui/link";
-import logoDark from "@/assets/images/logo-dark.png";
+import logoDark from "@/assets/images/logo.svg";
 
 export function Cadastro() {
   return (
