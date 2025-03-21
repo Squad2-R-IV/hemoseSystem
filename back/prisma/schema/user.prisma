@@ -13,4 +13,5 @@ model User {
   roles         UserToRole[]
   agendamentos  Agendamento[]
   auditorias    Auditoria[]
+  Anamneses     Anamnese[]
 }

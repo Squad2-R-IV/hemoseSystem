@@ -8,6 +8,7 @@ import { initializeProfiles } from "./mappings/profiles";
 import historicoRoutes from "./routes/historico.routes";
 import agendamentoRoutes from "./routes/agendamento.routes";
 import pacienteRoutes from "./routes/paciente.routes";
+import anamneseRoutes from "./routes/anamnese.routes";
 
 
 const app = express();
@@ -21,6 +22,7 @@ app.use("/users", userRoutes);
 app.use("/historico", historicoRoutes);
 app.use("/agendamento", agendamentoRoutes);
 app.use("/paciente", pacienteRoutes);
+app.use("/anamnese", anamneseRoutes);
 // Configurar Swagger
 setupSwagger(app);
 

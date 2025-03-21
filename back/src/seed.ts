@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Role, Permission } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -31,198 +31,68 @@ async function main() {
         { name: "paciente_read", description: "Permissão para ler paciente" },
         { name: "paciente_update", description: "Permissão para atualizar paciente" },
         { name: "paciente_delete", description: "Permissão para deletar paciente" },
+        { name: "anamnese_create", description: "Permissão para criar anamnese" },
+        { name: "anamnese_read", description: "Permissão para ler anamnese" },
+        { name: "anamnese_update", description: "Permissão para atualizar anamnese" },
+        { name: "anamnese_delete", description: "Permissão para deletar anamnese" },
+        { name: "exame_create", description: "Permissão para criar exame" },
+        { name: "exame_read", description: "Permissão para ler exame" },
+        { name: "exame_update", description: "Permissão para atualizar exame" },
+        { name: "exame_delete", description: "Permissão para deletar exame" },
     ];
 
-    for (const role of roles) {
-        await prisma.role.upsert({
+    await Promise.all(
+        roles.map(role => prisma.role.upsert({
             where: { name: role.name },
             update: {},
             create: role,
-        });
-    }
+        }))
+    );
 
-    for (const permission of permissions) {
-        await prisma.permission.upsert({
+    await Promise.all(
+        permissions.map(permission => prisma.permission.upsert({
             where: { name: permission.name },
             update: {},
             create: permission,
-        });
-    }
+        }))
+    );
 
-    const adminRole = await prisma.role.findUnique({ where: { name: "admin" } });
-    const gestorRole = await prisma.role.findUnique({ where: { name: "gestor" } });
-    const recepcionistaRole = await prisma.role.findUnique({ where: { name: "recepcionista" } });
-    const semRole = await prisma.role.findUnique({ where: { name: "semRole" } });
+    const roleNames = ["admin", "gestor", "recepcionista", "semRole", "medico"];
+    const rolesMap: { [key: string]: Role } = await prisma.role.findMany({
+        where: { name: { in: roleNames } },
+    }).then(roles => roles.reduce((acc, role) => ({ ...acc, [role.name]: role }), {}));
 
-    const pacientesReadPermission = await prisma.permission.findUnique({ where: { name: "pacientes_read" } });
-    const pacientesCreatePermission = await prisma.permission.findUnique({ where: { name: "pacientes_create" } });
-    const pacientesUpdatePermission = await prisma.permission.findUnique({ where: { name: "pacientes_update" } });
-    const pacientesDeletePermission = await prisma.permission.findUnique({ where: { name: "pacientes_delete" } });
+    const permissionNames = [
+        "pacientes_read", "pacientes_create", "pacientes_update", "pacientes_delete",
+        "historicos_read", "historicos_create", "historicos_update", "historicos_delete",
+        "agendamento_read", "agendamento_create", "agendamento_update", "agendamento_delete",
+        "paciente_read", "paciente_create", "paciente_update", "paciente_delete",
+        "anamnese_create", "anamnese_read", "anamnese_update", "anamnese_delete",
+        "exame_create", "exame_read", "exame_update", "exame_delete"
+    ];
+    const permissionsMap: { [key: string]: Permission } = await prisma.permission.findMany({
+        where: { name: { in: permissionNames } },
+    }).then(permissions => permissions.reduce((acc, permission) => ({ ...acc, [permission.name]: permission }), {}));
 
-    const historicosReadPermission = await prisma.permission.findUnique({ where: { name: "historicos_read" } });
-    const historicosCreatePermission = await prisma.permission.findUnique({ where: { name: "historicos_create" } });
-    const historicosUpdatePermission = await prisma.permission.findUnique({ where: { name: "historicos_update" } });
-    const historicosDeletePermission = await prisma.permission.findUnique({ where: { name: "historicos_delete" } });
+    const rolePermissions = [
+        { role: "admin", permissions: ["pacientes_read", "pacientes_delete", "historicos_read", "historicos_create", "historicos_update", "historicos_delete", "agendamento_read", "agendamento_create", "agendamento_update", "agendamento_delete", "paciente_read", "paciente_create", "paciente_update", "paciente_delete", "anamnese_read", "exame_create", "exame_read", "exame_update", "exame_delete"] },
+        { role: "gestor", permissions: ["pacientes_create", "historicos_read", "historicos_create", "historicos_update", "historicos_delete", "agendamento_read", "agendamento_create", "agendamento_update", "agendamento_delete", "paciente_read", "paciente_create", "paciente_update", "paciente_delete", "anamnese_read"] },
+        { role: "recepcionista", permissions: ["pacientes_update", "historicos_read", "historicos_create", "historicos_update", "historicos_delete", "agendamento_read", "agendamento_create", "agendamento_update", "agendamento_delete", "paciente_read", "paciente_create", "paciente_update", "paciente_delete"] },
+        { role: "semRole", permissions: ["historicos_read", "agendamento_read", "paciente_read", "anamnese_read"] },
+        { role: "medico", permissions: ["anamnese_create", "anamnese_read"] },
+    ];
 
-    const agendamentoReadPermission = await prisma.permission.findUnique({ where: { name: "agendamento_read" } });
-    const agendamentoCreatePermission = await prisma.permission.findUnique({ where: { name: "agendamento_create" } });
-    const agendamentoUpdatePermission = await prisma.permission.findUnique({ where: { name: "agendamento_update" } });
-    const agendamentoDeletePermission = await prisma.permission.findUnique({ where: { name: "agendamento_delete" } });
-
-    const pacienteReadPermission = await prisma.permission.findUnique({ where: { name: "paciente_read" } });
-    const pacienteCreatePermission = await prisma.permission.findUnique({ where: { name: "paciente_create" } });
-    const pacienteUpdatePermission = await prisma.permission.findUnique({ where: { name: "paciente_update" } });
-    const pacienteDeletePermission = await prisma.permission.findUnique({ where: { name: "paciente_delete" } });
-
-    if (adminRole && pacientesReadPermission) {
-        await prisma.roleToPermission.upsert({
-            where: { roleId_permissionId: { roleId: adminRole.id, permissionId: pacientesReadPermission.id } },
-            update: {},
-            create: { roleId: adminRole.id, permissionId: pacientesReadPermission.id },
-        });
-    }
-
-    if (gestorRole && pacientesCreatePermission) {
-        await prisma.roleToPermission.upsert({
-            where: { roleId_permissionId: { roleId: gestorRole.id, permissionId: pacientesCreatePermission.id } },
-            update: {},
-            create: { roleId: gestorRole.id, permissionId: pacientesCreatePermission.id },
-        });
-    }
-
-    if (recepcionistaRole && pacientesUpdatePermission) {
-        await prisma.roleToPermission.upsert({
-            where: { roleId_permissionId: { roleId: recepcionistaRole.id, permissionId: pacientesUpdatePermission.id } },
-            update: {},
-            create: { roleId: recepcionistaRole.id, permissionId: pacientesUpdatePermission.id },
-        });
-    }
-
-    if (adminRole && pacientesDeletePermission) {
-        await prisma.roleToPermission.upsert({
-            where: { roleId_permissionId: { roleId: adminRole.id, permissionId: pacientesDeletePermission.id } },
-            update: {},
-            create: { roleId: adminRole.id, permissionId: pacientesDeletePermission.id },
-        });
-    }
-
-    // Adicionar permissões de leitura para todas as roles em histórico
-    for (const role of [adminRole, gestorRole, recepcionistaRole, semRole]) {
-        if (role && historicosReadPermission) {
-            await prisma.roleToPermission.upsert({
-                where: { roleId_permissionId: { roleId: role.id, permissionId: historicosReadPermission.id } },
-                update: {},
-                create: { roleId: role.id, permissionId: historicosReadPermission.id },
-            });
-        }
-    }
-
-    // Adicionar permissões de criar, atualizar e deletar históricos para gestor, admin e recepcionista
-    for (const role of [adminRole, gestorRole, recepcionistaRole]) {
-        if (role && historicosCreatePermission) {
-            await prisma.roleToPermission.upsert({
-                where: { roleId_permissionId: { roleId: role.id, permissionId: historicosCreatePermission.id } },
-                update: {},
-                create: { roleId: role.id, permissionId: historicosCreatePermission.id },
-            });
-        }
-        if (role && historicosUpdatePermission) {
-            await prisma.roleToPermission.upsert({
-                where: { roleId_permissionId: { roleId: role.id, permissionId: historicosUpdatePermission.id } },
-                update: {},
-                create: { roleId: role.id, permissionId: historicosUpdatePermission.id },
-            });
-        }
-        if (role && historicosDeletePermission) {
-            await prisma.roleToPermission.upsert({
-                where: { roleId_permissionId: { roleId: role.id, permissionId: historicosDeletePermission.id } },
-                update: {},
-                create: { roleId: role.id, permissionId: historicosDeletePermission.id },
-            });
-        }
-    }
-
-
-    // Adicionar permissões de leitura para todas as roles em agendamento
-    for (const role of [adminRole, gestorRole, recepcionistaRole, semRole]) {
-        if (role && agendamentoReadPermission) {
-            await prisma.roleToPermission.upsert({
-                where: { roleId_permissionId: { roleId: role.id, permissionId: agendamentoReadPermission.id } },
-                update: {},
-                create: { roleId: role.id, permissionId: agendamentoReadPermission.id },
-            });
-        }
-    }
-
-    // Adicionar permissões de criar, atualizar e deletar agendamento para gestor, admin e recepcionista
-    for (const role of [adminRole, gestorRole, recepcionistaRole]) {
-        if (role && agendamentoReadPermission) {
-            await prisma.roleToPermission.upsert({
-                where: { roleId_permissionId: { roleId: role.id, permissionId: agendamentoReadPermission.id } },
-                update: {},
-                create: { roleId: role.id, permissionId: agendamentoReadPermission.id },
-            });
-        }
-        if (role && agendamentoCreatePermission) {
-            await prisma.roleToPermission.upsert({
-                where: { roleId_permissionId: { roleId: role.id, permissionId: agendamentoCreatePermission.id } },
-                update: {},
-                create: { roleId: role.id, permissionId: agendamentoCreatePermission.id },
-            });
-        }
-        if (role && agendamentoUpdatePermission) {
-            await prisma.roleToPermission.upsert({
-                where: { roleId_permissionId: { roleId: role.id, permissionId: agendamentoUpdatePermission.id } },
-                update: {},
-                create: { roleId: role.id, permissionId: agendamentoUpdatePermission.id },
-            });
-        }
-        if (role && agendamentoDeletePermission) {
-            await prisma.roleToPermission.upsert({
-                where: { roleId_permissionId: { roleId: role.id, permissionId: agendamentoDeletePermission.id } },
-                update: {},
-                create: { roleId: role.id, permissionId: agendamentoDeletePermission.id },
-            });
-        }
-
-    }
-
-
-    // Adicionar permissões de leitura para todas as roles em paciente
-    for (const role of [adminRole, gestorRole, recepcionistaRole, semRole]) {
-        if (role && pacienteReadPermission) {
-            await prisma.roleToPermission.upsert({
-                where: { roleId_permissionId: { roleId: role.id, permissionId: pacienteReadPermission.id } },
-                update: {},
-                create: { roleId: role.id, permissionId: pacienteReadPermission.id },
-            });
-        }
-    }
-
-    // Adicionar permissões de criar, atualizar e deletar paciente para gestor, admin e recepcionista
-    for (const role of [adminRole, gestorRole, recepcionistaRole]) {
-        if (role && pacienteCreatePermission) {
-            await prisma.roleToPermission.upsert({
-                where: { roleId_permissionId: { roleId: role.id, permissionId: pacienteCreatePermission.id } },
-                update: {},
-                create: { roleId: role.id, permissionId: pacienteCreatePermission.id },
-            });
-        }
-        if (role && pacienteUpdatePermission) {
-            await prisma.roleToPermission.upsert({
-                where: { roleId_permissionId: { roleId: role.id, permissionId: pacienteUpdatePermission.id } },
-                update: {},
-                create: { roleId: role.id, permissionId: pacienteUpdatePermission.id },
-            });
-        }
-        if (role && pacienteDeletePermission) {
-            await prisma.roleToPermission.upsert({
-                where: { roleId_permissionId: { roleId: role.id, permissionId: pacienteDeletePermission.id } },
-                update: {},
-                create: { roleId: role.id, permissionId: pacienteDeletePermission.id },
-            });
-        }
-    }
+    await Promise.all(
+        rolePermissions.flatMap(({ role, permissions }) =>
+            permissions.map(permission =>
+                prisma.roleToPermission.upsert({
+                    where: { roleId_permissionId: { roleId: rolesMap[role].id, permissionId: permissionsMap[permission].id } },
+                    update: {},
+                    create: { roleId: rolesMap[role].id, permissionId: permissionsMap[permission].id },
+                })
+            )
+        )
+    );
 }
 
 main()

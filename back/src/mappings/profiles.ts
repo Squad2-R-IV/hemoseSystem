@@ -15,13 +15,15 @@ import { PacienteEntity } from '../models/paciente.entity';
 import { CreatePacienteDto } from '../Dtos/Paciente/CreatePacienteDto';
 import { ReadPacienteDto } from '../Dtos/Paciente/ReadPacienteDto';
 import { UpdatePacienteDto } from '../Dtos/Paciente/UpdatePacienteDto';
+import { AnamneseEntity } from '../models/anamnese.entity';
+import { ReadAnamneseDto } from '../Dtos/Anamnese/ReadAnamneseDto';
 
 
 export const initializeProfiles = () => {
 
     createMap(mapper, UserEntity, ReadUserDto);
     createMap(mapper, ReadUserDto, UserEntity);
-    
+
     createMap(mapper, UserEntity, CreateUserDto);
     createMap(mapper, CreateUserDto, UserEntity);
 
@@ -54,4 +56,11 @@ export const initializeProfiles = () => {
 
     createMap(mapper, PacienteEntity, UpdatePacienteDto);
     createMap(mapper, UpdatePacienteDto, PacienteEntity);
+
+    createMap(mapper, AnamneseEntity, ReadAnamneseDto);
+    createMap(mapper, ReadAnamneseDto, AnamneseEntity);
+    createMap(mapper, AnamneseEntity, CreateHistoricoDto);
+    createMap(mapper, CreateHistoricoDto, AnamneseEntity);
+    createMap(mapper, AnamneseEntity, ReadHistoricoDto);
+
 }
