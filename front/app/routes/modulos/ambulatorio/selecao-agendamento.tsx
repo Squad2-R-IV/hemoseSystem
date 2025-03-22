@@ -1,5 +1,5 @@
 import type { Route } from "../../+types/home";
-import { SelecaoPaciente } from "../../../pages/modulos/atendimento-enfermagem/selecao-paciente";
+import { SelecaoAgendamento } from "../../../pages/modulos/ambulatorio/selecao-agendamento";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -11,6 +11,6 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function SelecaoPacienteRoute() {
-  return <SelecaoPaciente />;
+export default function SelecaoAgendamentoRoute() {
+  return <SelecaoAgendamento />;
 }

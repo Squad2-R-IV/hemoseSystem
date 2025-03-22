@@ -11,6 +11,6 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function SelecaoPacienteRoute() {
+export default function SelecaoAgendamentoRoute() {
   return <SelecaoPaciente />;
 }

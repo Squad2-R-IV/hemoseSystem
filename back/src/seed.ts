@@ -1,4 +1,5 @@
-import { PrismaClient, Role, Permission } from "@prisma/client";
+import { PrismaClient, Role, Permission, StatusAgendamentoEnum, tipo_procedimento_enum, TipoAgendamentoEnum } from "@prisma/client";
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -41,18 +42,20 @@ async function main() {
         { name: "exame_delete", description: "Permissão para deletar exame" },
     ];
 
+    // Upsert roles (only creates if not exists)
     await Promise.all(
         roles.map(role => prisma.role.upsert({
             where: { name: role.name },
-            update: {},
+            update: {}, // No updates, just ensure it exists
             create: role,
         }))
     );
 
+    // Upsert permissions (only creates if not exists)
     await Promise.all(
         permissions.map(permission => prisma.permission.upsert({
             where: { name: permission.name },
-            update: {},
+            update: {}, // No updates, just ensure it exists
             create: permission,
         }))
     );
@@ -79,18 +82,179 @@ async function main() {
         { role: "gestor", permissions: ["pacientes_create", "historicos_read", "historicos_create", "historicos_update", "historicos_delete", "agendamento_read", "agendamento_create", "agendamento_update", "agendamento_delete", "paciente_read", "paciente_create", "paciente_update", "paciente_delete", "anamnese_read"] },
         { role: "recepcionista", permissions: ["pacientes_update", "historicos_read", "historicos_create", "historicos_update", "historicos_delete", "agendamento_read", "agendamento_create", "agendamento_update", "agendamento_delete", "paciente_read", "paciente_create", "paciente_update", "paciente_delete"] },
         { role: "semRole", permissions: ["historicos_read", "agendamento_read", "paciente_read", "anamnese_read"] },
-        { role: "medico", permissions: ["anamnese_create", "anamnese_read"] },
+        { role: "medico", permissions: ["anamnese_create", "anamnese_read", "historicos_read", "agendamento_read", "paciente_read"] },
     ];
 
+    // Upsert role-to-permission relationships (only creates if not exists)
     await Promise.all(
         rolePermissions.flatMap(({ role, permissions }) =>
             permissions.map(permission =>
                 prisma.roleToPermission.upsert({
                     where: { roleId_permissionId: { roleId: rolesMap[role].id, permissionId: permissionsMap[permission].id } },
-                    update: {},
+                    update: {}, // No updates, just ensure it exists
                     create: { roleId: rolesMap[role].id, permissionId: permissionsMap[permission].id },
                 })
             )
+        )
+    );
+
+    const users = roleNames.map(role => ({
+        name: role,
+        email: `${role}@email.com`,
+        password: bcrypt.hashSync('Password@123', 10),
+        cpf: `${role}12345678900`,
+        contato: '123456789',
+        roles: {
+            create: [{ role: { connect: { id: rolesMap[role].id } } }]
+        }
+    }));
+
+    // Upsert users (only creates if email doesn't exist)
+    await Promise.all(
+        users.map(user =>
+            prisma.user.upsert({
+                where: { email: user.email }, // Use email as the unique identifier
+                update: {}, // No updates, just ensure it exists (you can add updates if needed)
+                create: user,
+            })
+        )
+    );
+
+    // Fetch the user with the role "medico"
+    const medicoUser = await prisma.user.findUnique({
+        where: { email: "medico@email.com" }
+    });
+
+    if (!medicoUser) {
+        throw new Error("Medico user not found");
+    }
+
+    // Seed patients
+    const patients = [
+        {
+            id: 1,
+            nome_paciente: "Paciente 1",
+            dt_nascimento: new Date("1990-01-01"),
+            idade: 33,
+            sexo: "Masculino",
+            estado_civil: "Solteiro",
+            endereco: "Endereço 1",
+            cpf: "12345678901",
+            cpf_acompanhante: "10987654321"
+        },
+        {
+            id: 2,
+            nome_paciente: "Paciente 2",
+            dt_nascimento: new Date("1985-05-15"),
+            idade: 38,
+            sexo: "Feminino",
+            estado_civil: "Casado",
+            endereco: "Endereço 2",
+            cpf: "23456789012",
+            cpf_acompanhante: "21098765432"
+        },
+        {
+            id: 3,
+            nome_paciente: "Paciente 3",
+            dt_nascimento: new Date("2000-12-20"),
+            idade: 22,
+            sexo: "Masculino",
+            estado_civil: "Solteiro",
+            endereco: "Endereço 3",
+            cpf: "34567890123",
+            cpf_acompanhante: "32109876543"
+        }
+    ];
+
+    await Promise.all(
+        patients.map(patient =>
+            prisma.paciente.upsert({
+                where: { cpf: patient.cpf },
+                update: {},
+                create: patient,
+            })
+        )
+    );
+
+    // Seed appointments
+    const appointments = [
+        {
+            id : 1,
+            id_paciente: 1,
+            id_funcionario: medicoUser.id,
+            data_hora_agendamento: new Date("2023-10-01T10:00:00Z"),
+            tipo_agendamento: TipoAgendamentoEnum.Consulta,
+            status_agendamento: StatusAgendamentoEnum.Realizado,
+            observacoes: "Primeira consulta"
+        },
+        {
+            id : 2,
+            id_paciente: 2,
+            id_funcionario: medicoUser.id,
+            data_hora_agendamento: new Date("2023-10-02T11:00:00Z"),
+            tipo_agendamento: TipoAgendamentoEnum.Exame,
+            status_agendamento: StatusAgendamentoEnum.Confirmado,
+            observacoes: "Exame de rotina"
+        },
+        {
+            id : 3,
+            id_paciente: 3,
+            id_funcionario: medicoUser.id,
+            data_hora_agendamento: new Date("2023-10-03T12:00:00Z"),
+            tipo_agendamento: TipoAgendamentoEnum.Procedimento,
+            status_agendamento:  StatusAgendamentoEnum.Agendado,
+            observacoes: "Procedimento cirúrgico"
+        }
+    ];
+
+    await Promise.all(
+        appointments.map(appointment =>
+            prisma.agendamento.upsert({
+                where: { id: appointment.id },
+                update: {},
+                create: appointment,
+            })
+        )
+    );
+
+    // Seed histories
+    const histories = [
+        {
+            id: 1,
+            id_agendamento: 1,
+            procedimento: tipo_procedimento_enum.PROCEDIMENTO_A,
+            dt_entrada: new Date("2023-10-01T10:00:00Z"),
+            dt_saida: new Date("2023-10-01T11:00:00Z"),
+            status: "A",
+            observacoes: "Histórico do procedimento A"
+        },
+        {
+            id: 2,
+            id_agendamento: 2,
+            procedimento: tipo_procedimento_enum.PROCEDIMENTO_B,
+            dt_entrada: new Date("2023-10-02T11:00:00Z"),
+            dt_saida: new Date("2023-10-02T12:00:00Z"),
+            status: "A",
+            observacoes: "Histórico do procedimento B"
+        },
+        {
+            id: 3,
+            id_agendamento: 3,
+            procedimento: tipo_procedimento_enum.PROCEDIMENTO_A,
+            dt_entrada: new Date("2023-10-03T12:00:00Z"),
+            dt_saida: new Date("2023-10-03T13:00:00Z"),
+            status: "A",
+            observacoes: "Histórico do procedimento A"
+        }
+    ];
+
+    await Promise.all(
+        histories.map(history =>
+            prisma.historico.upsert({
+                where: { id: history.id },
+                update: {},
+                create: history,
+            })
         )
     );
 }
