@@ -10,7 +10,7 @@ export type PacienteWithRelations = Paciente & {
 };
 
 export type UserWithRelations = User & {
-  agendamentos: Agendamento[];
+  agendamentos?: Agendamento[];
   auditorias?: Auditoria[];
   Anamneses?: Anamnese[];
 };
