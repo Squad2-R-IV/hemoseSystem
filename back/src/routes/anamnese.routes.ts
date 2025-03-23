@@ -50,6 +50,12 @@ const anamneseController = container.resolve(AnamneseController);
  *   get:
  *     summary: Retorna todas as anamneses
  *     tags: [Anamnese]
+ *     parameters:
+ *       - in: query
+ *         name: includeRelations
+ *         schema:
+ *           type: boolean
+ *         description: Incluir relações no resultado
  *     responses:
  *       200:
  *         description: Lista de anamneses retornada com sucesso
@@ -79,6 +85,11 @@ router.get("/", authMiddleware, checkPermission("anamnese_read"), asyncHandler(a
  *         schema:
  *           type: integer
  *         description: ID da anamnese
+ *       - in: query
+ *         name: includeRelations
+ *         schema:
+ *           type: boolean
+ *         description: Incluir relações no resultado
  *     responses:
  *       200:
  *         description: Anamnese encontrada com sucesso

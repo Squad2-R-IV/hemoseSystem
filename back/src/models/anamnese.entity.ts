@@ -1,4 +1,6 @@
 import { AutoMap } from "@automapper/classes";
+import { HistoricoEntity } from "./historico.entity";
+import { UserEntity } from "./user.entity";
 
 export class AnamneseEntity {
     @AutoMap()
@@ -27,4 +29,8 @@ export class AnamneseEntity {
     cirurgias_previas!: string | null;
     @AutoMap()
     observacoes!: string | null;
+    @AutoMap(() => HistoricoEntity)
+    Historico?: HistoricoEntity;
+    @AutoMap(() => UserEntity)
+    User?: UserEntity;
 }

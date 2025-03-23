@@ -19,12 +19,12 @@ export class GenericService<T> implements IGenericService<T> {
     this.repository = repository;
   }
 
-  async getAll(): Promise<T[]> {
-    return this.repository.findAll();
+  async getAll(includeRelations?: boolean): Promise<T[]> {
+    return this.repository.findAll(includeRelations);
   }
 
-  async getById(id: string | number): Promise<T | null> {
-    return this.repository.findById(id);
+  async getById(id: string | number, includeRelations?: boolean): Promise<T | null> {
+    return this.repository.findById(id, includeRelations);
   }
 
   async create(data: T): Promise<T> {

@@ -16,6 +16,6 @@ import { UserToRoleEntity } from "../../models/userToRole.entity";
 ])
 export class UserToRoleRepository extends GenericRepository<UserToRole> implements IUserToRoleRepository {
   constructor() {
-    super(prisma, prisma.userToRole, UserToRoleEntity);
+    super(prisma, prisma.userToRole, UserToRoleEntity, ['user', 'role']);
   }
 }

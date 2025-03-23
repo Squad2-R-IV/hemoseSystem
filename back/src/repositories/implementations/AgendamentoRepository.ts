@@ -7,13 +7,16 @@ import { Agendamento } from "@prisma/client";
 
 @registry([
   {
-    token: 'AgendamentoRepository',
+    token: "AgendamentoRepository",
     useClass: AgendamentoRepository,
   },
 ])
 @injectable()
-export class AgendamentoRepository extends GenericRepository<Agendamento> implements IAgendamentoRepository {
+export class AgendamentoRepository
+  extends GenericRepository<Agendamento>
+  implements IAgendamentoRepository
+{
   constructor() {
-    super(prisma, prisma.agendamento, AgendamentoEntity);
+    super(prisma, prisma.agendamento, AgendamentoEntity, ["Paciente", "Usuario", "historico"]);
   }
 }

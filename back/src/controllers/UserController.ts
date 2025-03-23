@@ -129,10 +129,9 @@ export class UserController extends GenericController<UserEntity, CreateUserDto,
   
   override async create(req: Request, res: Response): Promise<Response> {
     try {
-      const dto : CreateUserDto = req.body;
+      const dto: CreateUserDto = req.body;
       const createDto = mapper.map(dto, CreateUserDto, UserEntity);
-      createDto.password = await bcrypt.hash(createDto.password
-        , parseInt(process.env.SALT_ROUNDS as string));
+      createDto.password = await bcrypt.hash(createDto.password, parseInt(process.env.SALT_ROUNDS as string));
       createDto.id = randomUUID();
       createDto.status = "A";
       const newItem = await this.userService.create(createDto);
@@ -143,7 +142,7 @@ export class UserController extends GenericController<UserEntity, CreateUserDto,
         return res.status(404).json({ message: "Role padrão não encontrada, informe ao administrador do sistema" });
       }
       await userToRoleRepository.create({ userId: newItem.id, roleId: role.id });
-      const readDto = mapper.map(newItem, ReadUserDto, UserEntity);
+      const readDto = mapper.map(newItem, UserEntity, ReadUserDto);
       return res.status(201).json(readDto);
     } catch (error: any) {
       return res.status(500).json({ error: error.message });

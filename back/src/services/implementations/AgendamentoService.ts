@@ -3,6 +3,7 @@ import { Agendamento } from "@prisma/client";
 import { GenericService } from "./GenericService";
 import { IAgendamentoService } from "../interfaces/IAgendamentoService";
 import { AgendamentoRepository } from "../../repositories/implementations/AgendamentoRepository";
+import { AgendamentoWithRelations } from "../../utils/includeTypes";
 
 @injectable()
 @registry([
@@ -11,7 +12,7 @@ import { AgendamentoRepository } from "../../repositories/implementations/Agenda
       useClass: AgendamentoService
   },
 ])
-export class AgendamentoService extends GenericService<Agendamento> implements IAgendamentoService {
+export class AgendamentoService extends GenericService<AgendamentoWithRelations> implements IAgendamentoService {
   constructor(
     @inject("AgendamentoRepository") agendamentoRepository: AgendamentoRepository,
   ) {

@@ -17,6 +17,6 @@ import { RoleToPermissionEntity } from "../../models/roleToPermission.entity";
   
 export class RoleToPermissionRepository  extends GenericRepository<RoleToPermission> implements IRoleToPermissionRepository {
   constructor() {
-    super(prisma, prisma.roleToPermission, RoleToPermissionEntity);
+    super(prisma, prisma.roleToPermission, RoleToPermissionEntity, ['role', 'permission']);
   }
 }

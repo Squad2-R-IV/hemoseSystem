@@ -63,6 +63,12 @@ const userController = container.resolve(UserController);
  *   get:
  *     summary: Retorna todos os usuários
  *     tags: [Users]
+ *     parameters:
+ *       - in: query
+ *         name: includeRelations
+ *         schema:
+ *           type: boolean
+ *         description: Incluir relações no resultado
  *     responses:
  *       200:
  *         description: Lista de usuários retornada com sucesso
@@ -93,6 +99,11 @@ router.get(
  *         schema:
  *           type: string
  *         description: ID do usuário
+ *       - in: query
+ *         name: includeRelations
+ *         schema:
+ *           type: boolean
+ *         description: Incluir relações no resultado
  *     responses:
  *       200:
  *         description: Usuário encontrado com sucesso

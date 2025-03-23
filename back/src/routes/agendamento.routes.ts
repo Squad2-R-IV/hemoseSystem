@@ -66,6 +66,12 @@ const agendamentoController = container.resolve(AgendamentoController);
  *   get:
  *     summary: Retorna todos os agendamentos
  *     tags: [Agendamento]
+ *     parameters:
+ *       - in: query
+ *         name: includeRelations
+ *         schema:
+ *           type: boolean
+ *         description: Incluir relações no resultado
  *     responses:
  *       200:
  *         description: Lista de agendamentos retornada com sucesso
@@ -95,6 +101,11 @@ router.get("/", authMiddleware, checkPermission("agendamento_read"), asyncHandle
  *         schema:
  *           type: integer
  *         description: ID do agendamento
+ *       - in: query
+ *         name: includeRelations
+ *         schema:
+ *           type: boolean
+ *         description: Incluir relações no resultado
  *     responses:
  *       200:
  *         description: Agendamento encontrado com sucesso

@@ -16,6 +16,6 @@ import { Historico } from "@prisma/client";
 @injectable()
 export class HistoricoRepository extends GenericRepository<Historico> implements IHistoricoRepository {
   constructor() {
-    super(prisma, prisma.historico, HistoricoEntity); // Passando HistoricoEntity como o terceiro argumento
+    super(prisma, prisma.historico, HistoricoEntity, ['Agendamento', 'Anamneses']);
   }
 }

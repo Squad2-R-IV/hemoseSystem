@@ -75,6 +75,12 @@ const pacienteController = container.resolve(PacienteController);
  *   get:
  *     summary: Retorna todos os pacientes
  *     tags: [Paciente]
+ *     parameters:
+ *       - in: query
+ *         name: includeRelations
+ *         schema:
+ *           type: boolean
+ *         description: Incluir relações no resultado
  *     responses:
  *       200:
  *         description: Lista de pacientes retornada com sucesso
@@ -104,6 +110,11 @@ router.get("/", authMiddleware, checkPermission("paciente_read"), asyncHandler(p
  *         schema:
  *           type: integer
  *         description: ID do paciente
+ *       - in: query
+ *         name: includeRelations
+ *         schema:
+ *           type: boolean
+ *         description: Incluir relações no resultado
  *     responses:
  *       200:
  *         description: Paciente encontrado com sucesso

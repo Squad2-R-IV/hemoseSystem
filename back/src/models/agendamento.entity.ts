@@ -1,5 +1,8 @@
 import { AutoMap } from "@automapper/classes";
 import { TipoAgendamentoEnum, StatusAgendamentoEnum } from "@prisma/client";
+import { HistoricoEntity } from "./historico.entity";
+import { PacienteEntity } from "./paciente.entity";
+import { UserEntity } from "./user.entity";
 
 export class AgendamentoEntity {
     @AutoMap()
@@ -16,4 +19,10 @@ export class AgendamentoEntity {
     status_agendamento!: StatusAgendamentoEnum;
     @AutoMap()
     observacoes!: string | null;
+
+    @AutoMap(() => PacienteEntity)
+    Paciente?: PacienteEntity;
+    
+    @AutoMap(() => UserEntity)
+    Usuario?: UserEntity;
 }

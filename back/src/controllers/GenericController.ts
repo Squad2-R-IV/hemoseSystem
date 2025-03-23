@@ -21,7 +21,8 @@ export class GenericController<TEntity, TCreateDto, TUpdateDto, TReadDto> {
 
   async getAll(req: Request, res: Response): Promise<Response> {
     try {
-      const items = await this.service.getAll();
+      const includeRelations = req.query.includeRelations === 'true';
+      const items = await this.service.getAll(includeRelations);
       const readDtos = mapper.mapArray(items, this.entityClass, this.readDtoClass);
       return res.json(readDtos);
     } catch (error: any) {
@@ -32,6 +33,7 @@ export class GenericController<TEntity, TCreateDto, TUpdateDto, TReadDto> {
   async getById(req: Request, res: Response): Promise<Response> {
     try {
       let { id } = req.params;
+      const includeRelations = req.query.includeRelations === 'true';
       //Veerificar se TEntity é UsuarioEntity, se nao for, converte id para number
       const isUsuarioEntity = this.entityClass.name === "UsuarioEntity";
       let itemId;
@@ -41,7 +43,7 @@ export class GenericController<TEntity, TCreateDto, TUpdateDto, TReadDto> {
       else {
         itemId = id;
       }
-      const item = await this.service.getById(itemId);
+      const item = await this.service.getById(itemId, includeRelations);
       if (!item) return res.status(404).json({ message: "Item não encontrado" });
       const readDto = mapper.map(item, this.entityClass, this.readDtoClass);
       return res.json(readDto);
@@ -167,4 +169,4 @@ export class GenericController<TEntity, TCreateDto, TUpdateDto, TReadDto> {
     @AutoMap()
     dados_anteriores!: string | null;
     @AutoMap()
-    dados_novos!: string | null;*/ 
+    dados_novos!: string | null;*/

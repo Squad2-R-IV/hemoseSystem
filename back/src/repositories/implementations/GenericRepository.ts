@@ -14,25 +14,41 @@ export class GenericRepository<T> implements IGenericRepository<T> {
   constructor(
     @inject("PrismaClient") private prisma: PrismaClient,
     private model: any,
-    private entityClass: new () => T
+    private entityClass: new () => T,
+    protected availableRelations: string[] = [] // Renomeado para availableRelations
   ) {}
 
-  async findAll(): Promise<T[]> {
-    const results = await this.model.findMany();
+  // Método auxiliar para gerar o include a partir das relações disponíveis
+  private generateInclude() {
+    return this.availableRelations.reduce((acc, relation) => {
+      acc[relation] = true;
+      return acc;
+    }, {} as Record<string, boolean>);
+  }
+
+  async findAll(includeRelations?: boolean): Promise<T[]> {
+    const include = includeRelations ? this.generateInclude() : undefined;
+    const results = await this.model.findMany({ include });
     return plainToInstance(this.entityClass, results) as T[];
   }
 
-  async findById(id: string | number): Promise<T | null> {
-    const result = await this.model.findUnique({ where: { id } });
+  async findById(id: string | number, includeRelations?: boolean): Promise<T | null> {
+    const include = includeRelations ? this.generateInclude() : undefined;
+    const result = await this.model.findUnique({
+      where: { id },
+      include,
+    });
     return result ? plainToInstance(this.entityClass, result) : null;
   }
 
   async findByField(field: string, value: string): Promise<T | null> {
+    // Método não está na interface com includeRelations, mantendo como estava
     const result = await this.model.findFirst({ where: { [field]: value } });
     return result ? plainToInstance(this.entityClass, result) : null;
   }
 
   async findManyByField(field: string, value: string): Promise<T[]> {
+    // Método não está na interface com includeRelations, mantendo como estava
     const results = await this.model.findMany({ where: { [field]: value } });
     return plainToInstance(this.entityClass, results) as T[];
   }

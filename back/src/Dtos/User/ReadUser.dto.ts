@@ -1,4 +1,6 @@
 import { AutoMap } from "@automapper/classes";
+import { ReadAgendamentoDto } from "../Agendamento/ReadAgendamentoDto";
+import { ReadAnamneseDto } from "../Anamnese/ReadAnamneseDto";
 
 export class ReadUserDto{
     @AutoMap()
@@ -19,5 +21,9 @@ export class ReadUserDto{
     conselho?: string;
     @AutoMap()
     registro?: string;
+    @AutoMap(() => [ReadAgendamentoDto])
+    agendamentos!: ReadAgendamentoDto[];
+    @AutoMap(() => [ReadAnamneseDto])
+    Anamneses!: ReadAnamneseDto[];
 }
 

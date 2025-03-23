@@ -1,4 +1,5 @@
 import { AutoMap } from "@automapper/classes";
+import { ReadAgendamentoDto } from "../Agendamento/ReadAgendamentoDto";
 
 export class ReadPacienteDto {
     @AutoMap()
@@ -19,4 +20,6 @@ export class ReadPacienteDto {
     cpf!: string;
     @AutoMap()
     cpf_acompanhante!: string;
+    @AutoMap(() => [ReadAgendamentoDto])
+    agendamentos!: ReadAgendamentoDto[];
 }

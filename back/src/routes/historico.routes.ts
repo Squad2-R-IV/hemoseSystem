@@ -69,6 +69,12 @@ const historicoController = container.resolve(HistoricoController);
  *   get:
  *     summary: Retorna todos os históricos
  *     tags: [Historico]
+ *     parameters:
+ *       - in: query
+ *         name: includeRelations
+ *         schema:
+ *           type: boolean
+ *         description: Incluir relações no resultado
  *     responses:
  *       200:
  *         description: Lista de históricos retornada com sucesso
@@ -98,6 +104,11 @@ router.get("/", authMiddleware, checkPermission("historicos_read"), asyncHandler
  *         schema:
  *           type: integer
  *         description: ID do histórico
+ *       - in: query
+ *         name: includeRelations
+ *         schema:
+ *           type: boolean
+ *         description: Incluir relações no resultado
  *     responses:
  *       200:
  *         description: Histórico encontrado com sucesso

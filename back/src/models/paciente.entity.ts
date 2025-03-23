@@ -1,4 +1,5 @@
 import { AutoMap } from "@automapper/classes";
+import { AgendamentoEntity } from "./agendamento.entity";
 
 export class PacienteEntity {
     @AutoMap()
@@ -19,4 +20,6 @@ export class PacienteEntity {
     cpf!: string;
     @AutoMap()
     cpf_acompanhante!: string;
+    @AutoMap(() => [AgendamentoEntity])
+    agendamentos?: AgendamentoEntity[];
 }

@@ -1,5 +1,7 @@
 import { AutoMap } from "@automapper/classes";
 import { TipoAgendamentoEnum, StatusAgendamentoEnum } from "@prisma/client";
+import { ReadPacienteDto } from "../Paciente/ReadPacienteDto";
+import { ReadUserDto } from "../User/ReadUser.dto";
 
 export class ReadAgendamentoDto {
     @AutoMap()
@@ -16,4 +18,8 @@ export class ReadAgendamentoDto {
     status_agendamento!: StatusAgendamentoEnum;
     @AutoMap()
     observacoes?: string;
+    @AutoMap(() => ReadPacienteDto)
+    Paciente!: ReadPacienteDto;
+    @AutoMap(() => ReadUserDto)
+    Usuario!: ReadUserDto;
 }

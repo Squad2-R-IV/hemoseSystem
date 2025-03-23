@@ -15,6 +15,6 @@ import { UserEntity } from "../../models/user.entity";
 @injectable()
 export class UserRepository extends GenericRepository<User> implements IUserRepository {
   constructor() {
-    super(prisma, prisma.user, UserEntity); // Passando UserEntity como o terceiro argumento
+    super(prisma, prisma.user, UserEntity, ['roles', 'agendamentos', 'auditorias', 'Anamneses']);
   }
 }

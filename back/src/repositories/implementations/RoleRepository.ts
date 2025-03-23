@@ -18,7 +18,7 @@ import { RoleEntity } from "../../models/role.entity";
 ])
 export class RoleRepository  extends GenericRepository<Role> implements IRoleRepository {
   constructor() {
-    super(prisma, prisma.role, RoleEntity);
+    super(prisma, prisma.role, RoleEntity, ['users', 'permissions']);
   }
 
 

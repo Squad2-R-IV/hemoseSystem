@@ -14,6 +14,6 @@ import { Anamnese } from "@prisma/client";
 @injectable()
 export class AnamneseRepository extends GenericRepository<Anamnese> implements IAnamneseRepository {
   constructor() {
-    super(prisma, prisma.anamnese, AnamneseEntity);
+    super(prisma, prisma.anamnese, AnamneseEntity, ['Historico', 'User']);
   }
 }
