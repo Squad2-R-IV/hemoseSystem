@@ -3,6 +3,9 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { CreateUserDto } from '~/Dtos copy/User/CreateUser.dto';
 import type { ReadUserDto } from '~/Dtos copy/User/ReadUser.dto';
 import type { UpdateUserDto } from '~/Dtos copy/User/UpdateUser.dto';
+import { CreateAgendamentoDto } from '~/Dtos copy/Agendamento/CreateAgendamentoDto';
+import { ReadAgendamentoDto } from '~/Dtos copy/Agendamento/ReadAgendamentoDto';
+import { UpdateAgendamentoDto } from '~/Dtos copy/Agendamento/UpdateAgendamentoDto';
 
 // Define a service using a base URL and expected endpoints
 const baseQuery = fetchBaseQuery({
@@ -96,6 +99,36 @@ export const siahmeApi = createApi({
                 body,
             }),
         }),
+        getAgendamentos: builder.query<ReadAgendamentoDto[], { includeRelations?: boolean }>({
+            query: ({ includeRelations = false }) => ({
+                url: `agendamento?includeRelations=${includeRelations}`,
+            }),
+        }),
+        getAgendamentoById: builder.query<ReadAgendamentoDto, { id: number; includeRelations?: boolean }>({
+            query: ({ id, includeRelations = false }) => ({
+                url: `agendamento/${id}?includeRelations=${includeRelations}`,
+            }),
+        }),
+        createAgendamento: builder.mutation<ReadAgendamentoDto, CreateAgendamentoDto>({
+            query: (body) => ({
+                url: 'agendamento',
+                method: 'POST',
+                body,
+            }),
+        }),
+        updateAgendamento: builder.mutation<ReadAgendamentoDto, { id: number; body: UpdateAgendamentoDto }>({
+            query: ({ id, body }) => ({
+                url: `agendamento/${id}`,
+                method: 'PUT',
+                body,
+            }),
+        }),
+        deleteAgendamento: builder.mutation<{ success: boolean }, number>({
+            query: (id) => ({
+                url: `agendamento/${id}`,
+                method: 'DELETE',
+            }),
+        }),
     }),
 })
 
@@ -111,4 +144,9 @@ export const {
     useRefreshTokenMutation,
     useLogoutMutation,
     useChangeUserRolesMutation,
+    useGetAgendamentosQuery,
+    useGetAgendamentoByIdQuery,
+    useCreateAgendamentoMutation,
+    useUpdateAgendamentoMutation,
+    useDeleteAgendamentoMutation,
 } = siahmeApi;
