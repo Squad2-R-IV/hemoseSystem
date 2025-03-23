@@ -22,8 +22,8 @@ export class ReadUserDto{
     @AutoMap()
     registro?: string;
     @AutoMap(() => [ReadAgendamentoDto])
-    agendamentos!: ReadAgendamentoDto[];
+    agendamentos?: ReadAgendamentoDto[];
     @AutoMap(() => [ReadAnamneseDto])
-    Anamneses!: ReadAnamneseDto[];
+    Anamneses?: ReadAnamneseDto[];
 }
 

@@ -21,5 +21,5 @@ export class ReadPacienteDto {
     @AutoMap()
     cpf_acompanhante!: string;
     @AutoMap(() => [ReadAgendamentoDto])
-    agendamentos!: ReadAgendamentoDto[];
+    agendamentos?: ReadAgendamentoDto[];
 }

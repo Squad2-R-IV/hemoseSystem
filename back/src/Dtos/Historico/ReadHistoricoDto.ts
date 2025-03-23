@@ -18,5 +18,5 @@ export class ReadHistoricoDto {
     @AutoMap()
     observacoes!: string;
     @AutoMap(() => [ReadAnamneseDto])
-    Anamneses!: ReadAnamneseDto[];
+    Anamneses?: ReadAnamneseDto[];
 }

@@ -2,7 +2,7 @@ import { inject, injectable, registry } from "tsyringe";
 import { GenericService } from "./GenericService";
 import { AnamneseRepository } from "../../repositories/implementations/AnamneseRepository";
 import { IAnamneseService } from "../interfaces/IAnamneseService";
-import { Anamnese } from "@prisma/client";
+import { AnamneseWithRelations } from "../../utils/includeTypes";
 
 @injectable()
 @registry([
@@ -11,7 +11,7 @@ import { Anamnese } from "@prisma/client";
       useClass: AnamneseService
   },
 ])
-export class AnamneseService extends GenericService<Anamnese> implements IAnamneseService {
+export class AnamneseService extends GenericService<AnamneseWithRelations> implements IAnamneseService {
   constructor(
     @inject("AnamneseRepository") anamneseRepository: AnamneseRepository,
   ) {

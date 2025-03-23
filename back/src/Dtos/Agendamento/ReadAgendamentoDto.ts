@@ -19,7 +19,7 @@ export class ReadAgendamentoDto {
     @AutoMap()
     observacoes?: string;
     @AutoMap(() => ReadPacienteDto)
-    Paciente!: ReadPacienteDto;
+    Paciente?: ReadPacienteDto;
     @AutoMap(() => ReadUserDto)
-    Usuario!: ReadUserDto;
+    Usuario?: ReadUserDto;
 }

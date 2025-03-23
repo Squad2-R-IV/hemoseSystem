@@ -3,6 +3,8 @@ import {Historico} from "@prisma/client";
 import { GenericService } from "./GenericService";
 import { IHistoricoService } from "../interfaces/IHistoricoService";
 import { HistoricoRepository } from "../../repositories/implementations/HistoricoRepository";
+import { HistoricoWithRelations } from "../../utils/includeTypes";
+
 @injectable()
 @registry([
   {
@@ -10,7 +12,7 @@ import { HistoricoRepository } from "../../repositories/implementations/Historic
       useClass: HistoricoService
   },
 ])
-export class HistoricoService extends GenericService<Historico> implements IHistoricoService {
+export class HistoricoService extends GenericService<HistoricoWithRelations> implements IHistoricoService {
   constructor(
     @inject("HistoricoRepository") historicoRepository: HistoricoRepository,
   ) {

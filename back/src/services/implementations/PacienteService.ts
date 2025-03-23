@@ -3,6 +3,7 @@ import { Paciente } from "@prisma/client";
 import { GenericService } from "./GenericService";
 import { IPacienteService } from "../interfaces/IPacienteService";
 import { PacienteRepository } from "../../repositories/implementations/PacienteRepository";
+import { PacienteWithRelations } from "../../utils/includeTypes";
 
 @injectable()
 @registry([
@@ -11,7 +12,7 @@ import { PacienteRepository } from "../../repositories/implementations/PacienteR
       useClass: PacienteService
   },
 ])
-export class PacienteService extends GenericService<Paciente> implements IPacienteService {
+export class PacienteService extends GenericService<PacienteWithRelations> implements IPacienteService {
   constructor(
     @inject("PacienteRepository") pacienteRepository: PacienteRepository,
   ) {

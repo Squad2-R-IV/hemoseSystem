@@ -30,7 +30,7 @@ export class ReadAnamneseDto {
     @AutoMap()
     observacoes!: string | null;
     @AutoMap(() => ReadHistoricoDto)
-    Historico!: ReadHistoricoDto;
+    Historico?: ReadHistoricoDto;
     @AutoMap(() => ReadUserDto)
-    User!: ReadUserDto;
+    User?: ReadUserDto;
 }

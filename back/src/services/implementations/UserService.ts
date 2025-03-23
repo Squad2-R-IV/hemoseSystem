@@ -11,6 +11,7 @@ import { IUserToRoleRepository } from "../../repositories/interfaces/IUserToRole
 import { IRoleRepository } from "../../repositories/interfaces/IRoleRepository";
 import { UserToRoleRepository } from "../../repositories/implementations/UserToRoleRepository";
 import { RoleRepository } from "../../repositories/implementations/RoleRepository";
+import { UserWithRelations } from "../../utils/includeTypes";
 
 @injectable()
 @registry([
@@ -19,7 +20,7 @@ import { RoleRepository } from "../../repositories/implementations/RoleRepositor
       useClass: UserService
   },
 ])
-export class UserService extends GenericService<User> implements IUserService {
+export class UserService extends GenericService<UserWithRelations> implements IUserService {
   constructor(
     @inject("UserRepository") userRepository: UserRepository,
   ) {
