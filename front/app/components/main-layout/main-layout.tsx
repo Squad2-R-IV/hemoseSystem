@@ -12,10 +12,10 @@ export default function MainLayout() {
 
   return (
     
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#F0F4F7]">
       <Header onMenuToggle={handleMenuToggle} />
       <SidebarMenu isOpen={isOpen} onOpenChange={setIsOpen} />
-      <main className="flex-1">
+      <main className="flex-1 p-6">
         <Outlet />
       </main>
     </div>
