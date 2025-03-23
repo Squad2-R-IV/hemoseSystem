@@ -1,4 +1,3 @@
-
 export class CreatePacienteDto {
     nome_paciente!: string;
     dt_nascimento!: Date;

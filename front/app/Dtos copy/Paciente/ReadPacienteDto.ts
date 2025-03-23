@@ -1,3 +1,4 @@
+import { ReadAgendamentoDto } from "../Agendamento/ReadAgendamentoDto";
 
 export class ReadPacienteDto {
     id!: number;
@@ -9,4 +10,5 @@ export class ReadPacienteDto {
     endereco!: string;
     cpf!: string;
     cpf_acompanhante!: string;
+    agendamentos!: ReadAgendamentoDto[];
 }

@@ -1,7 +1,5 @@
-import type { tipo_procedimento_enum } from "~/utils/enums/enums";
-
 export class UpdateHistoricoDto {
-    procedimento!: tipo_procedimento_enum;
+    procedimento!: string; // Changed from tipo_procedimento_enum to string
     dt_entrada!: Date;
     dt_saida: Date | null | undefined;
     status!: string;
