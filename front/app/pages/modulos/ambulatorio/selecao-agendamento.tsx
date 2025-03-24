@@ -1,5 +1,5 @@
-import { Button, Card, CardBody, Input, Pagination, Select, SelectItem } from "@heroui/react";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { Button, Card, CardBody, Input, Pagination, Select, SelectItem, Chip } from "@heroui/react";
+import { MagnifyingGlassIcon, ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/outline";
 import {
   Table,
   TableHeader,
@@ -90,17 +90,17 @@ export function SelecaoAgendamento() {
     if (sortDescriptor.column) {
       filtered.sort((a, b) => {
         let first, second;
-        
+
         // Handle nested properties like "Paciente.nome_paciente"
         if (sortDescriptor.column.toString().includes('.')) {
           const parts = sortDescriptor.column.toString().split('.');
-          first = a[parts[0]]?.[parts[1]] ?? '';
-          second = b[parts[0]]?.[parts[1]] ?? '';
+          first = (a[parts[0] as keyof typeof a] as any)?.[parts[1]] ?? '';
+          second = (b[parts[0] as keyof typeof b] as any)?.[parts[1]] ?? '';
         } else {
           first = a[sortDescriptor.column as keyof typeof a] ?? '';
           second = b[sortDescriptor.column as keyof typeof b] ?? '';
         }
-        
+
         const cmp = first < second ? -1 : first > second ? 1 : 0;
         return sortDescriptor.direction === "descending" ? -cmp : cmp;
       });
@@ -125,23 +125,41 @@ export function SelecaoAgendamento() {
 
   const getCustomKeyValue = (item: ReadAgendamentoDto, columnKey: Key) => {
     switch (columnKey) {
-      case "id_paciente": 
+      case "id_paciente":
         return item.id_paciente;
-      case "Paciente.nome_paciente": 
+      case "Paciente.nome_paciente":
         return item.Paciente?.nome_paciente || "N/A";
-      case "Usuario.nome_usuario": 
+      case "Usuario.nome_usuario":
         return item.Usuario?.name || "N/A";
-      case "data_hora_agendamento": 
+      case "data_hora_agendamento":
         try {
           return new Date(item.data_hora_agendamento).toLocaleString();
         } catch (e) {
           return item.data_hora_agendamento;
         }
-      case "tipo_agendamento": 
+      case "tipo_agendamento":
         return item.tipo_agendamento;
-      case "status_agendamento": 
-        return item.status_agendamento;
-      default: 
+      case "status_agendamento":
+        const status = item.status_agendamento;
+        let color: "default" | "primary" | "secondary" | "success" | "warning" | "danger" = "default";
+        switch (status) {
+          case StatusAgendamentoEnum.Confirmado:
+            color = "primary";
+            break;
+          case StatusAgendamentoEnum.Realizado:
+            color = "success";
+            break;
+          case StatusAgendamentoEnum.Cancelado:
+            color = "danger";
+            break;
+          case StatusAgendamentoEnum.Reagendado:
+            color = "warning";
+            break;
+          default:
+            color = "default";
+        }
+        return <Chip variant="flat" color={color}>{status}</Chip>;
+      default:
         return "";
     }
   };
@@ -164,9 +182,9 @@ export function SelecaoAgendamento() {
             label="Filtrar por Status"
             onChange={(e) => setSelectedStatus(e.target.value)}
           >
-            <SelectItem key="all" value="">Todos</SelectItem>
+            <SelectItem key="all">Todos</SelectItem>
             {Object.values(StatusAgendamentoEnum).map((status) => (
-              <SelectItem key={status} value={status}>{status}</SelectItem>
+              <SelectItem key={status}>{status}</SelectItem>
             ))}
           </Select>
         </CardBody>
@@ -190,9 +208,9 @@ export function SelecaoAgendamento() {
               {(columnKey) => (
                 <TableCell>
                   {columnKey === "actions" && item.status_agendamento === "Confirmado" ? (
-                    <Button size="sm" color="primary">Chamar</Button>
+                    <Button size="sm" color="primary" startContent={<ArrowRightEndOnRectangleIcon className="h-6 w-6" />}>Chamar</Button>
                   ) : (
-                    getCustomKeyValue(item, columnKey)
+                    getCustomKeyValue(item, columnKey) as React.ReactNode
                   )}
                 </TableCell>
               )}
@@ -202,11 +220,11 @@ export function SelecaoAgendamento() {
       </Table>
 
       <div className="flex justify-center">
-        <Pagination 
-          total={pages} 
-          page={page} 
-          onChange={setPage} 
-          color="primary" 
+        <Pagination
+          total={pages}
+          page={page}
+          onChange={setPage}
+          color="primary"
           showControls
           isDisabled={pages <= 1}
         />
