@@ -13,36 +13,6 @@ import {
 
 export default function Recepcao() {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="flex items-center justify-between px-6 py-3 border-b">
-        <div className="flex items-center gap-2">
-          <div className="bg-blue-600 text-white p-1 rounded">
-            <SquaresPlusIcon className="h-6 w-6" />
-          </div>
-          <h1 className="text-lg font-medium">
-            Sistema de Prontuário Eletrônico
-          </h1>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-gray-200 overflow-hidden">
-              <img
-                src="/placeholder.svg"
-                alt="Profile"
-                className="object-cover w-full h-full"
-              />
-            </div>
-            <span className="text-sm">Maria Silva (Recepcionista)</span>
-          </div>
-          <button className="text-gray-500 hover:text-gray-700">
-            <Cog6ToothIcon className="h-5 w-5" />
-          </button>
-          <button className="text-gray-500 hover:text-gray-700">
-            <ArrowLeftOnRectangleIcon className="h-5 w-5" />
-          </button>
-        </div>
-      </header>
 
       <div className="flex">
         {/* Main Content */}
@@ -176,6 +146,5 @@ export default function Recepcao() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
