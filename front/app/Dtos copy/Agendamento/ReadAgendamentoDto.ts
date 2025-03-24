@@ -1,6 +1,7 @@
 import type { StatusAgendamentoEnum, TipoAgendamentoEnum } from "~/utils/enums/enums";
 import { ReadPacienteDto } from "../Paciente/ReadPacienteDto";
 import { ReadUserDto } from "../User/ReadUser.dto";
+import type { ReadConsultaDto } from "../Consulta/ReadConsultaDto";
 
 export class ReadAgendamentoDto {
     id_agendamento!: number;
@@ -12,4 +13,5 @@ export class ReadAgendamentoDto {
     observacoes?: string;
     Paciente?: ReadPacienteDto;
     Usuario?: ReadUserDto;
+    Consulta?: ReadConsultaDto;
 }

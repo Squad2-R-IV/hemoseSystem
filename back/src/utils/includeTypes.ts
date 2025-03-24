@@ -3,6 +3,7 @@ import { Agendamento, Paciente, User, Consulta, Auditoria, Anamnese } from "@pri
 export type AgendamentoWithRelations = Agendamento & {
   Paciente?: Paciente;
   Usuario?: User;
+  Consulta?: Consulta;
 };
 
 export type PacienteWithRelations = Paciente & {
@@ -17,7 +18,7 @@ export type UserWithRelations = User & {
 
 export type ConsultaWithRelations = Consulta & {
   Agendamento?: Agendamento;
-  Anamneses?: Anamnese[];
+  Anamnese?: Anamnese;
 };
 
 export type AuditoriaWithRelations = Auditoria & {

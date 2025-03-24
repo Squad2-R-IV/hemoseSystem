@@ -13,6 +13,6 @@ model Consulta {
   dt_saida             DateTime?              
   status               String                @db.VarChar(50) @default("A")
   observacoes          String                
-  Anamneses            Anamnese?
+  Anamnese             Anamnese?
 }
 

@@ -25,4 +25,7 @@ export class AgendamentoEntity {
     
     @AutoMap(() => UserEntity)
     Usuario?: UserEntity;
+    
+    @AutoMap(() => ConsultaEntity)
+    Consulta?: ConsultaEntity;
 }

@@ -21,5 +21,5 @@ export class ConsultaEntity {
     @AutoMap(() => AgendamentoEntity)
     Agendamento?: AgendamentoEntity;
     @AutoMap(() => [AnamneseEntity])
-    Anamneses?: AnamneseEntity[];
+    Anamnese?: AnamneseEntity;
 }
