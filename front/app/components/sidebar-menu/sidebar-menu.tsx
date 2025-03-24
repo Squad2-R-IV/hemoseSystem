@@ -6,6 +6,8 @@ import {
     UsersIcon,
     CogIcon,
     QuestionMarkCircleIcon,
+    ClipboardDocumentListIcon,
+    CalendarDaysIcon,
   } from "@heroicons/react/24/outline";
 import { Link as RouteLink } from "react-router";
 
@@ -15,9 +17,9 @@ interface SidebarMenuProps {
 }
 
 const menuItems = [
-  { icon: HomeIcon, label: "Dashboard", path: "/" },
-  { icon: UsersIcon, label: "Customers", path: "/customers" },
-  { icon: CogIcon, label: "Settings", path: "/settings" },
+  { icon: HomeIcon, label: "Home", path: "/home" },
+  { icon: ClipboardDocumentListIcon, label: "Consultas Abertas", path: "/selecao-agendamento" },
+  { icon: CalendarDaysIcon, label: "Recepção", path: "/recepcao" },
   { icon: QuestionMarkCircleIcon, label: "Help", path: "/help" },
 ];
 
