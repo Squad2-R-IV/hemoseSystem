@@ -5,7 +5,7 @@ import userRoutes from "./routes/user.routes";
 import { setupSwagger } from "./config/swagger";
 import cookieParser from "cookie-parser";
 import { initializeProfiles } from "./mappings/profiles";
-import historicoRoutes from "./routes/historico.routes";
+import consultaRoutes from "./routes/consulta.routes";
 import agendamentoRoutes from "./routes/agendamento.routes";
 import pacienteRoutes from "./routes/paciente.routes";
 import anamneseRoutes from "./routes/anamnese.routes";
@@ -19,7 +19,7 @@ app.use(cookieParser());
 initializeProfiles();
 // Configurar Rotas
 app.use("/users", userRoutes);
-app.use("/historico", historicoRoutes);
+app.use("/consulta", consultaRoutes);
 app.use("/agendamento", agendamentoRoutes);
 app.use("/paciente", pacienteRoutes);
 app.use("/anamnese", anamneseRoutes);

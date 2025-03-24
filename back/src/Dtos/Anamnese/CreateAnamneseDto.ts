@@ -2,7 +2,7 @@ import { AutoMap } from "@automapper/classes";
 
 export class CreateAnamneseDto {
     @AutoMap()
-    id_historico!: number;
+    id_consulta!: number;
     @AutoMap()
     id_funcionario!: string;
     @AutoMap()

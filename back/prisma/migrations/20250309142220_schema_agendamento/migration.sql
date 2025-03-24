@@ -16,4 +16,4 @@ CREATE TABLE `Agendamento` (
 ALTER TABLE `Agendamento` ADD CONSTRAINT `Agendamento_id_funcionario_fkey` FOREIGN KEY (`id_funcionario`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Historico` ADD CONSTRAINT `Historico_id_agendamento_fkey` FOREIGN KEY (`id_agendamento`) REFERENCES `Agendamento`(`id_agendamento`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Consulta` ADD CONSTRAINT `Consulta_id_agendamento_fkey` FOREIGN KEY (`id_agendamento`) REFERENCES `Agendamento`(`id_agendamento`) ON DELETE RESTRICT ON UPDATE CASCADE;

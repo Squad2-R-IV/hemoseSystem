@@ -2,9 +2,9 @@
 // import { tipo_procedimento_enum } from "@prisma/client";
 import { ReadAnamneseDto } from "../Anamnese/ReadAnamneseDto";
 
-export class ReadHistoricoDto {
+export class ReadConsultaDto {
     // @AutoMap()
-    id_historico!: number;
+    id_consulta!: number;
     // @AutoMap()
     id_agendamento!: number;
     // @AutoMap()

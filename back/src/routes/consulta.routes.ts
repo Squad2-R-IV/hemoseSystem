@@ -1,17 +1,17 @@
 import { Router } from "express";
 import { container } from "tsyringe";
-import { HistoricoController } from "../controllers/HistoricoController";
+import { ConsultaController } from "../controllers/ConsultaController";
 import { asyncHandler } from "../middlewares/asyncHandler";
 import { authMiddleware, checkPermission } from "../middlewares/auth";
 import { tipo_procedimento_enum } from "@prisma/client";
 
 const router = Router();
-const historicoController = container.resolve(HistoricoController);
+const consultaController = container.resolve(ConsultaController);
 
 /**
  * @swagger
  * tags:
- *   name: Historico
+ *   name: Consulta
  *   description: Endpoints para gerenciar históricos
  */
 
@@ -19,7 +19,7 @@ const historicoController = container.resolve(HistoricoController);
  * @swagger
  * components:
  *   schemas:
- *     Historico:
+ *     Consulta:
  *       type: object
  *       required:
  *         - id_agendamento
@@ -28,7 +28,7 @@ const historicoController = container.resolve(HistoricoController);
  *         - status
  *         - observacoes
  *       properties:
- *         id_historico:
+ *         id_consulta:
  *           type: integer
  *           description: ID único do histórico
  *           example: 1
@@ -65,10 +65,10 @@ const historicoController = container.resolve(HistoricoController);
 
 /**
  * @swagger
- * /historico:
+ * /consulta:
  *   get:
  *     summary: Retorna todos os históricos
- *     tags: [Historico]
+ *     tags: [Consulta]
  *     parameters:
  *       - in: query
  *         name: includeRelations
@@ -83,20 +83,20 @@ const historicoController = container.resolve(HistoricoController);
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Historico'
+ *                 $ref: '#/components/schemas/Consulta'
  *       500:
  *         description: Erro no servidor
  *     security:
  *       - bearerAuth: []
  */
-router.get("/", authMiddleware, checkPermission("historicos_read"), asyncHandler(historicoController.getAll.bind(historicoController)));
+router.get("/", authMiddleware, checkPermission("consultas_read"), asyncHandler(consultaController.getAll.bind(consultaController)));
 
 /**
  * @swagger
- * /historico/{id}:
+ * /consulta/{id}:
  *   get:
  *     summary: Retorna um histórico pelo ID
- *     tags: [Historico]
+ *     tags: [Consulta]
  *     parameters:
  *       - in: path
  *         name: id
@@ -115,7 +115,7 @@ router.get("/", authMiddleware, checkPermission("historicos_read"), asyncHandler
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Historico'
+ *               $ref: '#/components/schemas/Consulta'
  *       404:
  *         description: Histórico não encontrado
  *       500:
@@ -123,14 +123,14 @@ router.get("/", authMiddleware, checkPermission("historicos_read"), asyncHandler
  *     security:
  *       - bearerAuth: []
  */
-router.get("/:id", authMiddleware, checkPermission("historicos_read"), asyncHandler(historicoController.getById.bind(historicoController)));
+router.get("/:id", authMiddleware, checkPermission("consultas_read"), asyncHandler(consultaController.getById.bind(consultaController)));
 
 /**
  * @swagger
- * /historico:
+ * /consulta:
  *   post:
  *     summary: Cria um novo histórico
- *     tags: [Historico]
+ *     tags: [Consulta]
  *     requestBody:
  *       required: true
  *       content:
@@ -168,20 +168,20 @@ router.get("/:id", authMiddleware, checkPermission("historicos_read"), asyncHand
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Historico'
+ *               $ref: '#/components/schemas/Consulta'
  *       500:
  *         description: Erro no servidor
  *     security:
  *       - bearerAuth: []
  */
-router.post("/", authMiddleware, checkPermission("historicos_create"), asyncHandler(historicoController.create.bind(historicoController)));
+router.post("/", authMiddleware, checkPermission("consultas_create"), asyncHandler(consultaController.create.bind(consultaController)));
 
 /**
  * @swagger
- * /historico/{id}:
+ * /consulta/{id}:
  *   put:
  *     summary: Atualiza um histórico existente
- *     tags: [Historico]
+ *     tags: [Consulta]
  *     parameters:
  *       - in: path
  *         name: id
@@ -227,7 +227,7 @@ router.post("/", authMiddleware, checkPermission("historicos_create"), asyncHand
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Historico'
+ *               $ref: '#/components/schemas/Consulta'
  *       404:
  *         description: Histórico não encontrado
  *       500:
@@ -235,14 +235,14 @@ router.post("/", authMiddleware, checkPermission("historicos_create"), asyncHand
  *     security:
  *       - bearerAuth: []
  */
-router.put("/:id", authMiddleware, checkPermission("historicos_update"), asyncHandler(historicoController.update.bind(historicoController)));
+router.put("/:id", authMiddleware, checkPermission("consultas_update"), asyncHandler(consultaController.update.bind(consultaController)));
 
 /**
  * @swagger
- * /historico/{id}:
+ * /consulta/{id}:
  *   delete:
  *     summary: Exclui um histórico pelo ID
- *     tags: [Historico]
+ *     tags: [Consulta]
  *     parameters:
  *       - in: path
  *         name: id
@@ -260,6 +260,6 @@ router.put("/:id", authMiddleware, checkPermission("historicos_update"), asyncHa
  *     security:
  *       - bearerAuth: []
  */
-router.delete("/:id", authMiddleware, checkPermission("historicos_delete"), asyncHandler(historicoController.delete.bind(historicoController)));
+router.delete("/:id", authMiddleware, checkPermission("consultas_delete"), asyncHandler(consultaController.delete.bind(consultaController)));
 
 export default router;

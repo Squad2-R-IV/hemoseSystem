@@ -139,8 +139,8 @@ Table Exames {
   profissional_solicitante varchar(100)
 }
 
-Table Historico {
-  id_historico int [pk]
+Table Consulta {
+  id_consulta int [pk]
   id_paciente int [ref: > Paciente.id_paciente]
   dt_registro date
   tipo_atendimento tipo_agendamento_enum

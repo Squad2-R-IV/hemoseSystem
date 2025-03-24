@@ -1,7 +1,7 @@
 import { AutoMap } from "@automapper/classes";
 import { tipo_procedimento_enum } from "@prisma/client";
 
-export class CreateHistoricoDto {
+export class CreateConsultaDto {
     @AutoMap()
     id_agendamento!: number;
     @AutoMap()

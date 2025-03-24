@@ -1,12 +1,12 @@
 import { AutoMap } from "@automapper/classes";
-import { HistoricoEntity } from "./historico.entity";
+import { ConsultaEntity } from "./consulta.entity";
 import { UserEntity } from "./user.entity";
 
 export class AnamneseEntity {
     @AutoMap()
     id!: number;
     @AutoMap()
-    id_historico!: number;
+    id_consulta!: number;
     @AutoMap()
     id_funcionario!: string;
     @AutoMap()
@@ -29,8 +29,8 @@ export class AnamneseEntity {
     cirurgias_previas!: string | null;
     @AutoMap()
     observacoes!: string | null;
-    @AutoMap(() => HistoricoEntity)
-    Historico?: HistoricoEntity;
+    @AutoMap(() => ConsultaEntity)
+    Consulta?: ConsultaEntity;
     @AutoMap(() => UserEntity)
     User?: UserEntity;
 }

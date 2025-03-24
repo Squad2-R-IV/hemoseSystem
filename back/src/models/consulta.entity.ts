@@ -1,10 +1,11 @@
 import { AutoMap } from "@automapper/classes";
 import { tipo_procedimento_enum } from "@prisma/client";
-import { ReadAnamneseDto } from "../Anamnese/ReadAnamneseDto";
+import { AgendamentoEntity } from "./agendamento.entity";
+import { AnamneseEntity } from "./anamnese.entity";
 
-export class ReadHistoricoDto {
+export class ConsultaEntity {
     @AutoMap()
-    id_historico!: number;
+    id!: number;
     @AutoMap()
     id_agendamento!: number;
     @AutoMap()
@@ -12,11 +13,13 @@ export class ReadHistoricoDto {
     @AutoMap()
     dt_entrada!: Date;
     @AutoMap()
-    dt_saida: Date | null | undefined;
+    dt_saida!: Date | null;
     @AutoMap()
     status!: string;
     @AutoMap()
     observacoes!: string;
-    @AutoMap(() => [ReadAnamneseDto])
-    Anamneses?: ReadAnamneseDto[];
+    @AutoMap(() => AgendamentoEntity)
+    Agendamento?: AgendamentoEntity;
+    @AutoMap(() => [AnamneseEntity])
+    Anamneses?: AnamneseEntity[];
 }

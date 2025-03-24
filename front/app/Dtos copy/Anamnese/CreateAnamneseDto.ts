@@ -1,6 +1,6 @@
 
 export class CreateAnamneseDto {
-    id_historico!: number;
+    id_consulta!: number;
     id_funcionario!: string;
     cid!: string;
     queixa_principal!: string | null;

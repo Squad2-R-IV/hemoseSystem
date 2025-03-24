@@ -1,6 +1,6 @@
 model Anamnese {
   id                    Int      @id @default(autoincrement())
-  id_historico          Int
+  id_consulta           Int      @unique
   id_funcionario        String
   cid                   String   @db.VarChar(10)
   queixa_principal      String?   @db.VarChar(1000)
@@ -12,6 +12,6 @@ model Anamnese {
   alergias              String?   @db.VarChar(1000)
   cirurgias_previas     String?   @db.VarChar(1000)
   observacoes           String?   @db.VarChar(1000)
-  Historico             Historico @relation(fields: [id_historico], references: [id])
+  Consulta              Consulta @relation(fields: [id_consulta], references: [id])
   User                  User      @relation(fields: [id_funcionario], references: [id])
 }

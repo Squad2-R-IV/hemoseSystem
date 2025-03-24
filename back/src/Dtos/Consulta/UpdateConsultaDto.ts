@@ -2,7 +2,7 @@ import { AutoMap } from "@automapper/classes";
 import { tipo_procedimento_enum } from "@prisma/client";
 
 
-export class UpdateHistoricoDto {
+export class UpdateConsultaDto {
     @AutoMap()
     procedimento!: tipo_procedimento_enum;
     @AutoMap()

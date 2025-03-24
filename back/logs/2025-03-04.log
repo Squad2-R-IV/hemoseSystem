@@ -1,1 +1,1 @@
-2025-03-03 21:59:54 [INFO]: Na tabela HistoricoEntity foi criado por 330030ed-05dc-487e-a720-8ddb28d625fc, com os dados: {"id_agendamento":123,"procedimento":"PROCEDIMENTO_A","dt_entrada":"2025-03-03T10:00:00Z","status":"A","observacoes":"Procedimento iniciado"}
+2025-03-03 21:59:54 [INFO]: Na tabela ConsultaEntity foi criado por 330030ed-05dc-487e-a720-8ddb28d625fc, com os dados: {"id_agendamento":123,"procedimento":"PROCEDIMENTO_A","dt_entrada":"2025-03-03T10:00:00Z","status":"A","observacoes":"Procedimento iniciado"}

@@ -70,7 +70,7 @@ Table Role_Permissao {
 
 Table AltaMedica {
   id_alta int [pk]
-  id_historico int [ref: > Historico.id_historico]
+  id_consulta int [ref: > Consulta.id_consulta]
   id_medico int [ref: > Usuario.id_usuario]
   dt_alta datetime
   tipo_alta enum_tipo_alta_enum
@@ -105,8 +105,8 @@ Table Auditoria {
   dt_registro datetime
 }
 
-Table Historico {
-  id_historico int [pk]
+Table Consulta {
+  id_consulta int [pk]
   id_agendamento int [ref: > Agendamento.id_agendamento]
   procedimento tipo_procedimento_enum
   dt_entrada datetime
@@ -118,7 +118,7 @@ Table Historico {
 
 Table Prescricao {
   id_prescricao int [pk]
-  id_historico int [ref: > Historico.id_historico]
+  id_consulta int [ref: > Consulta.id_consulta]
   dt_prescricao date
   dieta varchar(500) //optional
   decubito varchar(500)//optional
@@ -157,7 +157,7 @@ Table Administracao_Registro_Prescricao{
 
 Table Triagem {
   id_triagem int [pk]
-  id_historico int [ref: > Historico.id_historico]
+  id_consulta int [ref: > Consulta.id_consulta]
   id_funcionario int [ref: > Usuario.id_usuario]
   dt_triagem datetime
   peso float
@@ -174,7 +174,7 @@ Table Triagem {
 
 Table Exames {
   id_exame int [pk]
-  id_historico int [ref: > Historico.id_historico]
+  id_consulta int [ref: > Consulta.id_consulta]
   id_funcionario int [ref: > Usuario.id_usuario]
   tipo_do_exame varchar(500)
   resultado varchar(1000)
@@ -185,7 +185,7 @@ Table Exames {
 
 Table Evolucao_Medica {
   id_evolucao int [pk]
-  id_historico int [ref: > Historico.id_historico]
+  id_consulta int [ref: > Consulta.id_consulta]
   id_funcionario int [ref: > Usuario.id_usuario]
   dt_evolucao datetime
   sintomas varchar(500)
@@ -194,7 +194,7 @@ Table Evolucao_Medica {
 
 Table Anamnese {
   id_anamnese int [pk]
-  id_historico int [ref: > Historico.id_historico]
+  id_consulta int [ref: > Consulta.id_consulta]
   id_funcionario int [ref: > Usuario.id_usuario]
   cid varchar(10)
   queixa_principal varchar(5000)
@@ -214,9 +214,9 @@ Table Leito {
   observacoes varchar(5000)
 }
 
-Table LeitoHistorico{
-  id_leito_historico int [pk]
-  id_historico int [ref: > Historico.id_historico]
+Table LeitoConsulta{
+  id_leito_consulta int [pk]
+  id_consulta int [ref: > Consulta.id_consulta]
   id_leito int [ref: > Leito.id_leito]
   dt_entrada datetime
   dt_saida datetime

@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE `Anamnese` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `id_historico` INTEGER NOT NULL,
+    `id_consulta` INTEGER NOT NULL,
     `id_funcionario` VARCHAR(191) NOT NULL,
     `cid` VARCHAR(10) NOT NULL,
     `queixa_principal` VARCHAR(1000) NULL,
@@ -18,7 +18,7 @@ CREATE TABLE `Anamnese` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `Anamnese` ADD CONSTRAINT `Anamnese_id_historico_fkey` FOREIGN KEY (`id_historico`) REFERENCES `Historico`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Anamnese` ADD CONSTRAINT `Anamnese_id_consulta_fkey` FOREIGN KEY (`id_consulta`) REFERENCES `Consulta`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Anamnese` ADD CONSTRAINT `Anamnese_id_funcionario_fkey` FOREIGN KEY (`id_funcionario`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

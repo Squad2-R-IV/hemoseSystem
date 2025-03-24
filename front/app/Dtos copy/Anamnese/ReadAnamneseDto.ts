@@ -1,9 +1,9 @@
-import { ReadHistoricoDto } from "../Historico/ReadHistoricoDto";
+import { ReadConsultaDto } from "../Consulta/ReadConsultaDto";
 import { ReadUserDto } from "../User/ReadUser.dto";
 
 export class ReadAnamneseDto {
     id!: number;
-    id_historico!: number;
+    id_consulta!: number;
     id_funcionario!: string;
     cid!: string;
     queixa_principal!: string | null;
@@ -15,6 +15,6 @@ export class ReadAnamneseDto {
     alergias!: string | null;
     cirurgias_previas!: string | null;
     observacoes!: string | null;
-    Historico!: ReadHistoricoDto;
+    Consulta!: ReadConsultaDto;
     User!: ReadUserDto;
 }

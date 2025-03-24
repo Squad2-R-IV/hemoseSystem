@@ -17,6 +17,6 @@ export class AgendamentoRepository
   implements IAgendamentoRepository
 {
   constructor() {
-    super(prisma, prisma.agendamento, AgendamentoEntity, ["Paciente", "Usuario", "historico"]);
+    super(prisma, prisma.agendamento, AgendamentoEntity, ["Paciente", "Usuario", "consulta"]);
   }
 }

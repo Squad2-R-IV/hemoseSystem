@@ -1,6 +1,6 @@
 import { AutoMap } from "@automapper/classes";
 import { TipoAgendamentoEnum, StatusAgendamentoEnum } from "@prisma/client";
-import { HistoricoEntity } from "./historico.entity";
+import { ConsultaEntity } from "./consulta.entity";
 import { PacienteEntity } from "./paciente.entity";
 import { UserEntity } from "./user.entity";
 

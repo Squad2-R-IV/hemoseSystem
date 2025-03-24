@@ -20,10 +20,10 @@ async function main() {
         { name: "pacientes_read", description: "Permissão para ler pacientes" },
         { name: "pacientes_update", description: "Permissão para atualizar pacientes" },
         { name: "pacientes_delete", description: "Permissão para deletar pacientes" },
-        { name: "historicos_create", description: "Permissão para criar históricos" },
-        { name: "historicos_read", description: "Permissão para ler históricos" },
-        { name: "historicos_update", description: "Permissão para atualizar históricos" },
-        { name: "historicos_delete", description: "Permissão para deletar históricos" },
+        { name: "consultas_create", description: "Permissão para criar históricos" },
+        { name: "consultas_read", description: "Permissão para ler históricos" },
+        { name: "consultas_update", description: "Permissão para atualizar históricos" },
+        { name: "consultas_delete", description: "Permissão para deletar históricos" },
         { name: "agendamento_create", description: "Permissão para criar agendamento" },
         { name: "agendamento_read", description: "Permissão para ler agendamento" },
         { name: "agendamento_update", description: "Permissão para atualizar agendamento" },
@@ -67,7 +67,7 @@ async function main() {
 
     const permissionNames = [
         "pacientes_read", "pacientes_create", "pacientes_update", "pacientes_delete",
-        "historicos_read", "historicos_create", "historicos_update", "historicos_delete",
+        "consultas_read", "consultas_create", "consultas_update", "consultas_delete",
         "agendamento_read", "agendamento_create", "agendamento_update", "agendamento_delete",
         "paciente_read", "paciente_create", "paciente_update", "paciente_delete",
         "anamnese_create", "anamnese_read", "anamnese_update", "anamnese_delete",
@@ -78,11 +78,11 @@ async function main() {
     }).then(permissions => permissions.reduce((acc, permission) => ({ ...acc, [permission.name]: permission }), {}));
 
     const rolePermissions = [
-        { role: "admin", permissions: ["pacientes_read", "pacientes_delete", "historicos_read", "historicos_create", "historicos_update", "historicos_delete", "agendamento_read", "agendamento_create", "agendamento_update", "agendamento_delete", "paciente_read", "paciente_create", "paciente_update", "paciente_delete", "anamnese_read", "exame_create", "exame_read", "exame_update", "exame_delete"] },
-        { role: "gestor", permissions: ["pacientes_create", "historicos_read", "historicos_create", "historicos_update", "historicos_delete", "agendamento_read", "agendamento_create", "agendamento_update", "agendamento_delete", "paciente_read", "paciente_create", "paciente_update", "paciente_delete", "anamnese_read"] },
-        { role: "recepcionista", permissions: ["pacientes_update", "historicos_read", "historicos_create", "historicos_update", "historicos_delete", "agendamento_read", "agendamento_create", "agendamento_update", "agendamento_delete", "paciente_read", "paciente_create", "paciente_update", "paciente_delete"] },
-        { role: "semRole", permissions: ["historicos_read", "agendamento_read", "paciente_read", "anamnese_read"] },
-        { role: "medico", permissions: ["anamnese_create", "anamnese_read", "historicos_read", "agendamento_read", "paciente_read"] },
+        { role: "admin", permissions: ["pacientes_read", "pacientes_delete", "consultas_read", "consultas_create", "consultas_update", "consultas_delete", "agendamento_read", "agendamento_create", "agendamento_update", "agendamento_delete", "paciente_read", "paciente_create", "paciente_update", "paciente_delete", "anamnese_read", "exame_create", "exame_read", "exame_update", "exame_delete"] },
+        { role: "gestor", permissions: ["pacientes_create", "consultas_read", "consultas_create", "consultas_update", "consultas_delete", "agendamento_read", "agendamento_create", "agendamento_update", "agendamento_delete", "paciente_read", "paciente_create", "paciente_update", "paciente_delete", "anamnese_read"] },
+        { role: "recepcionista", permissions: ["pacientes_update", "consultas_read", "consultas_create", "consultas_update", "consultas_delete", "agendamento_read", "agendamento_create", "agendamento_update", "agendamento_delete", "paciente_read", "paciente_create", "paciente_update", "paciente_delete"] },
+        { role: "semRole", permissions: ["consultas_read", "agendamento_read", "paciente_read", "anamnese_read"] },
+        { role: "medico", permissions: ["anamnese_create", "anamnese_read", "consultas_read", "agendamento_read", "paciente_read"] },
     ];
 
     // Upsert role-to-permission relationships (only creates if not exists)
@@ -250,7 +250,7 @@ async function main() {
 
     await Promise.all(
         histories.map(history =>
-            prisma.historico.upsert({
+            prisma.consulta.upsert({
                 where: { id: history.id },
                 update: {},
                 create: history,
