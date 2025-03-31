@@ -12,6 +12,6 @@ model Anamnese {
   alergias              String?   @db.VarChar(1000)
   cirurgias_previas     String?   @db.VarChar(1000)
   observacoes           String?   @db.VarChar(1000)
-  Consulta              Consulta @relation(fields: [id_consulta], references: [id])
+  Consulta              Consulta  @relation(fields: [id_consulta], references: [id])
   User                  User      @relation(fields: [id_funcionario], references: [id])
 }

@@ -6,7 +6,7 @@ import { ReadConsultaDto } from "../Consulta/ReadConsultaDto";
 
 export class ReadAgendamentoDto {
     @AutoMap()
-    id_agendamento!: number;
+    id!: number;
     @AutoMap()
     id_paciente!: number;
     @AutoMap()

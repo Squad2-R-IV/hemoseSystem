@@ -82,7 +82,7 @@ async function main() {
         { role: "gestor", permissions: ["pacientes_create", "consultas_read", "consultas_create", "consultas_update", "consultas_delete", "agendamento_read", "agendamento_create", "agendamento_update", "agendamento_delete", "paciente_read", "paciente_create", "paciente_update", "paciente_delete", "anamnese_read"] },
         { role: "recepcionista", permissions: ["pacientes_update", "consultas_read", "consultas_create", "consultas_update", "consultas_delete", "agendamento_read", "agendamento_create", "agendamento_update", "agendamento_delete", "paciente_read", "paciente_create", "paciente_update", "paciente_delete"] },
         { role: "semRole", permissions: ["consultas_read", "agendamento_read", "paciente_read", "anamnese_read"] },
-        { role: "medico", permissions: ["anamnese_create", "anamnese_read", "consultas_read", "agendamento_read", "paciente_read"] },
+        { role: "medico", permissions: ["anamnese_create", "anamnese_read", "consultas_read", "agendamento_read", "paciente_read", "consultas_update"] },
     ];
 
     // Upsert role-to-permission relationships (only creates if not exists)

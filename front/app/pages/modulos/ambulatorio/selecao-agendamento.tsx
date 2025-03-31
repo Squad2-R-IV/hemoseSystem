@@ -1,5 +1,8 @@
 import { Button, Card, CardBody, Input, Pagination, Select, SelectItem, Chip } from "@heroui/react";
-import { MagnifyingGlassIcon, ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { TabelaAguardandoChamados } from "~/components/ambulatorio/TabelaAguardandoChamados";
+import { TabelaEmAtendimento } from "~/components/ambulatorio/TabelaEmAtendimento";
+import { useUpdateConsultaMutation } from "~/services/siahme-api.service";
 import {
   Table,
   TableHeader,
@@ -24,11 +27,6 @@ var StatusAgendamentoEnum = {
 }
 
 const columns = [
-  {
-    key: "id_paciente",
-    label: "COD DO AGENDAMENTO",
-    sortable: true,
-  },
   {
     key: "Paciente.nome_paciente",
     label: "PACIENTE",
@@ -56,7 +54,7 @@ const columns = [
   },
   {
     key: "actions",
-    label: "ACTIONS",
+    label: "AÇÕES",
     sortable: false,
   },
 ];
@@ -72,65 +70,81 @@ export function SelecaoAgendamento() {
 
   const rowsPerPage = 4;
 
-  const { data: agendamentos = [], isLoading } = useGetAgendamentosComConsultasAtivasQuery(undefined, {
-    selectFromResult: ({ data, ...rest }) => ({
-      data: data?.filter(agendamento => 
-        agendamento.Consulta && 
-        (agendamento.Consulta.status === 'AGUARDANDO' || 
-         agendamento.Consulta.status === 'EM_ATENDIMENTO')
-      ),
-      ...rest
-    })
+  const { data: agendamentos = [], isLoading: isAgendamentosLoading } = useGetAgendamentosComConsultasAtivasQuery(undefined, {
+    refetchOnMountOrArgChange: true
   });
 
-  const filteredItems = React.useMemo(() => {
-    let filtered = [...agendamentos].filter(agendamento => 
+  const [waitingAndCalledItems, inProgressItems] = React.useMemo(() => {
+    const waitingAndCalled = [...agendamentos].filter(agendamento => 
       agendamento.Consulta && 
       (agendamento.Consulta.status === 'AGUARDANDO' || 
-       agendamento.Consulta.status === 'EM_ATENDIMENTO')
+       agendamento.Consulta.status === 'CHAMADO')
     );
 
-    if (filterValue) {
-      filtered = filtered.filter((item) =>
-        item.Paciente?.nome_paciente?.toLowerCase().includes(filterValue.toLowerCase()) ||
-        item.id_paciente.toString().includes(filterValue)
-      );
-    }
+    const inProgress = [...agendamentos].filter(agendamento => 
+      agendamento.Consulta && 
+      agendamento.Consulta.status === 'EM_ATENDIMENTO'
+    );
 
-    if (selectedStatus) {
-      filtered = filtered.filter((item) => item.status_agendamento === selectedStatus);
-    }
+    const applyFilters = (items: ReadAgendamentoDto[]) => {
+      let filtered = [...items];
 
-    if (sortDescriptor.column) {
-      filtered.sort((a, b) => {
-        let first, second;
+      if (filterValue) {
+        filtered = filtered.filter((item) =>
+          item.Paciente?.nome_paciente?.toLowerCase().includes(filterValue.toLowerCase()) ||
+          item.id_paciente.toString().includes(filterValue)
+        );
+      }
 
-        // Handle nested properties like "Paciente.nome_paciente"
-        if (sortDescriptor.column.toString().includes('.')) {
-          const parts = sortDescriptor.column.toString().split('.');
-          first = (a[parts[0] as keyof typeof a] as any)?.[parts[1]] ?? '';
-          second = (b[parts[0] as keyof typeof b] as any)?.[parts[1]] ?? '';
-        } else {
-          first = a[sortDescriptor.column as keyof typeof a] ?? '';
-          second = b[sortDescriptor.column as keyof typeof b] ?? '';
-        }
+      if (selectedStatus) {
+        filtered = filtered.filter((item) => item.status_agendamento === selectedStatus);
+      }
 
-        const cmp = first < second ? -1 : first > second ? 1 : 0;
-        return sortDescriptor.direction === "descending" ? -cmp : cmp;
-      });
-    }
+      if (sortDescriptor.column) {
+        filtered.sort((a, b) => {
+          let first, second;
 
-    return filtered;
+          if (sortDescriptor.column.toString().includes('.')) {
+            const parts = sortDescriptor.column.toString().split('.');
+            first = (a[parts[0] as keyof typeof a] as any)?.[parts[1]] ?? '';
+            second = (b[parts[0] as keyof typeof b] as any)?.[parts[1]] ?? '';
+          } else {
+            first = a[sortDescriptor.column as keyof typeof a] ?? '';
+            second = b[sortDescriptor.column as keyof typeof b] ?? '';
+          }
+
+          const cmp = first < second ? -1 : first > second ? 1 : 0;
+          return sortDescriptor.direction === "descending" ? -cmp : cmp;
+        });
+      }
+
+      return filtered;
+    };
+
+    return [
+      applyFilters(waitingAndCalled),
+      applyFilters(inProgress)
+    ];
   }, [filterValue, selectedStatus, sortDescriptor, agendamentos]);
 
-  const pages = Math.ceil(filteredItems.length / rowsPerPage);
-  const items = React.useMemo(() => {
+  const waitingPages = Math.ceil(waitingAndCalledItems.length / rowsPerPage);
+  const inProgressPages = Math.ceil(inProgressItems.length / rowsPerPage);
+  
+  const waitingItems = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
-    return filteredItems
+    return waitingAndCalledItems
       .filter(item => item.id_paciente !== undefined && item.id_paciente !== null)
       .slice(start, end);
-  }, [page, filteredItems]);
+  }, [page, waitingAndCalledItems]);
+
+  const inProgressItemsPaginated = React.useMemo(() => {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    return inProgressItems
+      .filter(item => item.id_paciente !== undefined && item.id_paciente !== null)
+      .slice(start, end);
+  }, [page, inProgressItems]);
 
   const onSearchChange = React.useCallback((value: string) => {
     setFilterValue(value);
@@ -153,21 +167,24 @@ export function SelecaoAgendamento() {
         }
       case "tipo_agendamento":
         return item.tipo_agendamento;
-      case "status_agendamento":
-        const status = item.status_agendamento;
+  case "status_agendamento":
+        const status = item.Consulta?.status || item.status_agendamento;
         let color: "default" | "primary" | "secondary" | "success" | "warning" | "danger" = "default";
         switch (status) {
-          case StatusAgendamentoEnum.Confirmado:
+          case 'AGUARDANDO':
+            color = "warning";
+            break;
+          case 'EM_ATENDIMENTO':
             color = "primary";
             break;
-          case StatusAgendamentoEnum.Realizado:
+          case 'CHAMADO':
+            color = "secondary";
+            break;
+          case 'FINALIZADO':
             color = "success";
             break;
-          case StatusAgendamentoEnum.Cancelado:
+          case 'CANCELADO':
             color = "danger";
-            break;
-          case StatusAgendamentoEnum.Reagendado:
-            color = "warning";
             break;
           default:
             color = "default";
@@ -178,7 +195,9 @@ export function SelecaoAgendamento() {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  const [updateConsulta, { isLoading: isUpdating }] = useUpdateConsultaMutation();
+
+  if (isAgendamentosLoading) return <div>Loading...</div>;
 
   return (
     <div className="flex flex-col gap-4">
@@ -196,51 +215,37 @@ export function SelecaoAgendamento() {
             label="Filtrar por Status"
             onChange={(e) => setSelectedStatus(e.target.value)}
           >
-            <SelectItem key="all">Todos</SelectItem>
-            {Object.values(StatusAgendamentoEnum).map((status) => (
-              <SelectItem key={status}>{status}</SelectItem>
-            ))}
+            <>
+              <SelectItem key="all">Todos</SelectItem>
+              {Object.values(StatusAgendamentoEnum).map((status) => (
+                <SelectItem key={status}>{status}</SelectItem>
+              ))}
+            </>
           </Select>
         </CardBody>
       </Card>
 
-      <Table
-        aria-label="Tabela de agendamentos"
-        sortDescriptor={sortDescriptor}
-        onSortChange={setSortDescriptor}
-      >
-        <TableHeader columns={columns}>
-          {(column) => (
-            <TableColumn key={column.key} allowsSorting={column.sortable}>
-              {column.label}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody items={items} emptyContent={"Nenhum agendamento encontrado"}>
-          {(item) => (
-            <TableRow key={item.id_paciente}>
-              {(columnKey) => (
-                <TableCell>
-                  {columnKey === "actions" && item.status_agendamento === "Confirmado" ? (
-                    <Button size="sm" color="primary" startContent={<ArrowRightEndOnRectangleIcon className="h-6 w-6" />}>Chamar</Button>
-                  ) : (
-                    getCustomKeyValue(item, columnKey) as React.ReactNode
-                  )}
-                </TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-
-      <div className="flex justify-center">
-        <Pagination
-          total={pages}
+      <div className="flex flex-col gap-6">
+        <TabelaAguardandoChamados
+          items={waitingAndCalledItems}
           page={page}
-          onChange={setPage}
-          color="primary"
-          showControls
-          isDisabled={pages <= 1}
+          setPage={setPage}
+          sortDescriptor={sortDescriptor}
+          setSortDescriptor={setSortDescriptor}
+          isUpdating={isUpdating}
+          updateConsulta={updateConsulta}
+          columns={columns}
+          rowsPerPage={rowsPerPage}
+        />
+
+        <TabelaEmAtendimento
+          items={inProgressItems}
+          page={page}
+          setPage={setPage}
+          sortDescriptor={sortDescriptor}
+          setSortDescriptor={setSortDescriptor}
+          columns={columns}
+          rowsPerPage={rowsPerPage}
         />
       </div>
     </div>

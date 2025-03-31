@@ -1,0 +1,13 @@
+2025-03-31 16:48:30 [INFO]: Na tabela ConsultaEntity o id 5 foi atualizado por 9c4361f1-f3ca-41a2-a924-d6e1a7917520, com os dados: {"status":"CHAMADO"}
+2025-03-31 16:58:17 [INFO]: Na tabela ConsultaEntity o id 4 foi atualizado por 9c4361f1-f3ca-41a2-a924-d6e1a7917520, com os dados: {"status":"CHAMADO"}
+2025-03-31 16:59:21 [INFO]: Na tabela ConsultaEntity o id 4 foi atualizado por 9c4361f1-f3ca-41a2-a924-d6e1a7917520, com os dados: {"status":"CHAMADO"}
+2025-03-31 17:04:23 [INFO]: Na tabela ConsultaEntity o id 4 foi atualizado por 9c4361f1-f3ca-41a2-a924-d6e1a7917520, com os dados: {"status":"CHAMADO"}
+2025-03-31 17:04:44 [INFO]: Na tabela ConsultaEntity o id 5 foi atualizado por 9c4361f1-f3ca-41a2-a924-d6e1a7917520, com os dados: {"status":"EM_ATENDIMENTO"}
+2025-03-31 17:19:49 [INFO]: Na tabela ConsultaEntity o id 4 foi atualizado por 9c4361f1-f3ca-41a2-a924-d6e1a7917520, com os dados: {"status":"EM_ATENDIMENTO"}
+2025-03-31 17:47:29 [INFO]: Na tabela ConsultaEntity o id 4 foi atualizado por 9c4361f1-f3ca-41a2-a924-d6e1a7917520, com os dados: {"status":"CHAMADO"}
+2025-03-31 18:03:21 [INFO]: Na tabela ConsultaEntity o id 5 foi atualizado por 9c4361f1-f3ca-41a2-a924-d6e1a7917520, com os dados: {"status":"CHAMADO"}
+2025-03-31 18:03:28 [INFO]: Na tabela ConsultaEntity o id 4 foi atualizado por 9c4361f1-f3ca-41a2-a924-d6e1a7917520, com os dados: {"status":"EM_ATENDIMENTO"}
+2025-03-31 18:59:14 [INFO]: Na tabela ConsultaEntity o id 5 foi atualizado por 9c4361f1-f3ca-41a2-a924-d6e1a7917520, com os dados: {"status":"EM_ATENDIMENTO"}
+2025-03-31 19:01:57 [INFO]: Na tabela ConsultaEntity o id 4 foi atualizado por 9c4361f1-f3ca-41a2-a924-d6e1a7917520, com os dados: {"status":"EM_ATENDIMENTO"}
+2025-03-31 19:28:16 [INFO]: Na tabela ConsultaEntity o id 3 foi atualizado por 9c4361f1-f3ca-41a2-a924-d6e1a7917520, com os dados: {"status":"CHAMADO"}
+2025-03-31 19:28:22 [INFO]: Na tabela ConsultaEntity o id 4 foi atualizado por 9c4361f1-f3ca-41a2-a924-d6e1a7917520, com os dados: {"status":"EM_ATENDIMENTO"}

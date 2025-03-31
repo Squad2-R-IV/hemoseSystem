@@ -20,6 +20,6 @@ export class ConsultaEntity {
     observacoes!: string;
     @AutoMap(() => AgendamentoEntity)
     Agendamento?: AgendamentoEntity;
-    @AutoMap(() => [AnamneseEntity])
+    @AutoMap(() => AnamneseEntity)
     Anamnese?: AnamneseEntity;
 }

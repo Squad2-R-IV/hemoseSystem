@@ -4,7 +4,7 @@ import { status_consulta_enum, tipo_procedimento_enum } from "@prisma/client";
 
 export class UpdateConsultaDto {
     @AutoMap()
-    dt_entrada!: Date;
+    dt_entrada?: Date
     @AutoMap()
     dt_saida: Date | null | undefined;
     @AutoMap()

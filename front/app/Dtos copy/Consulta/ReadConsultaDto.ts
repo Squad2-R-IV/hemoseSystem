@@ -5,7 +5,7 @@ import { ReadAnamneseDto } from "../Anamnese/ReadAnamneseDto";
 
 export class ReadConsultaDto {
     // @AutoMap()
-    id_consulta!: number;
+    id!: number;
     // @AutoMap()
     id_agendamento!: number;
     // @AutoMap()
@@ -19,5 +19,5 @@ export class ReadConsultaDto {
     // @AutoMap()
     observacoes!: string;
     // @AutoMap(() => [ReadAnamneseDto])
-    Anamneses!: ReadAnamneseDto[];
+    Anamneses!: ReadAnamneseDto;
 }

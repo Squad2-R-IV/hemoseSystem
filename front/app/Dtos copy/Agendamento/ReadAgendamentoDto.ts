@@ -4,7 +4,7 @@ import { ReadUserDto } from "../User/ReadUser.dto";
 import type { ReadConsultaDto } from "../Consulta/ReadConsultaDto";
 
 export class ReadAgendamentoDto {
-    id_agendamento!: number;
+    id!: number;
     id_paciente!: number;
     id_funcionario!: string;
     data_hora_agendamento!: Date;

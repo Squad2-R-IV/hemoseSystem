@@ -25,6 +25,7 @@ const baseQuery = fetchBaseQuery({
 export const siahmeApi = createApi({
     reducerPath: 'siahmeApi',
     baseQuery,
+    tagTypes: ['Agendamento', 'Consulta'],
     endpoints: (builder) => ({
         ///////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////
@@ -144,6 +145,7 @@ export const siahmeApi = createApi({
         }),
         getAgendamentosComConsultasAtivas: builder.query<ReadAgendamentoDto[], void>({
             query: () => 'agendamento/consultas-ativas',
+            providesTags: ['Agendamento', 'Consulta'],
         }),
         ///////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////
@@ -173,6 +175,7 @@ export const siahmeApi = createApi({
                 method: 'PUT',
                 body,
             }),
+            invalidatesTags: ['Consulta', 'Agendamento'],
         }),
         deleteConsulta: builder.mutation<{ success: boolean }, number>({
             query: (id) => ({

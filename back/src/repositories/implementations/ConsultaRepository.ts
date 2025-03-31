@@ -16,6 +16,6 @@ import { Consulta } from "@prisma/client";
 @injectable()
 export class ConsultaRepository extends GenericRepository<Consulta> implements IConsultaRepository {
   constructor() {
-    super(prisma, prisma.consulta, ConsultaEntity, ['Agendamento', 'Anamneses']);
+    super(prisma, prisma.consulta, ConsultaEntity, ['Agendamento', 'Anamnese']);
   }
 }

@@ -24,5 +24,9 @@ export default [
       "selecao-agendamento",
       "./routes/modulos/ambulatorio/selecao-agendamento.tsx"
     ),
+    route(
+      "consulta/:id",
+      "./routes/modulos/consulta.tsx"
+    ),
   ]),
 ] satisfies RouteConfig;
