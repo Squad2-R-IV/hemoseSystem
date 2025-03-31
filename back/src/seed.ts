@@ -1,4 +1,4 @@
-import { PrismaClient, Role, Permission, StatusAgendamentoEnum, tipo_procedimento_enum, TipoAgendamentoEnum } from "@prisma/client";
+import { PrismaClient, Role, Permission, StatusAgendamentoEnum, tipo_procedimento_enum, TipoAgendamentoEnum, status_consulta_enum } from "@prisma/client";
 import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -204,7 +204,27 @@ async function main() {
             tipo_agendamento: TipoAgendamentoEnum.Procedimento,
             status_agendamento:  StatusAgendamentoEnum.Agendado,
             observacoes: "Procedimento cirúrgico"
+        },
+        {
+            id: 4,
+            id_paciente: 1,
+            id_funcionario: medicoUser.id,
+            data_hora_agendamento: new Date("2023-10-04T14:00:00Z"),
+            tipo_agendamento: TipoAgendamentoEnum.Consulta,
+            status_agendamento: StatusAgendamentoEnum.Confirmado,
+            observacoes: "Consulta de acompanhamento"
+        },
+        {
+            id: 5,
+            id_paciente: 2,
+            id_funcionario: medicoUser.id,
+            data_hora_agendamento: new Date("2023-10-05T16:00:00Z"),
+            tipo_agendamento: TipoAgendamentoEnum.Exame,
+            status_agendamento: StatusAgendamentoEnum.Confirmado,
+            observacoes: "Exame cancelado"
         }
+
+
     ];
 
     await Promise.all(
@@ -217,7 +237,7 @@ async function main() {
         )
     );
 
-    // Seed histories
+    // Seed histories with updated model and more data
     const histories = [
         {
             id: 1,
@@ -225,7 +245,7 @@ async function main() {
             procedimento: tipo_procedimento_enum.PROCEDIMENTO_A,
             dt_entrada: new Date("2023-10-01T10:00:00Z"),
             dt_saida: new Date("2023-10-01T11:00:00Z"),
-            status: "A",
+            status: status_consulta_enum.REALIZADA,
             observacoes: "Histórico do procedimento A"
         },
         {
@@ -234,7 +254,7 @@ async function main() {
             procedimento: tipo_procedimento_enum.PROCEDIMENTO_B,
             dt_entrada: new Date("2023-10-02T11:00:00Z"),
             dt_saida: new Date("2023-10-02T12:00:00Z"),
-            status: "A",
+            status: status_consulta_enum.REALIZADA,
             observacoes: "Histórico do procedimento B"
         },
         {
@@ -243,9 +263,29 @@ async function main() {
             procedimento: tipo_procedimento_enum.PROCEDIMENTO_A,
             dt_entrada: new Date("2023-10-03T12:00:00Z"),
             dt_saida: new Date("2023-10-03T13:00:00Z"),
-            status: "A",
+            status: status_consulta_enum.EM_ATENDIMENTO,
             observacoes: "Histórico do procedimento A"
+        },
+        {
+            id: 4,
+            id_agendamento: 4,
+            procedimento: tipo_procedimento_enum.PROCEDIMENTO_B,
+            dt_entrada: new Date("2023-10-04T14:00:00Z"),
+            dt_saida: new Date("2023-10-04T15:00:00Z"),
+            status: status_consulta_enum.AGUARDANDO,
+            observacoes: "Histórico do procedimento B"
+        },
+        {
+            id: 5,
+            id_agendamento: 5,
+            procedimento: tipo_procedimento_enum.PROCEDIMENTO_B,
+            dt_entrada: new Date("2023-10-05T16:00:00Z"),
+            dt_saida: new Date("2023-10-05T17:00:00Z"),
+            status: status_consulta_enum.AGUARDANDO,
+            observacoes: "Histórico do procedimento C"
         }
+
+
     ];
 
     await Promise.all(

@@ -18,4 +18,21 @@ export class AgendamentoService extends GenericService<AgendamentoWithRelations>
   ) {
     super(agendamentoRepository);
   }
+
+  async getAgendamentosComConsultasAtivas(): Promise<AgendamentoWithRelations[]> {
+    return await this.repository.findManyByQuery({
+      where: {
+        Consulta: {
+          status: {
+            in: ['AGUARDANDO', 'EM_ATENDIMENTO', 'CHAMADO']
+          }
+        }
+      },
+      include: {
+        Consulta: true,
+        Paciente: true,
+        Usuario: true
+      }
+    }) as AgendamentoWithRelations[]; // Cast the result to AgendamentoWithRelations[]
+  }
 }

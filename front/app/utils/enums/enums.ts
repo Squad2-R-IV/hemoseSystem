@@ -22,3 +22,15 @@ export const tipo_procedimento_enum = {
 };
 
 export type tipo_procedimento_enum = (typeof tipo_procedimento_enum)[keyof typeof tipo_procedimento_enum];
+
+
+
+export const status_consulta_enum = {
+  REALIZADA: 'REALIZADA',
+  AGUARDANDO: 'AGUARDANDO',
+  EM_ATENDIMENTO: 'EM_ATENDIMENTO',
+  CHAMADO: 'CHAMADO',
+  CANCELADO: 'CANCELADO',
+};
+
+export type status_consulta_enum = (typeof status_consulta_enum)[keyof typeof status_consulta_enum];

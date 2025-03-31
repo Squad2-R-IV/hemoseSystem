@@ -10,7 +10,8 @@ import {
   type SortDescriptor
 } from "@heroui/react";
 import React from "react";
-import { useGetAgendamentosQuery } from "~/services/siahme-api.service";
+import { useGetAgendamentosComConsultasAtivasQuery } from "~/services/siahme-api.service";
+import type { ReadConsultaDto } from "~/Dtos copy/Consulta/ReadConsultaDto";
 import type { ReadAgendamentoDto } from "~/Dtos copy/Agendamento/ReadAgendamentoDto";
 import type { Key } from "@react-types/shared";
 
@@ -71,10 +72,23 @@ export function SelecaoAgendamento() {
 
   const rowsPerPage = 4;
 
-  const { data: agendamentos = [], isLoading } = useGetAgendamentosQuery({ includeRelations: true });
+  const { data: agendamentos = [], isLoading } = useGetAgendamentosComConsultasAtivasQuery(undefined, {
+    selectFromResult: ({ data, ...rest }) => ({
+      data: data?.filter(agendamento => 
+        agendamento.Consulta && 
+        (agendamento.Consulta.status === 'AGUARDANDO' || 
+         agendamento.Consulta.status === 'EM_ATENDIMENTO')
+      ),
+      ...rest
+    })
+  });
 
   const filteredItems = React.useMemo(() => {
-    let filtered = [...agendamentos];
+    let filtered = [...agendamentos].filter(agendamento => 
+      agendamento.Consulta && 
+      (agendamento.Consulta.status === 'AGUARDANDO' || 
+       agendamento.Consulta.status === 'EM_ATENDIMENTO')
+    );
 
     if (filterValue) {
       filtered = filtered.filter((item) =>

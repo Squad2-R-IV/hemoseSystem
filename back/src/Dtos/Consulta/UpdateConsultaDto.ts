@@ -1,16 +1,12 @@
 import { AutoMap } from "@automapper/classes";
-import { tipo_procedimento_enum } from "@prisma/client";
+import { status_consulta_enum, tipo_procedimento_enum } from "@prisma/client";
 
 
 export class UpdateConsultaDto {
-    @AutoMap()
-    procedimento!: tipo_procedimento_enum;
     @AutoMap()
     dt_entrada!: Date;
     @AutoMap()
     dt_saida: Date | null | undefined;
     @AutoMap()
-    status!: string;
-    @AutoMap()
-    observacoes!: string;
+    status!: status_consulta_enum;
 }

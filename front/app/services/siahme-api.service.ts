@@ -6,6 +6,9 @@ import type { UpdateUserDto } from '~/Dtos copy/User/UpdateUser.dto';
 import { CreateAgendamentoDto } from '~/Dtos copy/Agendamento/CreateAgendamentoDto';
 import { ReadAgendamentoDto } from '~/Dtos copy/Agendamento/ReadAgendamentoDto';
 import { UpdateAgendamentoDto } from '~/Dtos copy/Agendamento/UpdateAgendamentoDto';
+import { CreateConsultaDto } from '~/Dtos copy/Consulta/CreateConsultaDto';
+import { ReadConsultaDto } from '~/Dtos copy/Consulta/ReadConsultaDto';
+import { UpdateConsultaDto } from '~/Dtos copy/Consulta/UpdateConsultaDto';
 
 // Define a service using a base URL and expected endpoints
 const baseQuery = fetchBaseQuery({
@@ -23,6 +26,11 @@ export const siahmeApi = createApi({
     reducerPath: 'siahmeApi',
     baseQuery,
     endpoints: (builder) => ({
+        ///////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////
+        /////////////////USER ENDPOINTS////////////////////////
+        ///////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////
         login: builder.mutation<
             { token?: string; refreshToken?: string; message?: string },
             { email: string; password: string }>({
@@ -99,6 +107,11 @@ export const siahmeApi = createApi({
                 body,
             }),
         }),
+        ///////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////
+        /////////////////Agendamentos ENDPOINTS////////////////
+        ///////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////
         getAgendamentos: builder.query<ReadAgendamentoDto[], { includeRelations?: boolean }>({
             query: ({ includeRelations = false }) => ({
                 url: `agendamento?includeRelations=${includeRelations}`,
@@ -129,6 +142,44 @@ export const siahmeApi = createApi({
                 method: 'DELETE',
             }),
         }),
+        getAgendamentosComConsultasAtivas: builder.query<ReadAgendamentoDto[], void>({
+            query: () => 'agendamento/consultas-ativas',
+        }),
+        ///////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////
+        /////////////////Consultas ENDPOINTS///////////////////
+        ///////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////
+        getConsultas: builder.query<ReadConsultaDto[], { includeRelations?: boolean }>({
+            query: ({ includeRelations = false }) => ({
+                url: `consulta?includeRelations=${includeRelations}`,
+            }),
+        }),
+        getConsultaById: builder.query<ReadConsultaDto, { id: number; includeRelations?: boolean }>({
+            query: ({ id, includeRelations = false }) => ({
+                url: `consulta/${id}?includeRelations=${includeRelations}`,
+            }),
+        }),
+        createConsulta: builder.mutation<ReadConsultaDto, CreateConsultaDto>({
+            query: (body) => ({
+                url: 'consulta',
+                method: 'POST',
+                body,
+            }),
+        }),
+        updateConsulta: builder.mutation<ReadConsultaDto, { id: number; body: UpdateConsultaDto }>({
+            query: ({ id, body }) => ({
+                url: `consulta/${id}`,
+                method: 'PUT',
+                body,
+            }),
+        }),
+        deleteConsulta: builder.mutation<{ success: boolean }, number>({
+            query: (id) => ({
+                url: `consulta/${id}`,
+                method: 'DELETE',
+            }),
+        }),
     }),
 })
 
@@ -146,7 +197,13 @@ export const {
     useChangeUserRolesMutation,
     useGetAgendamentosQuery,
     useGetAgendamentoByIdQuery,
+    useGetAgendamentosComConsultasAtivasQuery,
     useCreateAgendamentoMutation,
     useUpdateAgendamentoMutation,
     useDeleteAgendamentoMutation,
+    useGetConsultasQuery,
+    useGetConsultaByIdQuery,
+    useCreateConsultaMutation,
+    useUpdateConsultaMutation,
+    useDeleteConsultaMutation,
 } = siahmeApi;

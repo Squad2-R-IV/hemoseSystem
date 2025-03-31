@@ -11,8 +11,16 @@ model Consulta {
   procedimento         tipo_procedimento_enum
   dt_entrada           DateTime              @default(now())
   dt_saida             DateTime?              
-  status               String                @db.VarChar(50) @default("A")
+  status               status_consulta_enum  @default(AGUARDANDO)
   observacoes          String                
   Anamnese             Anamnese?
+}
+
+enum status_consulta_enum {
+  REALIZADA
+  AGUARDANDO
+  EM_ATENDIMENTO
+  CHAMADO
+  CANCELADO
 }
 

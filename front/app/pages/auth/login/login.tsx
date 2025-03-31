@@ -7,10 +7,12 @@ import { CircularProgress } from "@heroui/progress";
 import logoDark from "@/assets/images/logo.svg";
 import { addToast } from "@heroui/react";
 import { useLoginMutation } from "~/services/siahme-api.service";
+import { useNavigate } from "react-router";
 
 export function Login() {
   const [isSelected, setIsSelected] = React.useState(false);
   const [login, { isLoading }] = useLoginMutation();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -35,6 +37,7 @@ export function Login() {
           description: "Login realizado com sucesso",
           color: "success",
         });
+        navigate("/home"); // Redirect to /home after successful login
       }
     } catch (error) {
       const err = error as { status?: number };

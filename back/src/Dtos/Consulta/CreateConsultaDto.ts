@@ -9,7 +9,5 @@ export class CreateConsultaDto {
     @AutoMap()
     dt_entrada!: Date;
     @AutoMap()
-    status!: string;
-    @AutoMap()
     observacoes!: string;
 }

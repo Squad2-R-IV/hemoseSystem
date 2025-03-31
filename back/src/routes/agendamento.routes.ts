@@ -87,6 +87,27 @@ const agendamentoController = container.resolve(AgendamentoController);
  *       - bearerAuth: []
  */
 router.get("/", authMiddleware, checkPermission("agendamento_read"), asyncHandler(agendamentoController.getAll.bind(agendamentoController)));
+/**
+ * @swagger
+ * /agendamento/consultas-ativas:
+ *   get:
+ *     summary: Retorna agendamentos com consultas ativas (aguardando ou em atendimento)
+ *     tags: [Agendamento]
+ *     responses:
+ *       200:
+ *         description: Lista de agendamentos com consultas ativas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Agendamento'
+ *       500:
+ *         description: Erro no servidor
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get("/consultas-ativas", authMiddleware, checkPermission("agendamento_read"), asyncHandler(agendamentoController.getAgendamentosComConsultasAtivas.bind(agendamentoController)));
 
 /**
  * @swagger
@@ -263,5 +284,6 @@ router.put("/:id", authMiddleware, checkPermission("agendamento_update"), asyncH
  *       - bearerAuth: []
  */
 router.delete("/:id", authMiddleware, checkPermission("agendamento_delete"), asyncHandler(agendamentoController.delete.bind(agendamentoController)));
+
 
 export default router;

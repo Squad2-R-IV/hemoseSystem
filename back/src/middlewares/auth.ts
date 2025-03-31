@@ -10,7 +10,7 @@ dotenv.config();
 
 interface JwtPayload {
     id: string;
-    roles: string[];    
+    roles: string[];
 }
 
 // Estendendo a interface Request para incluir a propriedade user
@@ -66,53 +66,58 @@ export const adminOnlyMiddleware = async (req: Request, res: Response, next: Nex
 
 export const checkPermission = (permission: string) => {
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        const authHeader = req.headers.authorization;
-        console.log("Auth Header:", authHeader);
-        if (!authHeader) {
-            res.status(401).json({ message: "Token não informado" });
-            return;
-        }
-
-        const token = authHeader.split(" ")[1];
-        console.log("Token:", token);
-        if (!token) {
-            res.status(401).json({ message: "Formato de token inválido" });
-            return;
-        }
-
         try {
-            const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string) as JwtPayload;
-            req.user = decoded;
-            console.log("Decoded Token:", decoded);
+            const authHeader = req.headers.authorization;
+            console.log("Auth Header:", authHeader);
+            if (!authHeader) {
+                res.status(401).json({ message: "Token não informado" });
+                return;
+            }
+
+            const token = authHeader.split(" ")[1];
+            console.log("Token:", token);
+            if (!token) {
+                res.status(401).json({ message: "Formato de token inválido" });
+                return;
+            }
+
+            try {
+                const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string) as JwtPayload;
+                req.user = decoded;
+                console.log("Decoded Token:", decoded);
+            } catch (error) {
+                console.error("Token verification error:", error);
+                res.status(403).json({ message: "Token inválido ou expirado" });
+                return;
+            }
+
+            const userService = container.resolve(UserService);
+            const user = await userService.getById(req.user.id);
+            if (!user) {
+                res.status(403).json({ message: "Usuário não encontrado" });
+                return;
+            }
+
+            const userRoles = await userService.getUserRoles(user.id);
+            const roleIds = userRoles.map(role => role.id);
+
+            const permissions = await prisma.roleToPermission.findMany({
+                where: {
+                    roleId: { in: roleIds },
+                    permission: { name: permission }
+                },
+                include: { permission: true }
+            });
+
+            if (permissions.length === 0) {
+                res.status(403).json({ message: "Acesso negado" });
+                return;
+            }
+
+            next();
         } catch (error) {
-            console.error("Token verification error:", error);
-            res.status(403).json({ message: "Token inválido ou expirado" });
-            return;
+            console.error("Error in checkPermission middleware:", error);
+            res.status(500).json({ message: "Erro interno do servidor" });
         }
-
-        const userService = container.resolve(UserService);
-        const user = await userService.getById(req.user.id);
-        if (!user) {
-            res.status(403).json({ message: "Usuário não encontrado" });
-            return;
-        }
-
-        const userRoles = await userService.getUserRoles(user.id);
-        const roleIds = userRoles.map(role => role.id);
-
-        const permissions = await prisma.roleToPermission.findMany({
-            where: {
-                roleId: { in: roleIds },
-                permission: { name: permission }
-            },
-            include: { permission: true }
-        });
-
-        if (permissions.length === 0) {
-            res.status(403).json({ message: "Acesso negado" });
-            return;
-        }
-
-        next();
     };
 };

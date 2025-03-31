@@ -1,5 +1,5 @@
 import { AutoMap } from "@automapper/classes";
-import { tipo_procedimento_enum } from "@prisma/client";
+import { status_consulta_enum, tipo_procedimento_enum } from "@prisma/client";
 import { AgendamentoEntity } from "./agendamento.entity";
 import { AnamneseEntity } from "./anamnese.entity";
 
@@ -15,7 +15,7 @@ export class ConsultaEntity {
     @AutoMap()
     dt_saida!: Date | null;
     @AutoMap()
-    status!: string;
+    status!: status_consulta_enum;
     @AutoMap()
     observacoes!: string;
     @AutoMap(() => AgendamentoEntity)

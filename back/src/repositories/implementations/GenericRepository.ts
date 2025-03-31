@@ -16,7 +16,7 @@ export class GenericRepository<T> implements IGenericRepository<T> {
     private model: any,
     private entityClass: new () => T,
     protected availableRelations: string[] = [] // Renomeado para availableRelations
-  ) {}
+  ) { }
 
   // Método auxiliar para gerar o include a partir das relações disponíveis
   private generateInclude() {
@@ -46,6 +46,21 @@ export class GenericRepository<T> implements IGenericRepository<T> {
     const result = await this.model.findFirst({ where: { [field]: value } });
     return result ? plainToInstance(this.entityClass, result) : null;
   }
+
+  async findManyByQuery(query: any): Promise<T[]> {
+    try {
+
+      const results = await this.model.findMany(query);
+
+      return plainToInstance(this.entityClass, results) as T[];
+    }
+    catch (error) {
+      console.error("Error in findManyByQuery:", error);
+      throw error; // Re-throw the error after logging it
+    }
+  }
+
+
 
   async findManyByField(field: string, value: string): Promise<T[]> {
     // Método não está na interface com includeRelations, mantendo como estava
