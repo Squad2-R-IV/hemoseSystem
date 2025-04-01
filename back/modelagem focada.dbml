@@ -128,8 +128,8 @@ Table Prescricao {
   observacoes varchar(5000)
 }
 
-Table Registro_Prescricao {
-  id_registro_prescricao int [pk]
+Table conduta {
+  id_conduta int [pk]
   id_prescricao int [ref: > Prescricao.id_prescricao]
   id_funcionario int [ref: > Usuario.id_usuario]
   nome_medicamento varchar(500)
@@ -146,9 +146,9 @@ Table Registro_Prescricao {
   duracao_tratamento int
 }
 
-Table Administracao_Registro_Prescricao{
-  id_administracao_registro_prescricao int [pk]
-  id_registro_prescricao int [ref: > Registro_Prescricao.id_registro_prescricao]
+Table Administracao_conduta{
+  id_administracao_conduta int [pk]
+  id_conduta int [ref: > conduta.id_conduta]
   id_funcionario int [ref: > Usuario.id_usuario]
   dt_administracao datetime
   hora_administracao time

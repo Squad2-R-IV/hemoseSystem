@@ -14,7 +14,7 @@ export function meta({ }: Route.MetaArgs) {
 export default function ConsultaRoute() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const { data: consulta, isLoading } = useGetConsultaByIdQuery({
+  const { data: consultaData, isLoading } = useGetConsultaByIdQuery({
     id: Number(id),
     includeRelations: true
   });
@@ -23,9 +23,11 @@ export default function ConsultaRoute() {
     return <Spinner />;
   }
 
-  if (!consulta) {
+  if (!consultaData) {
     return <div>Consulta não encontrada</div>;
   }
+
+  const { consulta, agendamento } = consultaData;
 
   return (
     <div className="p-4">
@@ -46,7 +48,8 @@ export default function ConsultaRoute() {
           <div className="space-y-2">
             <p><strong>Status:</strong> {consulta.status}</p>
             <p><strong>Codigo consulta:</strong> {consulta.id}</p>
-
+            <p><strong>Paciente:</strong> {agendamento.Paciente?.nome_paciente}</p>
+            <p><strong>Médico:</strong> {agendamento.Usuario?.name}</p>
           </div>
         </CardBody>
       </Card>

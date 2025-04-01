@@ -157,10 +157,35 @@ export const siahmeApi = createApi({
                 url: `consulta?includeRelations=${includeRelations}`,
             }),
         }),
-        getConsultaById: builder.query<ReadConsultaDto, { id: number; includeRelations?: boolean }>({
-            query: ({ id, includeRelations = false }) => ({
-                url: `consulta/${id}?includeRelations=${includeRelations}`,
-            }),
+        getConsultaById: builder.query<{ consulta: ReadConsultaDto; agendamento: ReadAgendamentoDto }, { id: number; includeRelations?: boolean }>({
+            queryFn: async ({ id, includeRelations = false }, api, extraOptions, baseQuery) => {
+                // First fetch the consulta
+                const consultaResult = await baseQuery({
+                    url: `consulta/${id}?includeRelations=${includeRelations}`,
+                });
+                
+                if (consultaResult.error) {
+                    return { error: consultaResult.error };
+                }
+                
+                const consulta = consultaResult.data as ReadConsultaDto;
+                
+                // Then fetch the related agendamento
+                const agendamentoResult = await baseQuery({
+                    url: `agendamento/${consulta.id_agendamento}?includeRelations=true`,
+                });
+                
+                if (agendamentoResult.error) {
+                    return { error: agendamentoResult.error };
+                }
+                
+                return {
+                    data: {
+                        consulta,
+                        agendamento: agendamentoResult.data as ReadAgendamentoDto,
+                    },
+                };
+            },
         }),
         createConsulta: builder.mutation<ReadConsultaDto, CreateConsultaDto>({
             query: (body) => ({
