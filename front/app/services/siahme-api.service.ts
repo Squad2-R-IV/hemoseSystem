@@ -1,18 +1,27 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { CreateUserDto } from '~/Dtos copy/User/CreateUser.dto';
-import type { ReadUserDto } from '~/Dtos copy/User/ReadUser.dto';
-import type { UpdateUserDto } from '~/Dtos copy/User/UpdateUser.dto';
-import { CreateAgendamentoDto } from '~/Dtos copy/Agendamento/CreateAgendamentoDto';
-import { ReadAgendamentoDto } from '~/Dtos copy/Agendamento/ReadAgendamentoDto';
-import { UpdateAgendamentoDto } from '~/Dtos copy/Agendamento/UpdateAgendamentoDto';
-import { CreateConsultaDto } from '~/Dtos copy/Consulta/CreateConsultaDto';
-import { ReadConsultaDto } from '~/Dtos copy/Consulta/ReadConsultaDto';
-import { UpdateConsultaDto } from '~/Dtos copy/Consulta/UpdateConsultaDto';
+import { CreateUserDto } from '~/Dtos/User/CreateUser.dto';
+import type { ReadUserDto } from '~/Dtos/User/ReadUser.dto';
+import type { UpdateUserDto } from '~/Dtos/User/UpdateUser.dto';
+import { CreateAgendamentoDto } from '~/Dtos/Agendamento/CreateAgendamentoDto';
+import { ReadAgendamentoDto } from '~/Dtos/Agendamento/ReadAgendamentoDto';
+import { UpdateAgendamentoDto } from '~/Dtos/Agendamento/UpdateAgendamentoDto';
+import { CreateConsultaDto } from '~/Dtos/Consulta/CreateConsultaDto';
+import { ReadConsultaDto } from '~/Dtos/Consulta/ReadConsultaDto';
+import { UpdateConsultaDto } from '~/Dtos/Consulta/UpdateConsultaDto';
+import { CreateAnamneseDto } from '~/Dtos/Anamnese/CreateAnamneseDto';
+import { ReadAnamneseDto } from '~/Dtos/Anamnese/ReadAnamneseDto';
+import { UpdateAnamneseDto } from '~/Dtos/Anamnese/UpdateAnamneseDto';
+import { CreateCondutaDto } from '~/Dtos/Conduta/CreateCondutaDto';
+import { ReadCondutaDto } from '~/Dtos/Conduta/ReadCondutaDto';
+import { UpdateCondutaDto } from '~/Dtos/Conduta/UpdateCondutaDto';
+import { CreatePrescricaoDto } from '~/Dtos/Prescricao/CreatePrescricaoDto';
+import { ReadPrescricaoDto } from '~/Dtos/Prescricao/ReadPrescricaoDto';
+import { UpdatePrescricaoDto } from '~/Dtos/Prescricao/UpdatePrescricaoDto';
 
 // Define a service using a base URL and expected endpoints
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost:3000/',
+    baseUrl: 'https://localhost:3000/',
     prepareHeaders: (headers) => {
         const token = localStorage.getItem('token');
         if (token) {
@@ -25,7 +34,7 @@ const baseQuery = fetchBaseQuery({
 export const siahmeApi = createApi({
     reducerPath: 'siahmeApi',
     baseQuery,
-    tagTypes: ['Agendamento', 'Consulta'],
+    tagTypes: ['Agendamento', 'Consulta', 'Anamnese', 'Conduta', 'Prescricao'],
     endpoints: (builder) => ({
         ///////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////
@@ -208,6 +217,111 @@ export const siahmeApi = createApi({
                 method: 'DELETE',
             }),
         }),
+        ///////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////
+        /////////////////Anamnese ENDPOINTS////////////////////
+        ///////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////
+        getAnamneses: builder.query<ReadAnamneseDto[], { includeRelations?: boolean }>({
+            query: ({ includeRelations = false }) => ({
+                url: `anamnese?includeRelations=${includeRelations}`,
+            }),
+        }),
+        getAnamneseById: builder.query<ReadAnamneseDto, { id: number; includeRelations?: boolean }>({
+            query: ({ id, includeRelations = false }) => ({
+                url: `anamnese/${id}?includeRelations=${includeRelations}`,
+            }),
+        }),
+        createAnamnese: builder.mutation<ReadAnamneseDto, CreateAnamneseDto>({
+            query: (body) => ({
+                url: 'anamnese',
+                method: 'POST',
+                body,
+            }),
+        }),
+        updateAnamnese: builder.mutation<ReadAnamneseDto, { id: number; body: UpdateAnamneseDto }>({
+            query: ({ id, body }) => ({
+                url: `anamnese/${id}`,
+                method: 'PUT',
+                body,
+            }),
+        }),
+        deleteAnamnese: builder.mutation<{ success: boolean }, number>({
+            query: (id) => ({
+                url: `anamnese/${id}`,
+                method: 'DELETE',
+            }),
+        }),
+        ///////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////
+        /////////////////Conduta ENDPOINTS/////////////////////
+        ///////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////
+        getCondutas: builder.query<ReadCondutaDto[], { includeRelations?: boolean }>({
+            query: ({ includeRelations = false }) => ({
+                url: `conduta?includeRelations=${includeRelations}`,
+            }),
+        }),
+        getCondutaById: builder.query<ReadCondutaDto, { id: number; includeRelations?: boolean }>({
+            query: ({ id, includeRelations = false }) => ({
+                url: `conduta/${id}?includeRelations=${includeRelations}`,
+            }),
+        }),
+        createConduta: builder.mutation<ReadCondutaDto, CreateCondutaDto>({
+            query: (body) => ({
+                url: 'conduta',
+                method: 'POST',
+                body,
+            }),
+        }),
+        updateConduta: builder.mutation<ReadCondutaDto, { id: number; body: UpdateCondutaDto }>({
+            query: ({ id, body }) => ({
+                url: `conduta/${id}`,
+                method: 'PUT',
+                body,
+            }),
+        }),
+        deleteConduta: builder.mutation<{ success: boolean }, number>({
+            query: (id) => ({
+                url: `conduta/${id}`,
+                method: 'DELETE',
+            }),
+        }),
+        ///////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////
+        /////////////////Prescricao ENDPOINTS//////////////////
+        ///////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////
+        getPrescricoes: builder.query<ReadPrescricaoDto[], { includeRelations?: boolean }>({
+            query: ({ includeRelations = false }) => ({
+                url: `prescricao?includeRelations=${includeRelations}`,
+            }),
+        }),
+        getPrescricaoById: builder.query<ReadPrescricaoDto, { id: number; includeRelations?: boolean }>({
+            query: ({ id, includeRelations = false }) => ({
+                url: `prescricao/${id}?includeRelations=${includeRelations}`,
+            }),
+        }),
+        createPrescricao: builder.mutation<ReadPrescricaoDto, CreatePrescricaoDto>({
+            query: (body) => ({
+                url: 'prescricao',
+                method: 'POST',
+                body,
+            }),
+        }),
+        updatePrescricao: builder.mutation<ReadPrescricaoDto, { id: number; body: UpdatePrescricaoDto }>({
+            query: ({ id, body }) => ({
+                url: `prescricao/${id}`,
+                method: 'PUT',
+                body,
+            }),
+        }),
+        deletePrescricao: builder.mutation<{ success: boolean }, number>({
+            query: (id) => ({
+                url: `prescricao/${id}`,
+                method: 'DELETE',
+            }),
+        }),
     }),
 })
 
@@ -234,4 +348,19 @@ export const {
     useCreateConsultaMutation,
     useUpdateConsultaMutation,
     useDeleteConsultaMutation,
+    useGetAnamnesesQuery,
+    useGetAnamneseByIdQuery,
+    useCreateAnamneseMutation,
+    useUpdateAnamneseMutation,
+    useDeleteAnamneseMutation,
+    useGetCondutasQuery,
+    useGetCondutaByIdQuery,
+    useCreateCondutaMutation,
+    useUpdateCondutaMutation,
+    useDeleteCondutaMutation,
+    useGetPrescricoesQuery,
+    useGetPrescricaoByIdQuery,
+    useCreatePrescricaoMutation,
+    useUpdatePrescricaoMutation,
+    useDeletePrescricaoMutation,
 } = siahmeApi;

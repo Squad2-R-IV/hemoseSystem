@@ -1,4 +1,4 @@
-import { Agendamento, Paciente, User, Consulta, Auditoria, Anamnese } from "@prisma/client";
+import { Agendamento, Paciente, User, Consulta, Auditoria, Anamnese, Prescricao, Conduta } from "@prisma/client";
 
 export type AgendamentoWithRelations = Agendamento & {
   Paciente?: Paciente;
@@ -29,3 +29,13 @@ export type AnamneseWithRelations = Anamnese & {
   Consulta?: Consulta;
   User?: User;
 };
+
+export type PrescricaoWithRelations = Prescricao & {
+  Consulta?: Consulta;
+  Condutas?: Conduta[];
+}
+
+export type CondutaWithRelations = Conduta & {
+  Prescricao?: Prescricao;
+  User?: User;
+}

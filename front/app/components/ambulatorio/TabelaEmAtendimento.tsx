@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 import { Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Chip } from "@heroui/react";
 import { EyeIcon } from "@heroicons/react/24/outline";
-import type { ReadAgendamentoDto } from "~/Dtos copy/Agendamento/ReadAgendamentoDto";
+import type { ReadAgendamentoDto } from "~/Dtos/Agendamento/ReadAgendamentoDto";
 import type { SortDescriptor } from "@heroui/react";
 import type { Key } from "@react-types/shared";
 

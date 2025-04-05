@@ -14,8 +14,8 @@ import {
 } from "@heroui/react";
 import React from "react";
 import { useGetAgendamentosComConsultasAtivasQuery } from "~/services/siahme-api.service";
-import type { ReadConsultaDto } from "~/Dtos copy/Consulta/ReadConsultaDto";
-import type { ReadAgendamentoDto } from "~/Dtos copy/Agendamento/ReadAgendamentoDto";
+import type { ReadConsultaDto } from "~/Dtos/Consulta/ReadConsultaDto";
+import type { ReadAgendamentoDto } from "~/Dtos/Agendamento/ReadAgendamentoDto";
 import type { Key } from "@react-types/shared";
 
 var StatusAgendamentoEnum = {

@@ -31,6 +31,50 @@
       "cwd": "${workspaceFolder}/back",
       "protocol": "inspector",
       "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "name": "Run Seed",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/back/src/seed.ts",
+      "runtimeArgs": [
+        "-r",
+        "${workspaceFolder}/back/node_modules/ts-node/register"
+      ],
+      "cwd": "${workspaceFolder}/back",
+      "protocol": "inspector",
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    
+    {
+      "name": "Run Front with api",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev-api"
+      ],
+      "cwd": "${workspaceFolder}/front",
+      "protocol": "inspector",
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+
+    //run front without api
+    {
+      "name": "Run Front without api",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "cwd": "${workspaceFolder}/front",
+      "protocol": "inspector",
+      "internalConsoleOptions": "openOnSessionStart"
     }
+
+    
   ]
 }

@@ -13,7 +13,8 @@ model Consulta {
   dt_saida             DateTime?              
   status               status_consulta_enum  @default(AGUARDANDO)
   observacoes          String                
-  Anamnese             Anamnese?
+  Anamnese             Anamnese?              
+  Prescricao           Prescricao?
 }
 
 enum status_consulta_enum {

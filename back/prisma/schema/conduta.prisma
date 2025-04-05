@@ -1,0 +1,11 @@
+model Conduta {
+  id                Int      @id @default(autoincrement())
+  id_prescricao     Int
+  id_funcionario    String
+  dt_conduta        DateTime @default(now())
+  conduta           String   @db.VarChar(5000)
+
+  Prescricao        Prescricao @relation(fields: [id_prescricao], references: [id])
+  User              User       @relation(fields: [id_funcionario], references: [id])
+
+}

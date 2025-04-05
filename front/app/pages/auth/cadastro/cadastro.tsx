@@ -7,7 +7,7 @@ import { CircularProgress } from "@heroui/progress";
 import { addToast } from "@heroui/react";
 import { useCreateUserMutation } from "~/services/siahme-api.service";
 import logoDark from "@/assets/images/logo.svg";
-import { CreateUserDto } from "~/Dtos copy/User/CreateUser.dto";
+import { CreateUserDto } from "~/Dtos/User/CreateUser.dto";
 
 export function Cadastro() {
   const [isHealthProfessional, setIsHealthProfessional] = useState(false);

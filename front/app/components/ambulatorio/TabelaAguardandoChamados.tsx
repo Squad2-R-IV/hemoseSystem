@@ -1,7 +1,7 @@
 import { Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Chip } from "@heroui/react";
 import { ArrowRightEndOnRectangleIcon, PlayIcon, EyeIcon } from "@heroicons/react/24/outline";
 import { useUpdateConsultaMutation } from "~/services/siahme-api.service";
-import type { ReadAgendamentoDto } from "~/Dtos copy/Agendamento/ReadAgendamentoDto";
+import type { ReadAgendamentoDto } from "~/Dtos/Agendamento/ReadAgendamentoDto";
 import type { SortDescriptor } from "@heroui/react";
 import type { Key } from "@react-types/shared";
 import { useNavigate } from "react-router";
