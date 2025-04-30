@@ -1,13 +1,13 @@
 import { AutoMap } from "@automapper/classes";
-import { ReadPrescricaoDto } from "../Prescricao/ReadPrescricaoDto";
 import { ReadUserDto } from "../User/ReadUser.dto";
+import { ReadConsultaDto } from "../Consulta/ReadConsultaDto";
 
 export class ReadCondutaDto {
   @AutoMap()
   id!: number;
 
   @AutoMap()
-  id_prescricao!: number;
+  id_consulta!: number;
 
   @AutoMap()
   id_funcionario!: string;
@@ -17,10 +17,8 @@ export class ReadCondutaDto {
 
   @AutoMap()
   conduta!: string;
-
-  @AutoMap(() => ReadPrescricaoDto)
-  Prescricao?: ReadPrescricaoDto;
-
   @AutoMap(() => ReadUserDto)
   User?: ReadUserDto;
+  @AutoMap(() => ReadConsultaDto)
+  Consulta?: ReadConsultaDto;
 }

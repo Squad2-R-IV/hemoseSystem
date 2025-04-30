@@ -21,27 +21,62 @@ const anamneseController = container.resolve(AnamneseController);
  *     Anamnese:
  *       type: object
  *       required:
- *         - id_paciente
- *         - descricao
- *         - data
+ *         - id_consulta
+ *         - id_funcionario
+ *         - cid
  *       properties:
  *         id_anamnese:
  *           type: integer
  *           description: ID único da anamnese
  *           example: 1
- *         id_paciente:
+ *         id_consulta:
  *           type: integer
- *           description: ID do paciente relacionado
- *           example: 123
- *         descricao:
+ *           description: ID da consulta relacionada
+ *           example: 101
+ *         id_funcionario:
  *           type: string
- *           description: Descrição da anamnese
- *           example: "Paciente relata dor de cabeça constante."
- *         data:
+ *           description: ID do funcionário responsável
+ *           example: "func123"
+ *         cid:
  *           type: string
- *           format: date-time
- *           description: Data da anamnese
- *           example: "2025-03-10T10:00:00Z"
+ *           description: Código CID relacionado
+ *           example: "A00"
+ *         queixa_principal:
+ *           type: string
+ *           description: Queixa principal do paciente
+ *           example: "Dor abdominal"
+ *         historia_doenca_atual:
+ *           type: string
+ *           description: História da doença atual
+ *           example: "Paciente relata dor há 3 dias."
+ *         antecedentes_pessoais:
+ *           type: string
+ *           description: Antecedentes pessoais do paciente
+ *           example: "Hipertensão"
+ *         antecedentes_familiares:
+ *           type: string
+ *           description: Antecedentes familiares do paciente
+ *           example: "Diabetes na família"
+ *         habitos_vida:
+ *           type: string
+ *           description: Hábitos de vida do paciente
+ *           example: "Fumante"
+ *         medicamentos_em_uso:
+ *           type: string
+ *           description: Medicamentos em uso pelo paciente
+ *           example: "Paracetamol"
+ *         alergias:
+ *           type: string
+ *           description: Alergias do paciente
+ *           example: "Alergia a penicilina"
+ *         cirurgias_previas:
+ *           type: string
+ *           description: Cirurgias prévias do paciente
+ *           example: "Apendicectomia"
+ *         observacoes:
+ *           type: string
+ *           description: Observações adicionais
+ *           example: "Paciente ansioso"
  */
 
 /**
@@ -119,20 +154,46 @@ router.get("/:id", authMiddleware, checkPermission("anamnese_read"), asyncHandle
  *           schema:
  *             type: object
  *             required:
- *               - id_paciente
- *               - descricao
- *               - data
+ *               - id_consulta
+ *               - id_funcionario
+ *               - cid
  *             properties:
- *               id_paciente:
+ *               id_consulta:
  *                 type: integer
- *                 example: 123
- *               descricao:
+ *                 example: 101
+ *               id_funcionario:
  *                 type: string
- *                 example: "Paciente relata dor de cabeça constante."
- *               data:
+ *                 example: "func123"
+ *               cid:
  *                 type: string
- *                 format: date-time
- *                 example: "2025-03-10T10:00:00Z"
+ *                 example: "A00"
+ *               queixa_principal:
+ *                 type: string
+ *                 example: "Dor abdominal"
+ *               historia_doenca_atual:
+ *                 type: string
+ *                 example: "Paciente relata dor há 3 dias."
+ *               antecedentes_pessoais:
+ *                 type: string
+ *                 example: "Hipertensão"
+ *               antecedentes_familiares:
+ *                 type: string
+ *                 example: "Diabetes na família"
+ *               habitos_vida:
+ *                 type: string
+ *                 example: "Fumante"
+ *               medicamentos_em_uso:
+ *                 type: string
+ *                 example: "Paracetamol"
+ *               alergias:
+ *                 type: string
+ *                 example: "Alergia a penicilina"
+ *               cirurgias_previas:
+ *                 type: string
+ *                 example: "Apendicectomia"
+ *               observacoes:
+ *                 type: string
+ *                 example: "Paciente ansioso"
  *     responses:
  *       201:
  *         description: Anamnese criada com sucesso
@@ -166,17 +227,34 @@ router.post("/", authMiddleware, checkPermission("anamnese_create"), asyncHandle
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - descricao
- *               - data
  *             properties:
- *               descricao:
+ *               queixa_principal:
  *                 type: string
- *                 example: "Paciente relata dor de cabeça constante."
- *               data:
+ *                 example: "Dor abdominal"
+ *               historia_doenca_atual:
  *                 type: string
- *                 format: date-time
- *                 example: "2025-03-10T10:00:00Z"
+ *                 example: "Paciente relata dor há 3 dias."
+ *               antecedentes_pessoais:
+ *                 type: string
+ *                 example: "Hipertensão"
+ *               antecedentes_familiares:
+ *                 type: string
+ *                 example: "Diabetes na família"
+ *               habitos_vida:
+ *                 type: string
+ *                 example: "Fumante"
+ *               medicamentos_em_uso:
+ *                 type: string
+ *                 example: "Paracetamol"
+ *               alergias:
+ *                 type: string
+ *                 example: "Alergia a penicilina"
+ *               cirurgias_previas:
+ *                 type: string
+ *                 example: "Apendicectomia"
+ *               observacoes:
+ *                 type: string
+ *                 example: "Paciente ansioso"
  *     responses:
  *       200:
  *         description: Anamnese atualizada com sucesso

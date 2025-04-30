@@ -2,6 +2,7 @@ import { AutoMap } from "@automapper/classes";
 import { status_consulta_enum, tipo_procedimento_enum } from "@prisma/client";
 import { ReadAnamneseDto } from "../Anamnese/ReadAnamneseDto";
 import { ReadAgendamentoDto } from "../Agendamento/ReadAgendamentoDto";
+import { ReadCondutaDto } from "../Conduta/ReadCondutaDto";
 
 export class ReadConsultaDto {
     @AutoMap()
@@ -22,4 +23,6 @@ export class ReadConsultaDto {
     Anamnese?: ReadAnamneseDto;
     @AutoMap(() => ReadAgendamentoDto)
     Agendamento?: ReadAgendamentoDto;
+    @AutoMap(() => [ReadCondutaDto])
+    Condutas?: ReadCondutaDto[];
 }

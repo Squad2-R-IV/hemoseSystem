@@ -18,4 +18,6 @@ export class ConsultaController extends GenericController<ConsultaEntity, Create
 ) {
     super(consultaService, ConsultaEntity, CreateConsultaDto, UpdateConsultaDto, ReadConsultaDto, auditoriaService);
   }
+
+
 }

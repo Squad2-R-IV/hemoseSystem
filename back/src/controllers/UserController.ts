@@ -6,7 +6,7 @@ import { UserEntity } from "../models/user.entity";
 import { CreateUserDto } from "../Dtos/User/CreateUser.dto";
 import { UpdateUserDto } from "../Dtos/User/UpdateUser.dto";
 import { ReadUserDto } from "../Dtos/User/ReadUser.dto";
-import { mapper } from "../mappings/mapper";
+import { plainToInstance } from "class-transformer";
 import * as jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import * as bcrypt from "bcrypt";
@@ -130,7 +130,7 @@ export class UserController extends GenericController<UserEntity, CreateUserDto,
   override async create(req: Request, res: Response): Promise<Response> {
     try {
       const dto: CreateUserDto = req.body;
-      const createDto = mapper.map(dto, CreateUserDto, UserEntity);
+      const createDto = plainToInstance(UserEntity, dto);
       createDto.password = await bcrypt.hash(createDto.password, parseInt(process.env.SALT_ROUNDS as string));
       createDto.id = randomUUID();
       createDto.status = "A";
@@ -142,7 +142,7 @@ export class UserController extends GenericController<UserEntity, CreateUserDto,
         return res.status(404).json({ message: "Role padrão não encontrada, informe ao administrador do sistema" });
       }
       await userToRoleRepository.create({ userId: newItem.id, roleId: role.id });
-      const readDto = mapper.map(newItem, UserEntity, ReadUserDto);
+      const readDto = plainToInstance(ReadUserDto, newItem);
       return res.status(201).json(readDto);
     } catch (error: any) {
       return res.status(500).json({ error: error.message });

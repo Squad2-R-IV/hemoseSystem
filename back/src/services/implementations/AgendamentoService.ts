@@ -33,6 +33,6 @@ export class AgendamentoService extends GenericService<AgendamentoWithRelations>
         Paciente: true,
         Usuario: true
       }
-    }) as AgendamentoWithRelations[]; // Cast the result to AgendamentoWithRelations[]
+    }, true) as AgendamentoWithRelations[]; // Cast the result to AgendamentoWithRelations[]
   }
 }

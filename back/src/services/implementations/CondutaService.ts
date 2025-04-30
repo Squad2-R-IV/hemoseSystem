@@ -19,4 +19,8 @@ export class CondutaService extends GenericService<CondutaWithRelations> impleme
   ) {
     super(condutaRepository);
   }
+  async getCondutasByConsultaId(consultaId: number): Promise<CondutaWithRelations[]> {
+    return await this.repository.findManyByFields([{ field: 'id_consulta', value: consultaId }], true);
+  }
+
 }

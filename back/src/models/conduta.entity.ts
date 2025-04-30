@@ -1,13 +1,13 @@
 import { AutoMap } from "@automapper/classes";
-import { PrescricaoEntity } from "./prescricao.entity";
 import { UserEntity } from "./user.entity";
+import { ConsultaEntity } from "./consulta.entity";
 
 export class CondutaEntity {
   @AutoMap()
   id!: number;
 
   @AutoMap()
-  id_prescricao!: number;
+  id_consulta!: number;
 
   @AutoMap()
   id_funcionario!: string;
@@ -18,8 +18,8 @@ export class CondutaEntity {
   @AutoMap()
   conduta!: string;
 
-  @AutoMap(() => PrescricaoEntity)
-  Prescricao?: PrescricaoEntity;
+  @AutoMap(() => ConsultaEntity)
+  Consulta?: ConsultaEntity;
 
   @AutoMap(() => UserEntity)
   User?: UserEntity;

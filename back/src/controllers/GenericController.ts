@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { IGenericService } from "../services/interfaces/IGenericService";
 import { inject } from "tsyringe";
-import { mapper } from "../mappings/mapper";
+import { plainToInstance } from "class-transformer";
 import logger from "../config/winston_logger";
 import { IAuditoriaService } from "../services/interfaces/IAuditoriaService";
 import { AuditoriaEntity } from "../models/auditoria.entity";
@@ -23,7 +23,7 @@ export class GenericController<TEntity, TCreateDto, TUpdateDto, TReadDto> {
     try {
       const includeRelations = req.query.includeRelations === 'true';
       const items = await this.service.getAll(includeRelations);
-      const readDtos = mapper.mapArray(items, this.entityClass, this.readDtoClass);
+      const readDtos = plainToInstance(this.readDtoClass, items);
       return res.json(readDtos);
     } catch (error: any) {
       return res.status(500).json({ error: error.message });
@@ -31,6 +31,7 @@ export class GenericController<TEntity, TCreateDto, TUpdateDto, TReadDto> {
   }
 
   async getById(req: Request, res: Response): Promise<Response> {
+    const entidade = this.entityClass.name;
     try {
       let { id } = req.params;
       const includeRelations = req.query.includeRelations === 'true';
@@ -45,10 +46,10 @@ export class GenericController<TEntity, TCreateDto, TUpdateDto, TReadDto> {
       }
       const item = await this.service.getById(itemId, includeRelations);
       if (!item) return res.status(404).json({ message: "Item não encontrado" });
-      const readDto = mapper.map(item, this.entityClass, this.readDtoClass);
+      const readDto = plainToInstance(this.readDtoClass, item);
       return res.json(readDto);
     } catch (error: any) {
-      return res.status(500).json({ error: error.message });
+       return res.status(500).json({ error: error.message });
     }
   }
 
@@ -58,10 +59,12 @@ export class GenericController<TEntity, TCreateDto, TUpdateDto, TReadDto> {
       if (!userId) {
         return res.status(403).json({ message: "Você não tem permissão para criar um item" });
       }
-      const createDto = mapper.map(req.body, this.createDtoClass, this.entityClass);
-      const newItem = await this.service.create(createDto);
-      const readDto = mapper.map(newItem, this.entityClass, this.readDtoClass);
-      if (userId) await logger.info(`Na tabela ${this.entityClass.name} foi criado por ${userId}, com os dados: ${JSON.stringify(createDto)}`);
+
+      const bodyDto = plainToInstance(this.entityClass, req.body);
+
+      const newItem = await this.service.create(bodyDto);
+      const readDto = plainToInstance(this.readDtoClass, newItem);
+      if (userId) await logger.info(`Na tabela ${this.entityClass.name} foi criado por ${userId}, com os dados: ${JSON.stringify(bodyDto)}`);
       let auditoria = new AuditoriaEntity();
       auditoria.id_usuario = userId;
       auditoria.data_hora = new Date();
@@ -96,10 +99,10 @@ export class GenericController<TEntity, TCreateDto, TUpdateDto, TReadDto> {
       }
       const previousItemData = await this.service.getById(itemId);
       if (!previousItemData) return res.status(404).json({ message: "Item não encontrado" });
-      const updateDto = mapper.map(req.body, this.updateDtoClass, this.entityClass);
+      const updateDto = plainToInstance(this.entityClass, req.body);
       const updatedItem = await this.service.update(itemId, updateDto);
       if (!updatedItem) return res.status(404).json({ message: "Item não encontrado" });
-      const readDto = mapper.map(updatedItem, this.entityClass, this.readDtoClass);
+      const readDto = plainToInstance(this.readDtoClass, updatedItem);
       if (userId) await logger.info(`Na tabela ${this.entityClass.name} o id ${itemId} foi atualizado por ${userId}, com os dados: ${JSON.stringify(updateDto)}`);
       let auditoria = new AuditoriaEntity();
       auditoria.id_usuario = userId;

@@ -14,7 +14,7 @@ model Consulta {
   status               status_consulta_enum  @default(AGUARDANDO)
   observacoes          String                
   Anamnese             Anamnese?              
-  Prescricao           Prescricao?
+  Condutas             Conduta[]
 }
 
 enum status_consulta_enum {

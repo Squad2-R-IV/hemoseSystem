@@ -26,69 +26,80 @@ export class GenericRepository<T> implements IGenericRepository<T> {
     }, {} as Record<string, boolean>);
   }
 
-  async findAll(includeRelations?: boolean): Promise<T[]> {
+  async create(data: any): Promise<T> {
+    if (!this.model) {
+      throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+    }
+    const result = await this.model.create({ data });
+    return plainToInstance(this.entityClass, result);
+  }
+
+  async findAll(includeRelations: boolean = true): Promise<T[]> {
+    if (!this.model) {
+      throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+    }
     const include = includeRelations ? this.generateInclude() : undefined;
     const results = await this.model.findMany({ include });
     return plainToInstance(this.entityClass, results) as T[];
   }
 
-  async findById(id: string | number, includeRelations?: boolean): Promise<T | null> {
+  async findById(id: string | number, includeRelations: boolean = true): Promise<T | null> {
+    try{
     const include = includeRelations ? this.generateInclude() : undefined;
     const result = await this.model.findUnique({
       where: { id },
       include,
     });
     return result ? plainToInstance(this.entityClass, result) : null;
+    }
+    catch (error) {
+      console.error("Error in findById:", error);
+      throw error;
+    }
   }
 
-  async findByField(field: string, value: string): Promise<T | null> {
-    // Método não está na interface com includeRelations, mantendo como estava
+  async findByField(field: string, value: any): Promise<T | null> {
     const result = await this.model.findFirst({ where: { [field]: value } });
     return result ? plainToInstance(this.entityClass, result) : null;
   }
 
-  async findManyByQuery(query: any): Promise<T[]> {
+  async findManyByQuery(query: any, includeRelations: boolean = true): Promise<T[]> {
     try {
-
-      const results = await this.model.findMany(query);
-
+      const include = includeRelations ? this.generateInclude() : undefined;
+      const results = await this.model.findMany({ ...query, include });
       return plainToInstance(this.entityClass, results) as T[];
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error in findManyByQuery:", error);
-      throw error; // Re-throw the error after logging it
+      throw error;
     }
   }
 
-
-
-  async findManyByField(field: string, value: string): Promise<T[]> {
-    // Método não está na interface com includeRelations, mantendo como estava
+  async findManyByField(field: string, value: any): Promise<T[]> {
     const results = await this.model.findMany({ where: { [field]: value } });
     return plainToInstance(this.entityClass, results) as T[];
   }
 
-  async findByFields(fields: { field: string; value: string }[]): Promise<T | null> {
-    const whereClause: { [key: string]: string } = fields.reduce((acc, { field, value }) => {
-      acc[field] = value;
+  async findByFields(fields: { field: string; value: any }[], includeRelations: boolean = true): Promise<T | null> {
+    const whereClause: { [key: string]: any } = fields.reduce((acc, { field, value }) => {
+      acc[field] = value; // Directly assign the value as provided by the user
       return acc;
-    }, {} as { [key: string]: string });
-    const result = await this.model.findFirst({ where: whereClause });
+    }, {} as { [key: string]: any });
+
+    const include = includeRelations ? this.generateInclude() : undefined;
+    const result = await this.model.findFirst({ where: whereClause, include });
     return result ? plainToInstance(this.entityClass, result) : null;
   }
 
-  async findManyByFields(fields: { field: string; value: string }[]): Promise<T[]> {
-    const whereClause: { [key: string]: string } = fields.reduce((acc, { field, value }) => {
-      acc[field] = value;
+  async findManyByFields(fields: { field: string; value: any }[], includeRelations: boolean = true): Promise<T[]> {
+    const whereClause: { [key: string]: any } = fields.reduce((acc, { field, value }) => {
+      acc[field] = value; // Directly assign the value as provided by the user
       return acc;
-    }, {} as { [key: string]: string });
-    const results = await this.model.findMany({ where: whereClause });
-    return plainToInstance(this.entityClass, results) as T[];
-  }
+    }, {} as { [key: string]: any });
 
-  async create(data: any): Promise<T> {
-    const result = await this.model.create({ data });
-    return plainToInstance(this.entityClass, result);
+    const include = includeRelations ? this.generateInclude() : undefined;
+
+    const results = await this.model.findMany({ where: whereClause, include });
+    return plainToInstance(this.entityClass, results) as T[];
   }
 
   async update(id: string | number, data: Partial<T>): Promise<T | null> {

@@ -14,6 +14,6 @@ import { Conduta } from "@prisma/client";
 @injectable()
 export class CondutaRepository extends GenericRepository<Conduta> implements ICondutaRepository {
   constructor() {
-    super(prisma, prisma.conduta, CondutaEntity, ['Prescricao', 'User']);
+    super(prisma, prisma.conduta, CondutaEntity, ['User', 'Consulta']);
   }
 }

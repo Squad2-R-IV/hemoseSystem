@@ -2,6 +2,7 @@
 // import { tipo_procedimento_enum } from "@prisma/client";
 import type { status_consulta_enum } from "~/utils/enums/enums";
 import { ReadAnamneseDto } from "../Anamnese/ReadAnamneseDto";
+import type { ReadCondutaDto } from "../Conduta/ReadCondutaDto";
 
 export class ReadConsultaDto {
     // @AutoMap()
@@ -19,5 +20,6 @@ export class ReadConsultaDto {
     // @AutoMap()
     observacoes!: string;
     // @AutoMap(() => [ReadAnamneseDto])
-    Anamneses!: ReadAnamneseDto;
+    Anamnese!: ReadAnamneseDto;
+    Condutas?: ReadCondutaDto[];
 }

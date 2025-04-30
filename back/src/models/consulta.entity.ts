@@ -2,6 +2,7 @@ import { AutoMap } from "@automapper/classes";
 import { status_consulta_enum, tipo_procedimento_enum } from "@prisma/client";
 import { AgendamentoEntity } from "./agendamento.entity";
 import { AnamneseEntity } from "./anamnese.entity";
+import { CondutaEntity } from "./conduta.entity";
 
 export class ConsultaEntity {
     @AutoMap()
@@ -22,4 +23,6 @@ export class ConsultaEntity {
     Agendamento?: AgendamentoEntity;
     @AutoMap(() => AnamneseEntity)
     Anamnese?: AnamneseEntity;
+    @AutoMap(() => [CondutaEntity])
+    Condutas?: CondutaEntity[];
 }
