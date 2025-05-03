@@ -7,7 +7,7 @@ model Paciente {
   estado_civil       String   @db.VarChar(20)
   endereco           String   @db.VarChar(50)
   cpf                String   @unique @db.VarChar(11)
-  cpf_acompanhante   String   @unique @db.VarChar(11)
+  cpf_acompanhante   String   @db.VarChar(11)
 
   agendamentos       Agendamento[]
 }
