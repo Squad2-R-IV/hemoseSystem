@@ -1,0 +1,14 @@
+model Prescricao {
+  id                 Int       @id @default(autoincrement())
+  id_consulta        Int       @unique
+  dt_prescricao      DateTime  @default(now())
+  dieta              String?
+  decubito           String?
+  cuidados_especiais String?
+  fisioterapia       String?
+  balanco_hidrico    Boolean   @default(false)
+  observacoes        String
+
+  Consulta           Consulta  @relation(fields: [id_consulta], references: [id])
+  Condutas           Conduta[]
+} 

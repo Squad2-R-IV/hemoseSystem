@@ -1,0 +1,20 @@
+model ExameFisico {
+  id                   Int             @id @default(autoincrement())
+  id_anamnese          Int?
+  id_evolucao          Int?            @unique
+  frequencia_cardiaca  Int?
+  frequencia_respiratoria Int?
+  pressao_arterial     String?
+  saturacao_oxigenio   Int?
+  ausculta_cardiaca    String?
+  ausculta_pulmonar    String?
+  ausculta_abdominal   String?
+  oroscopia            String?
+  genitalia            String?
+  sistema_nervoso      String?
+  temperatura          Int?
+  observacoes          String?
+
+  Anamnese             Anamnese?       @relation(fields: [id_anamnese], references: [id])
+  EvolucaoMedica       EvolucaoMedica? @relation(fields: [id_evolucao], references: [id])
+} 

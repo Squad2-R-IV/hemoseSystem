@@ -1,0 +1,10 @@
+model LeitoConsulta {
+  id          Int       @id @default(autoincrement())
+  id_consulta Int
+  id_leito    Int
+  dt_entrada  DateTime  @default(now())
+  dt_saida    DateTime?
+
+  Consulta    Consulta  @relation(fields: [id_consulta], references: [id])
+  Leito       Leito     @relation(fields: [id_leito], references: [id])
+} 

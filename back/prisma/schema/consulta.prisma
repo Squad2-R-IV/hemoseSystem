@@ -15,6 +15,12 @@ model Consulta {
   observacoes          String                
   Anamnese             Anamnese?              
   Condutas             Conduta[]
+  AltaMedica           AltaMedica?
+  Prescricao           Prescricao?
+  Triagem              Triagem?
+  Exames               Exames[]
+  EvolucoesMedicas     EvolucaoMedica[]
+  LeitoConsultas       LeitoConsulta[]
 }
 
 enum status_consulta_enum {
