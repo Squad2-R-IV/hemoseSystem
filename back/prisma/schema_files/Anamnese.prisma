@@ -1,0 +1,18 @@
+model Anamnese {
+  id                    Int      @id @default(autoincrement())
+  id_consulta           Int      @unique
+  id_funcionario        String
+  cid                   String   @db.VarChar(10)
+  queixa_principal      String?   @db.VarChar(1000)
+  historia_doenca_atual String?  @db.VarChar(1000)
+  antecedentes_pessoais String?   @db.VarChar(1000)
+  antecedentes_familiares String?   @db.VarChar(1000)
+  habitos_vida          String?   @db.VarChar(1000)
+  medicamentos_em_uso   String?   @db.VarChar(1000)
+  alergias              String?   @db.VarChar(1000)
+  cirurgias_previas     String?   @db.VarChar(1000)
+  observacoes           String?   @db.VarChar(1000)
+  Consulta              Consulta  @relation(fields: [id_consulta], references: [id])
+  User                  User      @relation(fields: [id_funcionario], references: [id])
+  ExameFisico           ExameFisico?
+}

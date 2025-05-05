@@ -1,0 +1,17 @@
+model Triagem {
+  id                 Int       @id @default(autoincrement())
+  id_consulta        Int       @unique
+  id_funcionario     String
+  dt_triagem         DateTime  @default(now())
+  peso               Float
+  altura             Float
+  pressao_arterial   String
+  temperatura        Float
+  saturacao_oxigenio Int
+  glicemia           Int?
+  classificacao_risco String
+  observacoes        String?
+
+  Consulta           Consulta  @relation(fields: [id_consulta], references: [id])
+  Funcionario        User      @relation(fields: [id_funcionario], references: [id])
+} 

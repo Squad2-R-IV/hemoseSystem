@@ -1,0 +1,12 @@
+model EvolucaoMedica {
+  id              Int       @id @default(autoincrement())
+  id_consulta     Int
+  id_funcionario  String
+  dt_evolucao     DateTime  @default(now())
+  sintomas        String?
+  observacoes     String?
+  ExameFisico     ExameFisico?
+
+  Consulta        Consulta  @relation(fields: [id_consulta], references: [id])
+  Funcionario     User      @relation(fields: [id_funcionario], references: [id])
+} 

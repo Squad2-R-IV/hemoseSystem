@@ -1,0 +1,13 @@
+model Exames {
+  id                      Int      @id @default(autoincrement())
+  id_consulta             Int
+  id_funcionario          String
+  tipo_do_exame           String
+  resultado               String?
+  dt_exame                DateTime @default(now())
+  profissional_responsavel String
+  status                  String
+
+  Consulta                Consulta @relation(fields: [id_consulta], references: [id])
+  Funcionario             User     @relation(fields: [id_funcionario], references: [id])
+} 

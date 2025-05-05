@@ -1,0 +1,366 @@
+// Este arquivo é gerado automaticamente. NÃO EDITE.
+// Para fazer alterações, edite os arquivos individuais na pasta prisma/schema_files e execute o script generatePrismaSchema.js
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+// Importado de AdministracaoConduta.prisma
+model AdministracaoConduta {
+  id                    Int      @id @default(autoincrement())
+  id_conduta            Int
+  id_funcionario        String
+  dt_administracao      DateTime @default(now())
+  hora_administracao    DateTime
+  observacoes           String?
+
+  Conduta               Conduta  @relation(fields: [id_conduta], references: [id])
+  Funcionario           User     @relation(fields: [id_funcionario], references: [id])
+} 
+
+// Importado de agendamento.prisma
+model Agendamento {
+  id    Int                   @id @default(autoincrement())
+  id_paciente         Int
+  id_funcionario      String
+  data_hora_agendamento    DateTime
+  tipo_agendamento    TipoAgendamentoEnum
+  status_agendamento  StatusAgendamentoEnum
+  observacoes         String?
+
+  Paciente            Paciente              @relation(fields: [id_paciente], references: [id])
+  Usuario             User                  @relation(fields: [id_funcionario], references: [id])
+  Consulta          Consulta?
+}
+
+enum StatusAgendamentoEnum {
+  Agendado
+  Confirmado
+  Realizado
+  Cancelado
+  Reagendado 
+}
+
+enum TipoAgendamentoEnum {
+  Consulta
+  Exame
+  Procedimento
+}
+
+// Importado de AltaMedica.prisma
+model AltaMedica {
+  id          Int       @id @default(autoincrement())
+  id_consulta Int       @unique
+  id_medico   String
+  dt_alta     DateTime  @default(now())
+  tipo_alta   TipoAltaEnum
+  observacoes String?
+
+  Consulta    Consulta  @relation(fields: [id_consulta], references: [id])
+  Medico      User      @relation(fields: [id_medico], references: [id])
+}
+
+enum TipoAltaEnum {
+  Com_Atestado
+  Sem_Atestado
+  Transferencia
+  Evasao
+  Outro
+} 
+
+// Importado de Anamnese.prisma
+model Anamnese {
+  id                    Int      @id @default(autoincrement())
+  id_consulta           Int      @unique
+  id_funcionario        String
+  cid                   String   @db.VarChar(10)
+  queixa_principal      String?   @db.VarChar(1000)
+  historia_doenca_atual String?  @db.VarChar(1000)
+  antecedentes_pessoais String?   @db.VarChar(1000)
+  antecedentes_familiares String?   @db.VarChar(1000)
+  habitos_vida          String?   @db.VarChar(1000)
+  medicamentos_em_uso   String?   @db.VarChar(1000)
+  alergias              String?   @db.VarChar(1000)
+  cirurgias_previas     String?   @db.VarChar(1000)
+  observacoes           String?   @db.VarChar(1000)
+  Consulta              Consulta  @relation(fields: [id_consulta], references: [id])
+  User                  User      @relation(fields: [id_funcionario], references: [id])
+  ExameFisico           ExameFisico?
+}
+
+
+// Importado de auditoria.prisma
+model Auditoria {
+  id     Int                   @id @default(autoincrement())
+  id_usuario         String
+  data_hora          DateTime
+  acao               String
+  tabela             String
+  dados_anteriores   Json? 
+  dados_novos        Json? 
+  Usuario            User                  @relation(fields: [id_usuario], references: [id])
+}
+
+
+// Importado de Chamados.prisma
+model Chamados {
+  id             Int                 @id @default(autoincrement())
+  id_usuario     String
+  tipo_problema  String
+  descricao      String
+  status         StatusChamadoEnum
+  dt_abertura    DateTime            @default(now())
+  dt_resolucao   DateTime?
+
+  Usuario        User                @relation(fields: [id_usuario], references: [id])
+}
+
+enum StatusChamadoEnum {
+  Aberto
+  Em_Andamento
+  Resolvido
+  Fechado
+} 
+
+// Importado de conduta.prisma
+model Conduta {
+  id                Int      @id @default(autoincrement())
+  id_consulta       Int
+  id_funcionario    String
+  id_prescricao     Int?
+  dt_conduta        DateTime @default(now())
+  conduta           String   @db.VarChar(5000)
+
+  Consulta          Consulta @relation(fields: [id_consulta], references: [id])
+  User              User     @relation(fields: [id_funcionario], references: [id])
+  Prescricao        Prescricao? @relation(fields: [id_prescricao], references: [id])
+  AdministracoesCondutas AdministracaoConduta[]
+}
+
+
+// Importado de consulta.prisma
+enum tipo_procedimento_enum {
+  PROCEDIMENTO_A
+  PROCEDIMENTO_B
+  // Adicione outros valores conforme necessário
+}
+
+model Consulta {
+  id                   Int                   @id @default(autoincrement())
+  id_agendamento       Int                   @unique
+  Agendamento          Agendamento           @relation(fields: [id_agendamento], references: [id])
+  procedimento         tipo_procedimento_enum
+  dt_entrada           DateTime              @default(now())
+  dt_saida             DateTime?              
+  status               status_consulta_enum  @default(AGUARDANDO)
+  observacoes          String                
+  Anamnese             Anamnese?              
+  Condutas             Conduta[]
+  AltaMedica           AltaMedica?
+  Prescricao           Prescricao?
+  Triagem              Triagem?
+  Exames               Exames[]
+  EvolucoesMedicas     EvolucaoMedica[]
+  LeitoConsultas       LeitoConsulta[]
+}
+
+enum status_consulta_enum {
+  REALIZADA
+  AGUARDANDO
+  EM_ATENDIMENTO
+  CHAMADO
+  CANCELADO
+}
+
+
+
+// Importado de EvolucaoMedica.prisma
+model EvolucaoMedica {
+  id              Int       @id @default(autoincrement())
+  id_consulta     Int
+  id_funcionario  String
+  dt_evolucao     DateTime  @default(now())
+  sintomas        String?
+  observacoes     String?
+  ExameFisico     ExameFisico?
+
+  Consulta        Consulta  @relation(fields: [id_consulta], references: [id])
+  Funcionario     User      @relation(fields: [id_funcionario], references: [id])
+} 
+
+// Importado de ExameFisico.prisma
+model ExameFisico {
+  id                   Int             @id @default(autoincrement())
+  id_anamnese          Int?            @unique
+  id_evolucao          Int?            @unique
+  frequencia_cardiaca  Int?
+  frequencia_respiratoria Int?
+  pressao_arterial     String?
+  saturacao_oxigenio   Int?
+  ausculta_cardiaca    String?
+  ausculta_pulmonar    String?
+  ausculta_abdominal   String?
+  oroscopia            String?
+  genitalia            String?
+  sistema_nervoso      String?
+  temperatura          Int?
+  observacoes          String?
+
+  Anamnese             Anamnese?       @relation(fields: [id_anamnese], references: [id])
+  EvolucaoMedica       EvolucaoMedica? @relation(fields: [id_evolucao], references: [id])
+} 
+
+// Importado de Exames.prisma
+model Exames {
+  id                      Int      @id @default(autoincrement())
+  id_consulta             Int
+  id_funcionario          String
+  tipo_do_exame           String
+  resultado               String?
+  dt_exame                DateTime @default(now())
+  profissional_responsavel String
+  status                  String
+
+  Consulta                Consulta @relation(fields: [id_consulta], references: [id])
+  Funcionario             User     @relation(fields: [id_funcionario], references: [id])
+} 
+
+// Importado de Leito.prisma
+model Leito {
+  id           Int            @id @default(autoincrement())
+  numero_leito Int
+  status       String
+  observacoes  String?
+  
+  LeitoConsultas LeitoConsulta[]
+} 
+
+// Importado de LeitoConsulta.prisma
+model LeitoConsulta {
+  id          Int       @id @default(autoincrement())
+  id_consulta Int
+  id_leito    Int
+  dt_entrada  DateTime  @default(now())
+  dt_saida    DateTime?
+
+  Consulta    Consulta  @relation(fields: [id_consulta], references: [id])
+  Leito       Leito     @relation(fields: [id_leito], references: [id])
+} 
+
+// Importado de paciente.prisma
+model Paciente {
+  id                 Int      @id @default(autoincrement())
+  nome_paciente      String   @db.VarChar(100)
+  dt_nascimento      DateTime
+  idade              Int
+  sexo               String   @db.VarChar(20)
+  estado_civil       String   @db.VarChar(20)
+  endereco           String   @db.VarChar(50)
+  cpf                String   @unique @db.VarChar(11)
+  cpf_acompanhante   String   @unique @db.VarChar(11)
+
+  agendamentos       Agendamento[]
+}
+
+// Importado de permission.prisma
+model Permission {
+  id          String @id @default(uuid())
+  name        String @unique
+  description String
+  roles       RoleToPermission[]
+}
+
+// Importado de Prescricao.prisma
+model Prescricao {
+  id                 Int       @id @default(autoincrement())
+  id_consulta        Int       @unique
+  dt_prescricao      DateTime  @default(now())
+  dieta              String?
+  decubito           String?
+  cuidados_especiais String?
+  fisioterapia       String?
+  balanco_hidrico    Boolean   @default(false)
+  observacoes        String
+
+  Consulta           Consulta  @relation(fields: [id_consulta], references: [id])
+  Condutas           Conduta[]
+} 
+
+// Importado de role.prisma
+model Role {
+  id          String @id @default(uuid())
+  name        String @unique
+  description String
+  users       UserToRole[]
+  permissions RoleToPermission[]
+}
+
+// Importado de roletopermission.prisma
+model RoleToPermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id])
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  @@id([roleId, permissionId])
+}
+
+// Importado de Triagem.prisma
+model Triagem {
+  id                 Int       @id @default(autoincrement())
+  id_consulta        Int       @unique
+  id_funcionario     String
+  dt_triagem         DateTime  @default(now())
+  peso               Float
+  altura             Float
+  pressao_arterial   String
+  temperatura        Float
+  saturacao_oxigenio Int
+  glicemia           Int?
+  classificacao_risco String
+  observacoes        String?
+
+  Consulta           Consulta  @relation(fields: [id_consulta], references: [id])
+  Funcionario        User      @relation(fields: [id_funcionario], references: [id])
+} 
+
+// Importado de user.prisma
+model User {
+  id            String @id @default(uuid())
+  name          String
+  password      String
+  email         String @unique
+  cpf           String @unique
+  contato       String
+  status        String @default("A")
+  especialidade String @default("")
+  conselho      String @default("")
+  registro      String @default("")
+  refreshToken  String @default("")
+  roles         UserToRole[]
+  agendamentos  Agendamento[]
+  auditorias    Auditoria[]
+  Anamneses     Anamnese[]
+  Condutas      Conduta[]
+  Chamados      Chamados[]
+  AltasMedicas  AltaMedica[]
+  TriagensRealizadas        Triagem[]
+  ExamesRealizados          Exames[]
+  EvolucoesMedicas          EvolucaoMedica[]
+  AdministracoesCondutas    AdministracaoConduta[]
+}
+
+
+// Importado de usertorole.prisma
+model UserToRole {
+  userId String
+  roleId String
+  user   User   @relation(fields: [userId], references: [id])
+  role   Role   @relation(fields: [roleId], references: [id])
+  @@id([userId, roleId])
+}

@@ -1,0 +1,18 @@
+model Chamados {
+  id             Int                 @id @default(autoincrement())
+  id_usuario     String
+  tipo_problema  String
+  descricao      String
+  status         StatusChamadoEnum
+  dt_abertura    DateTime            @default(now())
+  dt_resolucao   DateTime?
+
+  Usuario        User                @relation(fields: [id_usuario], references: [id])
+}
+
+enum StatusChamadoEnum {
+  Aberto
+  Em_Andamento
+  Resolvido
+  Fechado
+} 

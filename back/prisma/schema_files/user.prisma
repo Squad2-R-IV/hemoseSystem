@@ -1,0 +1,24 @@
+model User {
+  id            String @id @default(uuid())
+  name          String
+  password      String
+  email         String @unique
+  cpf           String @unique
+  contato       String
+  status        String @default("A")
+  especialidade String @default("")
+  conselho      String @default("")
+  registro      String @default("")
+  refreshToken  String @default("")
+  roles         UserToRole[]
+  agendamentos  Agendamento[]
+  auditorias    Auditoria[]
+  Anamneses     Anamnese[]
+  Condutas      Conduta[]
+  Chamados      Chamados[]
+  AltasMedicas  AltaMedica[]
+  TriagensRealizadas        Triagem[]
+  ExamesRealizados          Exames[]
+  EvolucoesMedicas          EvolucaoMedica[]
+  AdministracoesCondutas    AdministracaoConduta[]
+}

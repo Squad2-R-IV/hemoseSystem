@@ -1,0 +1,33 @@
+enum tipo_procedimento_enum {
+  PROCEDIMENTO_A
+  PROCEDIMENTO_B
+  // Adicione outros valores conforme necessário
+}
+
+model Consulta {
+  id                   Int                   @id @default(autoincrement())
+  id_agendamento       Int                   @unique
+  Agendamento          Agendamento           @relation(fields: [id_agendamento], references: [id])
+  procedimento         tipo_procedimento_enum
+  dt_entrada           DateTime              @default(now())
+  dt_saida             DateTime?              
+  status               status_consulta_enum  @default(AGUARDANDO)
+  observacoes          String                
+  Anamnese             Anamnese?              
+  Condutas             Conduta[]
+  AltaMedica           AltaMedica?
+  Prescricao           Prescricao?
+  Triagem              Triagem?
+  Exames               Exames[]
+  EvolucoesMedicas     EvolucaoMedica[]
+  LeitoConsultas       LeitoConsulta[]
+}
+
+enum status_consulta_enum {
+  REALIZADA
+  AGUARDANDO
+  EM_ATENDIMENTO
+  CHAMADO
+  CANCELADO
+}
+
