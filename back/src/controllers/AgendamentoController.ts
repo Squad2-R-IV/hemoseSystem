@@ -28,4 +28,26 @@ export class AgendamentoController extends GenericController<AgendamentoEntity, 
       return res.status(500).json({ message: error?.message || 'Erro ao buscar agendamentos' });
     }
   }
+
+  async getAgendamentosByDate(req: Request, res: Response): Promise<Response> {
+    try {
+      const { date } = req.params;
+      
+      if (!date) {
+        return res.status(400).json({ message: 'Data não informada' });
+      }
+      
+      const dateObject = new Date(date);
+      
+      // Check if date is valid
+      if (isNaN(dateObject.getTime())) {
+        return res.status(400).json({ message: 'Data inválida' });
+      }
+
+      const agendamentos = await this.agendamentoService.getAgendamentosByDate(dateObject);
+      return res.json(agendamentos);
+    } catch (error: any) {
+      return res.status(500).json({ message: error?.message || 'Erro ao buscar agendamentos por data' });
+    }
+  }
 }

@@ -8,8 +8,8 @@ import { AgendamentoWithRelations } from "../../utils/includeTypes";
 @injectable()
 @registry([
   {
-      token: 'AgendamentoService',
-      useClass: AgendamentoService
+    token: 'AgendamentoService',
+    useClass: AgendamentoService
   },
 ])
 export class AgendamentoService extends GenericService<AgendamentoWithRelations> implements IAgendamentoService {
@@ -35,4 +35,29 @@ export class AgendamentoService extends GenericService<AgendamentoWithRelations>
       }
     }, true) as AgendamentoWithRelations[]; // Cast the result to AgendamentoWithRelations[]
   }
+
+  async getAgendamentosByDate(date: Date): Promise<AgendamentoWithRelations[]> {
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const nextDay = new Date(startOfDay);
+    nextDay.setDate(nextDay.getDate() + 1); // Dia seguinte, à meia-noite
+
+    return await this.repository.findManyByQuery({
+      where: {
+        dt_agendamento: {
+          gte: startOfDay,
+          lt: nextDay,
+        }
+      },
+      include: {
+        Consulta: true,
+        Paciente: true,
+        Usuario: true
+      }
+    }, true) as AgendamentoWithRelations[];
+
+
+  }
+
 }

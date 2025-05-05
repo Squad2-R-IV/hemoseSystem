@@ -62,6 +62,39 @@ const agendamentoController = container.resolve(AgendamentoController);
 
 /**
  * @swagger
+ * /agendamento/data/{date}:
+ *   get:
+ *     summary: Retorna agendamentos para uma data específica
+ *     tags: [Agendamento]
+ *     parameters:
+ *       - in: path
+ *         name: date
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Data no formato YYYY-MM-DD
+ *         example: "2023-12-31"
+ *     responses:
+ *       200:
+ *         description: Lista de agendamentos para a data especificada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Agendamento'
+ *       400:
+ *         description: Data inválida ou não informada
+ *       500:
+ *         description: Erro no servidor
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get("/data/:date", authMiddleware, checkPermission("agendamento_read"), asyncHandler(agendamentoController.getAgendamentosByDate.bind(agendamentoController)));
+
+/**
+ * @swagger
  * /agendamento:
  *   get:
  *     summary: Retorna todos os agendamentos
@@ -284,6 +317,5 @@ router.put("/:id", authMiddleware, checkPermission("agendamento_update"), asyncH
  *       - bearerAuth: []
  */
 router.delete("/:id", authMiddleware, checkPermission("agendamento_delete"), asyncHandler(agendamentoController.delete.bind(agendamentoController)));
-
 
 export default router;
