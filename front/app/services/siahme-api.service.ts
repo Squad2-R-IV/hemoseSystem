@@ -18,6 +18,8 @@ import { UpdateCondutaDto } from "~/Dtos/Conduta/UpdateCondutaDto";
 import { CreatePrescricaoDto } from "~/Dtos/Prescricao/CreatePrescricaoDto";
 import { ReadPrescricaoDto } from "~/Dtos/Prescricao/ReadPrescricaoDto";
 import { UpdatePrescricaoDto } from "~/Dtos/Prescricao/UpdatePrescricaoDto";
+import { CreatePacienteDto } from "~/Dtos/Paciente/CreatePacienteDto";
+import { ReadPacienteDto } from "~/Dtos/Paciente/ReadPacienteDto";
 
 // Define a service using a base URL and expected endpoints
 const baseQuery = fetchBaseQuery({
@@ -124,6 +126,9 @@ export const siahmeApi = createApi({
         body,
       }),
     }),
+    getMedicos: builder.query<ReadUserDto[], void>({
+      query: () => "users/medicos",
+    }),
     ///////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////
     /////////////////Agendamentos ENDPOINTS////////////////
@@ -177,6 +182,13 @@ export const siahmeApi = createApi({
     >({
       query: () => "agendamento/consultas-ativas",
       providesTags: ["Agendamento", "Consulta"],
+    }),
+    getAgendamentosByDate: builder.query<
+      ReadAgendamentoDto[],
+      { date: string }
+    >({
+      query: ({ date }) => `agendamento/data/${date}`,
+      providesTags: ["Agendamento"],
     }),
     ///////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////
@@ -409,6 +421,46 @@ export const siahmeApi = createApi({
         url: `conduta/consulta?consultaId=${consultaId}`,
       }),
     }),
+    ///////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////
+    /////////////////Paciente ENDPOINTS/////////////////////
+    ///////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////
+    getPacientes: builder.query<ReadPacienteDto[], { includeRelations?: boolean }>({
+      query: ({ includeRelations = false }) => ({
+        url: `paciente?includeRelations=${includeRelations}`,
+      }),
+    }),
+    getPacienteById: builder.query<ReadPacienteDto, { id: number; includeRelations?: boolean }>({
+      query: ({ id, includeRelations = false }) => ({
+        url: `paciente/${id}?includeRelations=${includeRelations}`,
+      }),
+    }),
+    createPaciente: builder.mutation<ReadPacienteDto, CreatePacienteDto>({
+      query: (body) => ({
+        url: "paciente",
+        method: "POST",
+        body,
+      }),
+    }),
+    updatePaciente: builder.mutation<ReadPacienteDto, { id: number; body: CreatePacienteDto }>({
+      query: ({ id, body }) => ({
+        url: `paciente/${id}`,
+        method: "PUT",
+        body,
+      }),
+    }),
+    deletePaciente: builder.mutation<{ success: boolean }, number>({
+      query: (id) => ({
+        url: `paciente/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    getPacienteByCpf: builder.query<ReadPacienteDto, { cpf: string }>({
+      query: ({ cpf }) => ({
+        url: `paciente/cpf/${cpf}`,
+      }),
+    }),
   }),
 });
 
@@ -427,6 +479,7 @@ export const {
   useGetAgendamentosQuery,
   useGetAgendamentoByIdQuery,
   useGetAgendamentosComConsultasAtivasQuery,
+  useGetAgendamentosByDateQuery,
   useCreateAgendamentoMutation,
   useUpdateAgendamentoMutation,
   useDeleteAgendamentoMutation,
@@ -447,4 +500,11 @@ export const {
   useDeleteCondutaMutation,
   useGetCondutasByConsultaIdQuery, // Add this hook for the new endpoint
   useFetchAllConsultaDetailsQuery, // Add this hook for the new endpoint
+  useGetPacientesQuery,
+  useGetPacienteByIdQuery,
+  useCreatePacienteMutation,
+  useUpdatePacienteMutation,
+  useDeletePacienteMutation,
+  useGetPacienteByCpfQuery, // Add this hook for the new endpoint
+  useGetMedicosQuery, // Add this hook for the new endpoint
 } = siahmeApi;
