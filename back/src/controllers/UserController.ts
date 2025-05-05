@@ -163,4 +163,14 @@ export class UserController extends GenericController<UserEntity, CreateUserDto,
       return res.status(500).json({ error: error.message });
     }
   }
+
+  async getMedicos(req: Request, res: Response): Promise<Response> {
+    try {
+      const medicos = await this.userService.getUsersByRole("medico");
+      const readDto = medicos.map((medico) => plainToInstance(ReadUserDto, medico));
+      return res.status(200).json(readDto);
+    } catch (error: any) {
+      return res.status(500).json({ error: error.message });
+    }
+  }
 }

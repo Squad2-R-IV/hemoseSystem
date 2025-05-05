@@ -77,4 +77,23 @@ export class UserService extends GenericService<UserWithRelations> implements IU
         data: userToRoleData
     });
   }
+
+  async getUsersByRole(roleName: string): Promise<User[]> {
+    const roleRepository = container.resolve(RoleRepository);
+    const userToRoleRepository = container.resolve(UserToRoleRepository);
+
+    const role = await roleRepository.findByField("name", roleName);
+    if (!role) {
+      throw new Error(`Role ${roleName} não encontrada`);
+    }
+
+    const userToRoles = await userToRoleRepository.findManyByFields([{ field: "roleId", value: role.id }]);
+    const userIds = userToRoles.map(userToRole => userToRole.userId);
+
+    const users = await prisma.user.findMany({
+      where: { id: { in: userIds } },
+    });
+
+    return users;
+  }
 }

@@ -59,6 +59,31 @@ const userController = container.resolve(UserController);
 
 /**
  * @swagger
+ * /users/medicos:
+ *   get:
+ *     summary: Retorna todos os usuários com a role "medico"
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Lista de médicos retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Erro no servidor
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get(
+    "/medicos",
+    authMiddleware,
+    asyncHandler(userController.getMedicos.bind(userController))
+);
+/**
+ * @swagger
  * /users:
  *   get:
  *     summary: Retorna todos os usuários
@@ -392,5 +417,6 @@ router.post("/changeUserRoles",
     adminOnlyMiddleware,
     asyncHandler(userController.changeUserRoles.bind(userController))
 );
+
 
 export default router;
