@@ -6,6 +6,8 @@ import {
   tipo_procedimento_enum,
   TipoAgendamentoEnum,
   status_consulta_enum,
+  Sexo,
+  EstadoCivil,
 } from "@prisma/client";
 import bcrypt from "bcrypt";
 
@@ -212,25 +214,17 @@ async function main() {
         "pacientes_create",
         "consultas_read",
         "consultas_create",
-   
-
         "agendamento_read",
         "agendamento_create",
-
-
         "paciente_read",
         "paciente_create",
-
         "anamnese_read",
         "exame_create",
         "exame_read",
-
         "conduta_create",
         "conduta_read",
-
         "prescricao_create",
         "prescricao_read",
-
       ],
     },
     {
@@ -325,16 +319,15 @@ async function main() {
   if (!medicoUser) {
     throw new Error("Medico user not found");
   }
-
+  
   // Seed patients
   const patients = [
     {
       id: 1,
       nome_paciente: "Paciente 1",
       dt_nascimento: new Date("1990-01-01"),
-      idade: 33,
-      sexo: "Masculino",
-      estado_civil: "Solteiro",
+      sexo: Sexo.M, // Masculino
+      estado_civil: EstadoCivil.S, // Solteiro(a)
       endereco: "Endereço 1",
       cpf: "12345678901",
       cpf_acompanhante: "10987654321",
@@ -343,9 +336,8 @@ async function main() {
       id: 2,
       nome_paciente: "Paciente 2",
       dt_nascimento: new Date("1985-05-15"),
-      idade: 38,
-      sexo: "Feminino",
-      estado_civil: "Casado",
+      sexo: Sexo.F, // Feminino
+      estado_civil: EstadoCivil.C, // Casado(a)
       endereco: "Endereço 2",
       cpf: "23456789012",
       cpf_acompanhante: "21098765432",
@@ -354,71 +346,81 @@ async function main() {
       id: 3,
       nome_paciente: "Paciente 3",
       dt_nascimento: new Date("2000-12-20"),
-      idade: 22,
-      sexo: "Masculino",
-      estado_civil: "Solteiro",
+      sexo: Sexo.M, // Masculino
+      estado_civil: EstadoCivil.S, // Solteiro(a)
       endereco: "Endereço 3",
       cpf: "34567890123",
       cpf_acompanhante: "32109876543",
     },
   ];
-
+  
+  // Upsert patients (only creates if not exists)
   await Promise.all(
     patients.map((patient) =>
       prisma.paciente.upsert({
         where: { cpf: patient.cpf },
-        update: {},
+        update: {}, // No updates, just ensure it exists
         create: patient,
       })
     )
   );
-
+  
   // Seed appointments
   const appointments = [
     {
       id: 1,
       id_paciente: 1,
       id_funcionario: medicoUser.id,
-      data_hora_agendamento: new Date("2023-10-01T10:00:00Z"),
+      dt_agendamento: new Date("2023-10-01"),
+      dt_hora_agendamento: 1000, // Representing 10:00 AM as 1000
       tipo_agendamento: TipoAgendamentoEnum.Consulta,
       status_agendamento: StatusAgendamentoEnum.Realizado,
       observacoes: "Primeira consulta",
+      dt_chegada: new Date("2023-10-01T09:50:00Z"),
     },
     {
       id: 2,
       id_paciente: 2,
       id_funcionario: medicoUser.id,
-      data_hora_agendamento: new Date("2023-10-02T11:00:00Z"),
+      dt_agendamento: new Date("2023-10-02"),
+      dt_hora_agendamento: 1100, // Representing 11:00 AM as 1100
       tipo_agendamento: TipoAgendamentoEnum.Exame,
       status_agendamento: StatusAgendamentoEnum.Confirmado,
       observacoes: "Exame de rotina",
+      dt_chegada: new Date("2023-10-02T10:50:00Z"),
     },
     {
       id: 3,
       id_paciente: 3,
       id_funcionario: medicoUser.id,
-      data_hora_agendamento: new Date("2023-10-03T12:00:00Z"),
+      dt_agendamento: new Date("2023-10-03"),
+      dt_hora_agendamento: 1200, // Representing 12:00 PM as 1200
       tipo_agendamento: TipoAgendamentoEnum.Procedimento,
       status_agendamento: StatusAgendamentoEnum.Agendado,
       observacoes: "Procedimento cirúrgico",
+      dt_chegada: null,
     },
     {
       id: 4,
       id_paciente: 1,
       id_funcionario: medicoUser.id,
-      data_hora_agendamento: new Date("2023-10-04T14:00:00Z"),
+      dt_agendamento: new Date("2023-10-04"),
+      dt_hora_agendamento: 1400, // Representing 2:00 PM as 1400
       tipo_agendamento: TipoAgendamentoEnum.Consulta,
       status_agendamento: StatusAgendamentoEnum.Confirmado,
       observacoes: "Consulta de acompanhamento",
+      dt_chegada: new Date("2023-10-04T13:50:00Z"),
     },
     {
       id: 5,
       id_paciente: 2,
       id_funcionario: medicoUser.id,
-      data_hora_agendamento: new Date("2023-10-05T16:00:00Z"),
+      dt_agendamento: new Date("2023-10-05"),
+      dt_hora_agendamento: 1600, // Representing 4:00 PM as 1600
       tipo_agendamento: TipoAgendamentoEnum.Exame,
-      status_agendamento: StatusAgendamentoEnum.Confirmado,
+      status_agendamento: StatusAgendamentoEnum.Cancelado,
       observacoes: "Exame cancelado",
+      dt_chegada: null,
     },
   ];
 
