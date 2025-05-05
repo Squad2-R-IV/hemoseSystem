@@ -7,10 +7,12 @@ export class ReadAgendamentoDto {
     id!: number;
     id_paciente!: number;
     id_funcionario!: string;
-    data_hora_agendamento!: Date;
+    dt_agendamento!: Date;
+    dt_hora_agendamento!: number;
     tipo_agendamento!: TipoAgendamentoEnum;
     status_agendamento!: StatusAgendamentoEnum;
     observacoes?: string;
+    dt_chegada?: Date;
     Paciente?: ReadPacienteDto;
     Usuario?: ReadUserDto;
     Consulta?: ReadConsultaDto;

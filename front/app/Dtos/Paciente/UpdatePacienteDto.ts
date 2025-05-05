@@ -1,16 +1,14 @@
 // import { AutoMap } from "@automapper/classes";
 
+import type { Sexo, EstadoCivil } from "~/utils/enums/enums";
+
 export class UpdatePacienteDto {
     // @AutoMap()
     nome_paciente?: string;
     // @AutoMap()
     dt_nascimento?: Date;
-    // @AutoMap()
-    idade?: number;
-    // @AutoMap()
-    sexo?: string;
-    // @AutoMap()
-    estado_civil?: string;
+    sexo!: Sexo;
+    estado_civil!: EstadoCivil;
     // @AutoMap()
     endereco?: string;
     // @AutoMap()
