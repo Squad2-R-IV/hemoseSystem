@@ -39,11 +39,13 @@ export function TabelaEmAtendimento({
         return item.Paciente?.nome_paciente || "N/A";
       case "Usuario.nome_usuario":
         return item.Usuario?.name || "N/A";
-      case "data_hora_agendamento":
+      case "dt_chegada":
         try {
-          return new Date(item.data_hora_agendamento).toLocaleString();
+          return item.dt_chegada 
+            ? new Date(item.dt_chegada).toLocaleString() 
+            : "Data não definida";
         } catch (e) {
-          return item.data_hora_agendamento;
+          return item.dt_chegada?.toString() || "Data inválida";
         }
       case "tipo_agendamento":
         return item.tipo_agendamento;
