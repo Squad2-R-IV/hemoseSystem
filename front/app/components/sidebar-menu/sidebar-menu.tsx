@@ -22,6 +22,7 @@ const menuItems = [
   { icon: ClipboardDocumentListIcon, label: "Consultas Abertas", path: "/selecao-agendamento" },
   { icon: CalendarDaysIcon, label: "Recepção", path: "/recepcao" },
   { icon: DocumentTextIcon, label: "Prontuarios", path: "/prontuarios" },
+  { icon: UsersIcon, label: "Funcionários", path: "/funcionarios" },
   { icon: QuestionMarkCircleIcon, label: "Help", path: "/help" },
   
 ];

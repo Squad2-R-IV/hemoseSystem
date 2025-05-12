@@ -32,5 +32,13 @@ export default [
       "prontuarios",
       "./routes/prontuarios.tsx"
     ),
+    route(
+      "funcionarios",
+      "./routes/funcionarios.tsx"
+    ),
+    route(
+      "funcionarios/:role",
+      "./routes/funcionarios/funcionarios-role.tsx"
+    ),
   ]),
 ] satisfies RouteConfig;
