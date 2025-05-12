@@ -32,15 +32,12 @@ export class CondutaController extends GenericController<
     );
   }
   async getCondutasByConsultaId(req: Request, res: Response): Promise<Response> {
-    try {
-      const consultaId = parseInt(req.query.consultaId as string);
-      if (isNaN(consultaId)) {
-        return res.status(400).json({ message: "consultaId deve ser um número válido" });
-      }
-      const condutas = await this.condutaService.getCondutasByConsultaId(Number(consultaId));
-      return res.json(condutas);
-    } catch (error: any) {
-      return res.status(500).json({ message: error?.message || "Erro ao buscar condutas" });
+    // Removido o try/catch para permitir que erros sejam tratados pelo middleware global
+    const consultaId = parseInt(req.query.consultaId as string);
+    if (isNaN(consultaId)) {
+      return res.status(400).json({ message: "consultaId deve ser um número válido" });
     }
+    const condutas = await this.condutaService.getCondutasByConsultaId(Number(consultaId));
+    return res.json(condutas);
   }
 }

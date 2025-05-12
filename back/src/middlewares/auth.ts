@@ -5,6 +5,7 @@ import { container } from "tsyringe";
 import { UserService } from "../services/implementations/UserService";
 import { User } from "@prisma/client";
 import prisma from "../config/prisma";
+import { handlePrismaError } from "../utils/prismaErrorHandler";
 
 dotenv.config();
 
@@ -101,20 +102,28 @@ export const checkPermission = (permission: string) => {
             const userRoles = await userService.getUserRoles(user.id);
             const roleIds = userRoles.map(role => role.id);
 
-            const permissions = await prisma.roleToPermission.findMany({
-                where: {
-                    roleId: { in: roleIds },
-                    permission: { name: permission }
-                },
-                include: { permission: true }
-            });
+            try {
+                const permissions = await prisma.roleToPermission.findMany({
+                    where: {
+                        roleId: { in: roleIds },
+                        permission: { name: permission }
+                    },
+                    include: { permission: true }
+                });
 
-            if (permissions.length === 0) {
-                res.status(403).json({ message: "Acesso negado" });
-                return;
+                if (permissions.length === 0) {
+                    res.status(403).json({ message: "Acesso negado" });
+                    return;
+                }
+
+                next();
+            } catch (error) {
+                const handledError = handlePrismaError(error);
+                console.error("Permission check error:", handledError);
+                res.status(handledError.statusCode || 500).json({ 
+                    message: handledError.message || "Erro ao verificar permissões" 
+                });
             }
-
-            next();
         } catch (error) {
             console.error("Error in checkPermission middleware:", error);
             res.status(500).json({ message: "Erro interno do servidor" });

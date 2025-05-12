@@ -24,7 +24,10 @@ export class PacienteController extends GenericController<PacienteEntity, Create
     const { cpf } = req.params;
     const paciente = await this.pacienteService.findPacienteByCpf(cpf);
     if (!paciente) {
-      return res.status(404).json({ message: "Paciente not found" });
+      return res.status(404).json({ 
+        titulo: "Paciente Não Encontrado", 
+        mensagem: "Não foi possível encontrar um paciente com este CPF" 
+      });
     }
     return res.json(paciente);
   }
