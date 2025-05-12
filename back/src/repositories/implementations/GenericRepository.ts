@@ -2,6 +2,7 @@ import { inject, injectable, registry } from "tsyringe";
 import { PrismaClient } from "@prisma/client";
 import { IGenericRepository } from "../interfaces/IGenericRepository";
 import { plainToInstance } from "class-transformer";
+import { handlePrismaError } from "../../utils/prismaErrorHandler";
 
 @registry([
   {
@@ -27,40 +28,51 @@ export class GenericRepository<T> implements IGenericRepository<T> {
   }
 
   async create(data: any): Promise<T> {
-    if (!this.model) {
-      throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+    try {
+      if (!this.model) {
+        throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+      }
+      const result = await this.model.create({ data });
+      return plainToInstance(this.entityClass, result);
+    } catch (error) {
+      throw handlePrismaError(error);
     }
-    const result = await this.model.create({ data });
-    return plainToInstance(this.entityClass, result);
   }
 
   async findAll(includeRelations: boolean = true): Promise<T[]> {
-    if (!this.model) {
-      throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+    try {
+      if (!this.model) {
+        throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+      }
+      const include = includeRelations ? this.generateInclude() : undefined;
+      const results = await this.model.findMany({ include });
+      return plainToInstance(this.entityClass, results) as T[];
+    } catch (error) {
+      throw handlePrismaError(error);
     }
-    const include = includeRelations ? this.generateInclude() : undefined;
-    const results = await this.model.findMany({ include });
-    return plainToInstance(this.entityClass, results) as T[];
   }
 
   async findById(id: string | number, includeRelations: boolean = true): Promise<T | null> {
     try{
-    const include = includeRelations ? this.generateInclude() : undefined;
-    const result = await this.model.findUnique({
-      where: { id },
-      include,
-    });
-    return result ? plainToInstance(this.entityClass, result) : null;
+      const include = includeRelations ? this.generateInclude() : undefined;
+      const result = await this.model.findUnique({
+        where: { id },
+        include,
+      });
+      return result ? plainToInstance(this.entityClass, result) : null;
     }
     catch (error) {
-      console.error("Error in findById:", error);
-      throw error;
+      throw handlePrismaError(error);
     }
   }
 
   async findByField(field: string, value: any): Promise<T | null> {
-    const result = await this.model.findFirst({ where: { [field]: value } });
-    return result ? plainToInstance(this.entityClass, result) : null;
+    try {
+      const result = await this.model.findFirst({ where: { [field]: value } });
+      return result ? plainToInstance(this.entityClass, result) : null;
+    } catch (error) {
+      throw handlePrismaError(error);
+    }
   }
 
   async findManyByQuery(query: any, includeRelations: boolean = true): Promise<T[]> {
@@ -69,47 +81,66 @@ export class GenericRepository<T> implements IGenericRepository<T> {
       const results = await this.model.findMany({ ...query, include });
       return plainToInstance(this.entityClass, results) as T[];
     } catch (error) {
-      console.error("Error in findManyByQuery:", error);
-      throw error;
+      throw handlePrismaError(error);
     }
   }
 
   async findManyByField(field: string, value: any): Promise<T[]> {
-    const results = await this.model.findMany({ where: { [field]: value } });
-    return plainToInstance(this.entityClass, results) as T[];
+    try {
+      const results = await this.model.findMany({ where: { [field]: value } });
+      return plainToInstance(this.entityClass, results) as T[];
+    } catch (error) {
+      throw handlePrismaError(error);
+    }
   }
 
   async findByFields(fields: { field: string; value: any }[], includeRelations: boolean = true): Promise<T | null> {
-    const whereClause: { [key: string]: any } = fields.reduce((acc, { field, value }) => {
-      acc[field] = value; // Directly assign the value as provided by the user
-      return acc;
-    }, {} as { [key: string]: any });
+    try {
+      const whereClause: { [key: string]: any } = fields.reduce((acc, { field, value }) => {
+        acc[field] = value; // Directly assign the value as provided by the user
+        return acc;
+      }, {} as { [key: string]: any });
 
-    const include = includeRelations ? this.generateInclude() : undefined;
-    const result = await this.model.findFirst({ where: whereClause, include });
-    return result ? plainToInstance(this.entityClass, result) : null;
+      const include = includeRelations ? this.generateInclude() : undefined;
+      const result = await this.model.findFirst({ where: whereClause, include });
+      return result ? plainToInstance(this.entityClass, result) : null;
+    } catch (error) {
+      throw handlePrismaError(error);
+    }
   }
 
   async findManyByFields(fields: { field: string; value: any }[], includeRelations: boolean = true): Promise<T[]> {
-    const whereClause: { [key: string]: any } = fields.reduce((acc, { field, value }) => {
-      acc[field] = value; // Directly assign the value as provided by the user
-      return acc;
-    }, {} as { [key: string]: any });
+    try {
+      const whereClause: { [key: string]: any } = fields.reduce((acc, { field, value }) => {
+        acc[field] = value; // Directly assign the value as provided by the user
+        return acc;
+      }, {} as { [key: string]: any });
 
-    const include = includeRelations ? this.generateInclude() : undefined;
+      const include = includeRelations ? this.generateInclude() : undefined;
 
-    const results = await this.model.findMany({ where: whereClause, include });
-    return plainToInstance(this.entityClass, results) as T[];
+      const results = await this.model.findMany({ where: whereClause, include });
+      return plainToInstance(this.entityClass, results) as T[];
+    } catch (error) {
+      throw handlePrismaError(error);
+    }
   }
 
   async update(id: string | number, data: Partial<T>): Promise<T | null> {
-    const entity = await this.findById(id);
-    if (!entity) return null;
-    const result = await this.model.update({ where: { id: id }, data });
-    return plainToInstance(this.entityClass, result);
+    try {
+      const entity = await this.findById(id);
+      if (!entity) return null;
+      const result = await this.model.update({ where: { id: id }, data });
+      return plainToInstance(this.entityClass, result);
+    } catch (error) {
+      throw handlePrismaError(error);
+    }
   }
 
   async delete(id: string | number): Promise<void> {
-    await this.model.delete({ where: { id } });
+    try {
+      await this.model.delete({ where: { id } });
+    } catch (error) {
+      throw handlePrismaError(error);
+    }
   }
 }
