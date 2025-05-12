@@ -1,0 +1,113 @@
+2025-05-12 11:29:18 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-12 11:49:56 [INFO]: Na tabela PacienteEntity o id 1 foi atualizado por 79afa638-d1a9-40dd-9cf6-ad6c988b6e09, com os dados: {"nome_paciente":"Matias","dt_nascimento":"1990-01-01T00:00:00.000Z","sexo":"M","estado_civil":"S","endereco":"Endereço 1","cpf":"12345678901","cpf_acompanhante":"10987654321"}
+2025-05-12 11:50:48 [INFO]: Na tabela PacienteEntity foi criado por 79afa638-d1a9-40dd-9cf6-ad6c988b6e09, com os dados: {"nome_paciente":"gfsafioafsa","dt_nascimento":"1998-05-12T00:00:00.000Z","sexo":"M","estado_civil":"S","endereco":"Rua dos Lirios","cpf":"00100200304","cpf_acompanhante":"54452312412"}
+2025-05-12 11:51:06 [INFO]: Na tabela PacienteEntity o id 6 foi excluído por 79afa638-d1a9-40dd-9cf6-ad6c988b6e09
+2025-05-12 14:57:08 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-12 15:09:47 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-12 15:26:13 [ERROR]: Error: Role dentista não encontrada
+2025-05-12 15:41:03 [INFO]: Na tabela UserEntity o id 8a706193-cc11-4ec3-9e12-e469144f6bd8 foi atualizado por 79afa638-d1a9-40dd-9cf6-ad6c988b6e09, com os dados: {"name":"medico","email":"medico@email.com","cpf":"medico12345678900","contato":"123456789","especialidade":"Cardiologista","conselho":"CRM","registro":"25213SE"}
+2025-05-12 16:42:26 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create({
+       data: {
+         name: "Richard",
+         password: "$2b$10$pbSHJeSgntb9nwhYOMJD8.VXCMNb/4iPuoRf5Sc8VPL8XZLvAyfve",
+         email: "richard@hemose.gov.br",
+         cpf: "12365498785",
+         contato: "79999998888",
+         roles: [
+           "gestor"
+         ],
+         ~~~~~~~~~~
+         id: "437093a3-9a0e-4b90-8b3b-d8001ecd0c98",
+         status: "A"
+       }
+     })
+
+Argument `roles`: Invalid value provided. Expected UserToRoleCreateNestedManyWithoutUserInput or UserToRoleUncheckedCreateNestedManyWithoutUserInput, provided (String).
+2025-05-12 16:42:26 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-12 16:46:45 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-12 16:46:45 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create({
+       data: {
+         name: "Richard",
+         password: "$2b$10$zxKOa2Jv8sv0XgMuqyNPn.TVUnm.JJ4RIg2TT5rnst59dxUJVur3C",
+         email: "richard@hemose.gov.br",
+         cpf: "12365498785",
+         contato: "79999998888",
+         roles: [
+           "gestor"
+         ],
+         ~~~~~~~~~~
+         id: "e7aa3e6e-c082-47ad-af2c-963248a5b8fb",
+         status: "A"
+       }
+     })
+
+Argument `roles`: Invalid value provided. Expected UserToRoleCreateNestedManyWithoutUserInput or UserToRoleUncheckedCreateNestedManyWithoutUserInput, provided (String).
+2025-05-12 16:46:45 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-12 16:46:48 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create({
+       data: {
+         name: "Richard",
+         password: "$2b$10$ZNIQ99E.qJKHFys9thFgc.AgF9Akcpqr9hw5gB7eDbMb5N2tvFdMy",
+         email: "richard@hemose.gov.br",
+         cpf: "12365498785",
+         contato: "79999998888",
+         roles: [
+           "gestor"
+         ],
+         ~~~~~~~~~~
+         id: "91807cdd-ad0a-402a-859a-570142e6eec1",
+         status: "A"
+       }
+     })
+
+Argument `roles`: Invalid value provided. Expected UserToRoleCreateNestedManyWithoutUserInput or UserToRoleUncheckedCreateNestedManyWithoutUserInput, provided (String).
+2025-05-12 16:46:48 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-12 16:56:25 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create({
+       data: {
+         name: "Richard",
+         password: "$2b$10$DKa1sCnxS8V1ExlVWXg40uKlaGJm93.3vgUiiU2qQOrj/AF4dqpfi",
+         email: "richard@hemose.gov.br",
+         cpf: "12365498785",
+         contato: "79999998888",
+         roles: [
+           "gestor"
+         ],
+         ~~~~~~~~~~
+         id: "2e7ebf86-4440-4425-aa42-3957ffdb6e08",
+         status: "A"
+       }
+     })
+
+Argument `roles`: Invalid value provided. Expected UserToRoleCreateNestedManyWithoutUserInput or UserToRoleUncheckedCreateNestedManyWithoutUserInput, provided (String).
+2025-05-12 16:58:46 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-12 17:04:19 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-12 17:05:51 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-12 17:18:52 [INFO]: Na tabela UserEntity o id 8a706193-cc11-4ec3-9e12-e469144f6bd8 foi atualizado por 79afa638-d1a9-40dd-9cf6-ad6c988b6e09, com os dados: {"name":"Medico da Silva","email":"medico@email.com","cpf":"medico12345678900","contato":"123456789","especialidade":"Cardiologista","conselho":"CRM","registro":"25213SE"}
+2025-05-12 17:19:02 [ERROR]: Error: Role dentista não encontrada

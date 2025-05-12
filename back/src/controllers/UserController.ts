@@ -121,10 +121,15 @@ export class UserController extends GenericController<UserEntity, CreateUserDto,
     createDto.password = await bcrypt.hash(createDto.password, parseInt(process.env.SALT_ROUNDS as string));
     createDto.id = randomUUID();
     createDto.status = "A";
+    createDto.roles = undefined; // Limpa a propriedade roles para evitar que ela seja salva no banco de dados
     const newItem = await this.userService.create(createDto);
     const userToRoleRepository = container.resolve(UserToRoleRepository);
     const roleRepository = container.resolve(RoleRepository);
-    const role = await roleRepository.findByField("name", "semRole");
+    let roleDto = "semRole";
+    if (dto.roles && dto.roles.length > 0) {
+      roleDto = dto.roles[0];
+    }
+    const role = await roleRepository.findByField("name", roleDto);
     if (!role) {
       return res.status(404).json({ message: "Role padrão não encontrada, informe ao administrador do sistema" });
     }
@@ -149,4 +154,42 @@ export class UserController extends GenericController<UserEntity, CreateUserDto,
     const readDto = medicos.map((medico) => plainToInstance(ReadUserDto, medico));
     return res.status(200).json(readDto);
   }
+
+  async getEnfermeiros(req: Request, res: Response): Promise<Response> {
+    const enfermeiros = await this.userService.getUsersByRole("enfermeiro");
+    const readDto = enfermeiros.map((enfermeiro) => plainToInstance(ReadUserDto, enfermeiro));
+    return res.status(200).json(readDto);
+  }
+
+  async getRecepcionistas(req: Request, res: Response): Promise<Response> {
+    const recepcionistas = await this.userService.getUsersByRole("recepcionista");
+    const readDto = recepcionistas.map((recepcionista) => plainToInstance(ReadUserDto, recepcionista));
+    return res.status(200).json(readDto);
+  }
+
+  async getDentistas(req: Request, res: Response): Promise<Response> {
+    const dentistas = await this.userService.getUsersByRole("dentista");
+    const readDto = dentistas.map((dentista) => plainToInstance(ReadUserDto, dentista));
+    return res.status(200).json(readDto);
+  }
+
+  async getFisioterapeutas(req: Request, res: Response): Promise<Response> {
+    const fisioterapeutas = await this.userService.getUsersByRole("fisioterapeuta");
+    const readDto = fisioterapeutas.map((fisioterapeuta) => plainToInstance(ReadUserDto, fisioterapeuta));
+    return res.status(200).json(readDto);
+  }
+
+  async getGestores(req: Request, res: Response): Promise<Response> {
+    const gestores = await this.userService.getUsersByRole("gestor");
+    const readDto = gestores.map((gestor) => plainToInstance(ReadUserDto, gestor));
+    return res.status(200).json(readDto);
+  }
+  
+  async getNutricionistas(req: Request, res: Response): Promise<Response> {
+    const nutricionistas = await this.userService.getUsersByRole("nutricionista");
+    const readDto = nutricionistas.map((nutricionista) => plainToInstance(ReadUserDto, nutricionista));
+    return res.status(200).json(readDto);
+  }
+
+  
 }
