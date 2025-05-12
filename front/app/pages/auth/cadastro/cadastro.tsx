@@ -36,11 +36,7 @@ export function Cadastro() {
         color: "success",
       });
     } catch (error) {
-      addToast({
-        title: "Erro",
-        description: "Erro ao criar conta",
-        color: "danger",
-      });
+     console.error("Erro ao criar conta:", error);
     }
   };
 

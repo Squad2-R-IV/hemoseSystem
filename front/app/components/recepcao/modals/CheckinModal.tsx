@@ -15,8 +15,8 @@ interface CheckinModalProps {
   onOpenChange: (isOpen: boolean) => void;
   onClose: () => void;
   appointment: ReadAgendamentoDto | null;
-  onConfirm: () => void;
-  isLoading?: boolean;
+  onConfirm: () => Promise<boolean | undefined>;
+  isLoading: boolean;
 }
 
 export function CheckinModal({
@@ -25,8 +25,16 @@ export function CheckinModal({
   onClose,
   appointment,
   onConfirm,
-  isLoading = false,
+  isLoading,
 }: CheckinModalProps) {
+  // Handle the confirmation with proper loading state
+  const handleConfirm = async () => {
+    const success = await onConfirm();
+    if (success) {
+      onClose();
+    }
+  };
+
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} onClose={onClose}>
       <ModalContent>
@@ -49,7 +57,7 @@ export function CheckinModal({
         <ModalFooter>
           <Button
             color="primary"
-            onPress={() => onConfirm()}
+            onPress={handleConfirm}
             isDisabled={isLoading}
           >
             {isLoading ? <Spinner size="sm" /> : "Confirmar Check-in"}

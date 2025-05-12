@@ -15,8 +15,8 @@ interface CancelModalProps {
   onOpenChange: (isOpen: boolean) => void;
   onClose: () => void;
   appointment: ReadAgendamentoDto | null;
-  onConfirm: () => void;
-  isLoading?: boolean;
+  onConfirm: () => Promise<boolean | undefined>;
+  isLoading: boolean;
 }
 
 export function CancelModal({
@@ -25,8 +25,16 @@ export function CancelModal({
   onClose,
   appointment,
   onConfirm,
-  isLoading = false,
+  isLoading,
 }: CancelModalProps) {
+  // Handle the confirmation with proper loading state
+  const handleConfirm = async () => {
+    const success = await onConfirm();
+    if (success) {
+      onClose();
+    }
+  };
+
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} onClose={onClose}>
       <ModalContent>
@@ -48,7 +56,7 @@ export function CancelModal({
         <ModalFooter>
           <Button
             color="danger"
-            onPress={() => onConfirm()}
+            onPress={handleConfirm}
             isDisabled={isLoading}
           >
             {isLoading ? <Spinner size="sm" /> : "Confirmar Cancelamento"}

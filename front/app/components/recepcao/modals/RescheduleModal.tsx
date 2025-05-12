@@ -12,6 +12,7 @@ import {
   Spinner,
 } from "@heroui/react";
 import type { ReadAgendamentoDto } from "~/Dtos/Agendamento/ReadAgendamentoDto";
+import { formatDateForInput } from "../../../utils/recepcao/utils";
 
 interface RescheduleModalProps {
   isOpen: boolean;
@@ -36,13 +37,6 @@ export function RescheduleModal({
 }: RescheduleModalProps) {
   const formatHour = (hour: number) => {
     return `${hour}:00`;
-  };
-
-  // Format date for input
-  const formatDateForInput = (date: Date | string | undefined) => {
-    if (!date) return "";
-    const d = new Date(date);
-    return d.toISOString().split('T')[0];
   };
 
   return (

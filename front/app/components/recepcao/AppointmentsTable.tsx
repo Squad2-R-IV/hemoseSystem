@@ -17,14 +17,13 @@ import {
 import { FunnelIcon, CheckCircleIcon, ClockIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import type { DateValue } from "@internationalized/date";
 import type { ReadAgendamentoDto } from "~/Dtos/Agendamento/ReadAgendamentoDto";
-import { formatDate } from "./utils";
+import { formatDate, formatDateForApi } from "../../utils/recepcao/utils";
 import { RescheduleModal } from "./modals/RescheduleModal";
 import { CheckinModal } from "./modals/CheckinModal";
 import { CancelModal } from "./modals/CancelModal";
 import { StatusAgendamentoEnum } from "~/utils/enums/enums";
-import { useUpdateAgendamentoMutation } from "~/services/siahme-api.service";
-import { UpdateAgendamentoDto } from "~/Dtos/Agendamento/UpdateAgendamentoDto";
-import { addToast } from "@heroui/react";
+import { useGetAgendamentosByDateQuery } from "~/services/siahme-api.service";
+import { useAppointmentActions } from "~/hooks/recepcao/useAppointmentActions";
 
 interface AppointmentsTableProps {
   selectedDate: DateValue;
@@ -37,178 +36,88 @@ export function AppointmentsTable({
   appointments,
   onAppointmentUpdated 
 }: AppointmentsTableProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // Modal visibility states
+  const [isRescheduleModalOpen, setIsRescheduleModalOpen] = useState(false);
   const [isCheckinModalOpen, setIsCheckinModalOpen] = useState(false);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
-  const [selectedAppointment, setSelectedAppointment] = useState<ReadAgendamentoDto | null>(null);
-  const [formData, setFormData] = useState<Partial<ReadAgendamentoDto>>({});
   
-  // API mutation hook
-  const [updateAgendamento, { isLoading }] = useUpdateAgendamentoMutation();
+  // Search functionality
+  const [searchQuery, setSearchQuery] = useState("");
+  
+  // Format date for the query
+  const formattedDate = formatDateForApi(selectedDate);
 
-  const handleOpenModal = (appointment: ReadAgendamentoDto) => {
-    setSelectedAppointment(appointment);
-    // Set initial form data with current appointment values
-    setFormData({
-      dt_agendamento: appointment.dt_agendamento,
-      dt_hora_agendamento: appointment.dt_hora_agendamento,
-    });
-    setIsModalOpen(true);
+  // Check if we should manage our own data
+  const shouldFetchDirectly = !onAppointmentUpdated;
+  
+  // Only manage our own data if not provided by parent
+  const { refetch } = useGetAgendamentosByDateQuery({ 
+    date: formattedDate 
+  }, {
+    skip: !shouldFetchDirectly,
+    refetchOnMountOrArgChange: true
+  });
+
+  // Use our custom hook to handle appointment actions
+  const {
+    selectedAppointment,
+    formData,
+    isRescheduling,
+    isCheckingIn,
+    isCanceling,
+    selectAppointment,
+    clearSelection,
+    handleChange,
+    rescheduleAppointment,
+    checkInAppointment,
+    cancelAppointment,
+    canPerformActions
+  } = useAppointmentActions({
+    onAppointmentUpdated,
+    refetchAppointments: shouldFetchDirectly ? refetch : undefined
+  });
+
+  // Modal handlers
+  const handleOpenRescheduleModal = (appointment: ReadAgendamentoDto) => {
+    selectAppointment(appointment, 'reschedule');
+    setIsRescheduleModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedAppointment(null);
-    setFormData({});
+  const handleCloseRescheduleModal = () => {
+    setIsRescheduleModalOpen(false);
+    clearSelection();
   };
 
   const handleOpenCheckinModal = (appointment: ReadAgendamentoDto) => {
-    setSelectedAppointment(appointment);
+    selectAppointment(appointment, 'checkin');
     setIsCheckinModalOpen(true);
   };
 
   const handleCloseCheckinModal = () => {
     setIsCheckinModalOpen(false);
-    setSelectedAppointment(null);
+    clearSelection();
   };
 
   const handleOpenCancelModal = (appointment: ReadAgendamentoDto) => {
-    setSelectedAppointment(appointment);
+    selectAppointment(appointment, 'cancel');
     setIsCancelModalOpen(true);
   };
 
   const handleCloseCancelModal = () => {
     setIsCancelModalOpen(false);
-    setSelectedAppointment(null);
+    clearSelection();
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async () => {
-    if (!selectedAppointment) return;
+  // Filter appointments based on search query
+  const filteredAppointments = appointments.filter(appointment => {
+    if (!searchQuery) return true;
     
-    try {
-      // Create update DTO
-      const updateDto: UpdateAgendamentoDto = {
-        dt_agendamento: formData.dt_agendamento as Date,
-        dt_hora_agendamento: Number(formData.dt_hora_agendamento),
-        status_agendamento: StatusAgendamentoEnum.Reagendado,
-        tipo_agendamento: selectedAppointment.tipo_agendamento,
-        observacoes: selectedAppointment.observacoes
-      };
-
-      // Call API to update appointment
-      const result = await updateAgendamento({
-        id: selectedAppointment.id,
-        body: updateDto
-      }).unwrap();
-
-      addToast({
-        title: "Sucesso",
-        description: "Agendamento reagendado com sucesso!",
-        color: "success",
-      });
-      
-      // Notify parent component to refresh data
-      if (onAppointmentUpdated) {
-        onAppointmentUpdated();
-      }
-
-      handleCloseModal();
-    } catch (error) {
-      console.error("Error rescheduling appointment:", error);
-      addToast({
-        title: "Erro",
-        description: "Erro ao reagendar. Tente novamente.",
-        color: "danger",
-      });
-    }
-  };
-
-  const handleCheckin = async () => {
-    if (!selectedAppointment) return;
+    const patientName = appointment.Paciente?.nome_paciente?.toLowerCase() || '';
+    const appointmentType = appointment.tipo_agendamento?.toLowerCase() || '';
+    const query = searchQuery.toLowerCase();
     
-    try {
-      const updateDto: UpdateAgendamentoDto = {
-        dt_agendamento: selectedAppointment.dt_agendamento,
-        dt_hora_agendamento: selectedAppointment.dt_hora_agendamento,
-        tipo_agendamento: selectedAppointment.tipo_agendamento,
-        status_agendamento: StatusAgendamentoEnum.Confirmado,
-        dt_chegada: new Date(),
-        observacoes: selectedAppointment.observacoes
-      };
-
-      await updateAgendamento({
-        id: selectedAppointment.id,
-        body: updateDto
-      }).unwrap();
-
-      addToast({
-        title: "Sucesso",
-        description: "Check-in realizado com sucesso!",
-        color: "success",
-      });
-      
-      if (onAppointmentUpdated) {
-        onAppointmentUpdated();
-      }
-
-      handleCloseCheckinModal();
-    } catch (error) {
-      console.error("Error checking in:", error);
-      addToast({
-        title: "Erro",
-        description: "Erro ao realizar check-in. Tente novamente.",
-        color: "danger",
-      });
-    }
-  };
-
-  const handleCancel = async () => {
-    if (!selectedAppointment) return;
-    
-    try {
-      const updateDto: UpdateAgendamentoDto = {
-        dt_agendamento: selectedAppointment.dt_agendamento,
-        dt_hora_agendamento: selectedAppointment.dt_hora_agendamento,
-        tipo_agendamento: selectedAppointment.tipo_agendamento,
-        status_agendamento: StatusAgendamentoEnum.Cancelado,
-        observacoes: selectedAppointment.observacoes
-      };
-
-      await updateAgendamento({
-        id: selectedAppointment.id,
-        body: updateDto
-      }).unwrap();
-
-      addToast({
-        title: "Sucesso",
-        description: "Agendamento cancelado com sucesso!",
-        color: "success",
-      });
-      
-      if (onAppointmentUpdated) {
-        onAppointmentUpdated();
-      }
-
-      handleCloseCancelModal();
-    } catch (error) {
-      console.error("Error canceling appointment:", error);
-      addToast({
-        title: "Erro",
-        description: "Erro ao cancelar. Tente novamente.",
-        color: "danger",
-      });
-    }
-  };
-
-  // Helper function to determine if actions should be available
-  const canPerformActions = (status: string): boolean => {
-    return status === StatusAgendamentoEnum.Agendado;
-  };
+    return patientName.includes(query) || appointmentType.includes(query);
+  });
 
   return (
     <>
@@ -222,6 +131,8 @@ export function AppointmentsTable({
               placeholder="Buscar paciente..."
               className="w-64"
               size="sm"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
             <Button isIconOnly variant="light" size="sm">
               <FunnelIcon className="h-[18px] w-[18px]" />
@@ -240,7 +151,7 @@ export function AppointmentsTable({
               <TableColumn>Ações</TableColumn>
             </TableHeader>
             <TableBody emptyContent="Nenhum agendamento para esta data">
-              {appointments.map((appointment: ReadAgendamentoDto) => (
+              {filteredAppointments.map((appointment: ReadAgendamentoDto) => (
                 <TableRow key={appointment.id}>
                   <TableCell>
                     {`${appointment.dt_hora_agendamento.toString()}:00`}
@@ -274,7 +185,8 @@ export function AppointmentsTable({
                             variant="light"
                             color="primary"
                             onClick={() => handleOpenCheckinModal(appointment)}
-                            isDisabled={isLoading}
+                            isDisabled={isRescheduling || isCheckingIn || isCanceling}
+                            aria-label="Check-in"
                           >
                             <CheckCircleIcon className="h-[18px] w-[18px]" />
                           </Button>
@@ -283,8 +195,9 @@ export function AppointmentsTable({
                             size="sm"
                             variant="light"
                             color="default"
-                            onClick={() => handleOpenModal(appointment)}
-                            isDisabled={isLoading}
+                            onClick={() => handleOpenRescheduleModal(appointment)}
+                            isDisabled={isRescheduling || isCheckingIn || isCanceling}
+                            aria-label="Reagendar"
                           >
                             <ClockIcon className="h-[18px] w-[18px]" />
                           </Button>
@@ -294,7 +207,8 @@ export function AppointmentsTable({
                             variant="light"
                             color="danger"
                             onClick={() => handleOpenCancelModal(appointment)}
-                            isDisabled={isLoading}
+                            isDisabled={isRescheduling || isCheckingIn || isCanceling}
+                            aria-label="Cancelar"
                           >
                             <XMarkIcon className="h-[18px] w-[18px]" />
                           </Button>
@@ -313,13 +227,14 @@ export function AppointmentsTable({
 
       {/* Modals */}
       <RescheduleModal
-        isOpen={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        onClose={handleCloseModal}
+        isOpen={isRescheduleModalOpen}
+        onOpenChange={setIsRescheduleModalOpen}
+        onClose={handleCloseRescheduleModal}
         appointment={selectedAppointment}
         formData={formData}
-        onSubmit={handleSubmit}
+        onSubmit={rescheduleAppointment}
         onChange={handleChange}
+        isLoading={isRescheduling}
       />
 
       <CheckinModal
@@ -327,7 +242,8 @@ export function AppointmentsTable({
         onOpenChange={setIsCheckinModalOpen}
         onClose={handleCloseCheckinModal}
         appointment={selectedAppointment}
-        onConfirm={handleCheckin}
+        onConfirm={checkInAppointment}
+        isLoading={isCheckingIn}
       />
 
       <CancelModal
@@ -335,7 +251,8 @@ export function AppointmentsTable({
         onOpenChange={setIsCancelModalOpen}
         onClose={handleCloseCancelModal}
         appointment={selectedAppointment}
-        onConfirm={handleCancel}
+        onConfirm={cancelAppointment}
+        isLoading={isCanceling}
       />
     </>
   );

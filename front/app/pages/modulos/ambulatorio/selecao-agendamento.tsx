@@ -38,7 +38,7 @@ const columns = [
     sortable: true,
   },
   {
-    key: "data_hora_agendamento",
+    key: "dt_chegada",
     label: "DATA/HORA",
     sortable: true,
   },
@@ -161,9 +161,11 @@ export function SelecaoAgendamento() {
         return item.Usuario?.name || "N/A";
       case "data_hora_agendamento":
         try {
-          return new Date(item.data_hora_agendamento).toLocaleString();
+          return item.dt_chegada 
+            ? new Date(item.dt_chegada).toLocaleString() 
+            : "Data não definida";
         } catch (e) {
-          return item.data_hora_agendamento;
+          return item.dt_chegada?.toString() || "Data inválida";
         }
       case "tipo_agendamento":
         return item.tipo_agendamento;

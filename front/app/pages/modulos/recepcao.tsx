@@ -16,7 +16,7 @@ import { PacienteModal } from "../../components/recepcao/PacienteModal";
 import { AgendamentoModal } from "../../components/recepcao/AgendamentoModal";
 import { AppointmentsTable } from "../../components/recepcao/AppointmentsTable";
 import { CalendarSidebar } from "../../components/recepcao/CalendarSidebar";
-import { formatDateForApi } from "../../components/recepcao/utils";
+import { formatDateForApi } from "../../utils/recepcao/utils";
 
 export default function Recepcao() {
   const [selectedDate, setSelectedDate] = React.useState<DateValue>(
@@ -31,12 +31,18 @@ export default function Recepcao() {
   const formattedDate = formatDateForApi(selectedDate);
   
   // Fetch agendamentos for the selected date
-  const { data: appointments = [], isLoading } = useGetAgendamentosByDateQuery({ 
+  const { data: appointments = [], isLoading, refetch } = useGetAgendamentosByDateQuery({ 
     date: formattedDate 
   }, {
     // Re-fetch when coming back to the window/tab
     refetchOnMountOrArgChange: true
   });
+
+  // Handle appointment updates
+  const handleAppointmentUpdated = () => {
+    // Refetch the appointments data when an appointment is updated
+    refetch();
+  };
 
   // Handle date change from calendar
   const handleDateChange = (date: DateValue): void => {
@@ -57,6 +63,8 @@ export default function Recepcao() {
     try {
       await createAgendamento(data).unwrap();
       setAgendamentoModalOpen(false);
+      // Refetch appointments after creating a new appointment
+      refetch();
     } catch (error) {
       console.error("Error creating appointment:", error);
     }
@@ -95,6 +103,7 @@ export default function Recepcao() {
           <AppointmentsTable 
             selectedDate={selectedDate} 
             appointments={appointments} 
+            onAppointmentUpdated={handleAppointmentUpdated}
           />
         )}
       </div>
