@@ -159,6 +159,21 @@ export const siahmeApi = createApi({
     getMedicos: builder.query<ReadUserDto[], void>({
       query: () => "users/medicos",
     }),
+    getGestores: builder.query<ReadUserDto[], void>({
+      query: () => "users/gestores",
+    }),
+    getEnfermeiros: builder.query<ReadUserDto[], void>({
+      query: () => "users/enfermeiros",
+    }),
+    getRecepcionistas: builder.query<ReadUserDto[], void>({
+      query: () => "users/recepcionistas",
+    }),
+    getDentistas: builder.query<ReadUserDto[], void>({
+      query: () => "users/dentistas",
+    }),
+    getFisioterapeutas: builder.query<ReadUserDto[], void>({
+      query: () => "users/fisioterapeutas",
+    }),
     ///////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////
     /////////////////Agendamentos ENDPOINTS////////////////
@@ -634,7 +649,12 @@ export const {
   useUpdatePacienteMutation,
   useDeletePacienteMutation,
   useGetPacienteByCpfQuery, // Add this hook for the new endpoint
-  useGetMedicosQuery, // Add this hook for the new endpoint
+  useGetMedicosQuery,
+  useGetEnfermeirosQuery,
+  useGetRecepcionistasQuery, 
+  useGetDentistasQuery,
+  useGetFisioterapeutasQuery,
   useReagendarAgendamentoMutation, // Add this export
   useRealizarCheckinMutation,
+  useGetGestoresQuery,
 } = siahmeApi;
