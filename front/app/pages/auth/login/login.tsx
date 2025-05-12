@@ -129,22 +129,9 @@ export function Login() {
 
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <Checkbox
-                  isSelected={isSelected}
-                  onValueChange={setIsSelected}
-                  radius="md"
-                  color="primary"
-                  className="text-gray-600 rounded-r-full "
-                >
-                  Lembrar de mim
-                </Checkbox>
+                
               </div>
-              <Link
-                href="/forgot-password"
-                className="text-sm text-gray-500 hover:text-gray-700"
-              >
-                Esqueceu a senha?
-              </Link>
+             
             </div>
 
             {isLoading ? (
@@ -161,15 +148,6 @@ export function Login() {
             )}
           </form>
 
-          <div className="mt-6 text-center text-sm">
-            <span className="text-gray-500">Não tem uma conta?</span>{" "}
-            <Link
-              href="/cadastro"
-              className="text-[#2196F3] hover:text-[#1976D2]"
-            >
-              Cadastrar-se!
-            </Link>
-          </div>
         </div>
 
         <div className="mt-8 text-center text-sm text-gray-500">
