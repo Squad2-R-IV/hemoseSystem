@@ -21,6 +21,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
+    "prisma-better-errors": "^1.0.4",
     "reflect-metadata": "^0.2.2",
     "swagger-autogen": "^2.23.7",
     "swagger-jsdoc": "^6.2.8",

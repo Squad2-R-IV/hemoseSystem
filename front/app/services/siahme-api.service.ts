@@ -20,6 +20,9 @@ import { ReadPrescricaoDto } from "~/Dtos/Prescricao/ReadPrescricaoDto";
 import { UpdatePrescricaoDto } from "~/Dtos/Prescricao/UpdatePrescricaoDto";
 import { CreatePacienteDto } from "~/Dtos/Paciente/CreatePacienteDto";
 import { ReadPacienteDto } from "~/Dtos/Paciente/ReadPacienteDto";
+import { showApiError } from "~/utils/handlers/api-error-handler";
+import { addToast } from "@heroui/react";
+import type { UpdatePacienteDto } from "~/Dtos/Paciente/UpdatePacienteDto";
 
 // Define a service using a base URL and expected endpoints
 const baseQuery = fetchBaseQuery({
@@ -33,9 +36,24 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
+// Criar um wrapper para o baseQuery que intercepta erros
+const baseQueryWithErrorHandling = async (args: any, api: any, extraOptions: any) => {
+  const result = await baseQuery(args, api, extraOptions);
+  
+  // Se houver um erro na requisição, exibe o toast automaticamente
+  if (result.error) {
+    // Não mostrar erros automáticos para o endpoint de login
+    if (!args.url.endsWith('/login')) {
+      showApiError(result.error);
+    }
+  }
+  
+  return result;
+};
+
 export const siahmeApi = createApi({
   reducerPath: "siahmeApi",
-  baseQuery,
+  baseQuery: baseQueryWithErrorHandling, // Usando o query modificado com tratamento de erro
   tagTypes: ["Agendamento", "Consulta", "Anamnese", "Conduta", "Prescricao"],
   endpoints: (builder) => ({
     ///////////////////////////////////////////////////////
@@ -58,16 +76,28 @@ export const siahmeApi = createApi({
           if (data.token) {
             localStorage.setItem("token", data.token);
           }
-        } catch (error) {
-          const err = error as { error?: { status?: number } };
-          if (err.error && err.error.status === 404) {
-            console.error("Error: Usuário não encontrado");
-          } else if (err.error && err.error.status === 401) {
-            console.error("Error: Senha inválida");
-          } else if (err.error && err.error.status === 500) {
-            console.error("Error: Erro interno no servidor");
-          } else {
-            console.error("Error storing token:", error);
+        } catch (error: any) {
+          // Tratamento específico para erros de login
+          const err = error as { error?: { status?: number; data?: any } };
+          
+          if (err.error) {
+            let message = "Falha na autenticação";
+            
+            if (err.error.status === 404) {
+              message = "Usuário não encontrado";
+            } else if (err.error.status === 401) {
+              message = "Senha inválida";
+            } else if (err.error.status === 500) {
+              message = "Erro interno no servidor";
+            } else if (err.error.data?.message) {
+              message = err.error.data.message;
+            }
+            
+            addToast({
+              title: "Erro de Login",
+              description: message,
+              color: "danger",
+            });
           }
         }
       },
@@ -443,7 +473,7 @@ export const siahmeApi = createApi({
         body,
       }),
     }),
-    updatePaciente: builder.mutation<ReadPacienteDto, { id: number; body: CreatePacienteDto }>({
+    updatePaciente: builder.mutation<ReadPacienteDto, { id: number; body: UpdatePacienteDto }>({
       query: ({ id, body }) => ({
         url: `paciente/${id}`,
         method: "PUT",
@@ -460,6 +490,104 @@ export const siahmeApi = createApi({
       query: ({ cpf }) => ({
         url: `paciente/cpf/${cpf}`,
       }),
+    }),
+    reagendarAgendamento: builder.mutation<
+      { oldAppointment: ReadAgendamentoDto, newAppointment: ReadAgendamentoDto },
+      { 
+        id: number; 
+        updateDto: UpdateAgendamentoDto;
+        newAppointmentDto: CreateAgendamentoDto 
+      }
+    >({
+      async queryFn({ id, updateDto, newAppointmentDto }, _queryApi, _extraOptions, baseQuery) {
+        try {
+          // Step 1: Update the existing appointment to Reagendado status
+          const updateResult = await baseQuery({
+            url: `agendamento/${id}`,
+            method: 'PUT',
+            body: updateDto
+          });
+          
+          if (updateResult.error) {
+            return { error: updateResult.error };
+          }
+          
+          // Step 2: Create a new appointment with the new date/time
+          const createResult = await baseQuery({
+            url: 'agendamento',
+            method: 'POST',
+            body: newAppointmentDto
+          });
+          
+          if (createResult.error) {
+            return { error: createResult.error };
+          }
+          
+          return { 
+            data: {
+              oldAppointment: updateResult.data as ReadAgendamentoDto,
+              newAppointment: createResult.data as ReadAgendamentoDto
+            }
+          };
+        } catch (error) {
+          return { 
+            error: { 
+              status: 500, 
+              data: { message: 'Erro ao reagendar o agendamento' } 
+            } 
+          };
+        }
+      },
+      invalidatesTags: ["Agendamento"],
+    }),
+    realizarCheckin: builder.mutation<
+      { appointment: ReadAgendamentoDto, consulta: ReadConsultaDto },
+      { 
+        id: number; 
+        updateDto: UpdateAgendamentoDto;
+        createConsultaDto: CreateConsultaDto 
+      }
+    >({
+      async queryFn({ id, updateDto, createConsultaDto }, _queryApi, _extraOptions, baseQuery) {
+        try {
+          // Step 1: Update appointment status to confirmed
+          const updateResult = await baseQuery({
+            url: `agendamento/${id}`,
+            method: 'PUT',
+            body: updateDto
+          });
+          
+          if (updateResult.error) {
+            return { error: updateResult.error };
+          }
+          
+          // Step 2: Create an empty consultation
+          const createResult = await baseQuery({
+            url: 'consulta',
+            method: 'POST',
+            body: createConsultaDto
+          });
+          
+          if (createResult.error) {
+            return { error: createResult.error };
+          }
+          
+          return { 
+            data: {
+              appointment: updateResult.data as ReadAgendamentoDto,
+              consulta: createResult.data as ReadConsultaDto
+            }
+          };
+        } catch (error) {
+          return { 
+            error: { 
+              status: 500, 
+              data: { message: 'Erro ao realizar check-in' } 
+            } 
+          };
+        }
+      },
+      invalidatesTags: ["Agendamento", "Consulta"],
     }),
   }),
 });
@@ -507,4 +635,6 @@ export const {
   useDeletePacienteMutation,
   useGetPacienteByCpfQuery, // Add this hook for the new endpoint
   useGetMedicosQuery, // Add this hook for the new endpoint
+  useReagendarAgendamentoMutation, // Add this export
+  useRealizarCheckinMutation,
 } = siahmeApi;
