@@ -28,5 +28,9 @@ export default [
       "consulta/:id",
       "./routes/modulos/consulta.tsx"
     ),
+    route(
+      "prontuarios",
+      "./routes/prontuarios.tsx"
+    ),
   ]),
 ] satisfies RouteConfig;
