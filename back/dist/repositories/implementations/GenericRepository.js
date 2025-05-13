@@ -24,39 +24,155 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GenericRepository = void 0;
 const tsyringe_1 = require("tsyringe");
 const client_1 = require("@prisma/client");
+const class_transformer_1 = require("class-transformer");
+const prismaErrorHandler_1 = require("../../utils/prismaErrorHandler");
 let GenericRepository = class GenericRepository {
-    constructor(prisma, model) {
+    constructor(prisma, model, entityClass, availableRelations = [] // Renomeado para availableRelations
+    ) {
         this.prisma = prisma;
         this.model = model;
+        this.entityClass = entityClass;
+        this.availableRelations = availableRelations;
     }
-    findAll() {
+    // Método auxiliar para gerar o include a partir das relações disponíveis
+    generateInclude() {
+        return this.availableRelations.reduce((acc, relation) => {
+            acc[relation] = true;
+            return acc;
+        }, {});
+    }
+    create(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.model.findMany();
+            try {
+                if (!this.model) {
+                    throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+                }
+                const result = yield this.model.create({ data });
+                return (0, class_transformer_1.plainToInstance)(this.entityClass, result);
+            }
+            catch (error) {
+                throw (0, prismaErrorHandler_1.handlePrismaError)(error);
+            }
         });
     }
-    findById(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.model.findUnique({ where: { id } });
+    findAll() {
+        return __awaiter(this, arguments, void 0, function* (includeRelations = true) {
+            try {
+                if (!this.model) {
+                    throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+                }
+                const include = includeRelations ? this.generateInclude() : undefined;
+                const results = yield this.model.findMany({ include });
+                return (0, class_transformer_1.plainToInstance)(this.entityClass, results);
+            }
+            catch (error) {
+                throw (0, prismaErrorHandler_1.handlePrismaError)(error);
+            }
+        });
+    }
+    findById(id_1) {
+        return __awaiter(this, arguments, void 0, function* (id, includeRelations = true) {
+            try {
+                const include = includeRelations ? this.generateInclude() : undefined;
+                const result = yield this.model.findUnique({
+                    where: { id },
+                    include,
+                });
+                return result ? (0, class_transformer_1.plainToInstance)(this.entityClass, result) : null;
+            }
+            catch (error) {
+                throw (0, prismaErrorHandler_1.handlePrismaError)(error);
+            }
         });
     }
     findByField(field, value) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.model.findUnique({ where: { [field]: value } });
+            try {
+                const result = yield this.model.findFirst({ where: { [field]: value } });
+                return result ? (0, class_transformer_1.plainToInstance)(this.entityClass, result) : null;
+            }
+            catch (error) {
+                throw (0, prismaErrorHandler_1.handlePrismaError)(error);
+            }
         });
     }
-    create(data) {
+    findManyByQuery(query_1) {
+        return __awaiter(this, arguments, void 0, function* (query, includeRelations = true) {
+            try {
+                const include = includeRelations ? this.generateInclude() : undefined;
+                const results = yield this.model.findMany(Object.assign(Object.assign({}, query), { include }));
+                return (0, class_transformer_1.plainToInstance)(this.entityClass, results);
+            }
+            catch (error) {
+                throw (0, prismaErrorHandler_1.handlePrismaError)(error);
+            }
+        });
+    }
+    findManyByField(field, value) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.model.create({ data });
+            try {
+                const results = yield this.model.findMany({ where: { [field]: value } });
+                return (0, class_transformer_1.plainToInstance)(this.entityClass, results);
+            }
+            catch (error) {
+                throw (0, prismaErrorHandler_1.handlePrismaError)(error);
+            }
+        });
+    }
+    findByFields(fields_1) {
+        return __awaiter(this, arguments, void 0, function* (fields, includeRelations = true) {
+            try {
+                const whereClause = fields.reduce((acc, { field, value }) => {
+                    acc[field] = value; // Directly assign the value as provided by the user
+                    return acc;
+                }, {});
+                const include = includeRelations ? this.generateInclude() : undefined;
+                const result = yield this.model.findFirst({ where: whereClause, include });
+                return result ? (0, class_transformer_1.plainToInstance)(this.entityClass, result) : null;
+            }
+            catch (error) {
+                throw (0, prismaErrorHandler_1.handlePrismaError)(error);
+            }
+        });
+    }
+    findManyByFields(fields_1) {
+        return __awaiter(this, arguments, void 0, function* (fields, includeRelations = true) {
+            try {
+                const whereClause = fields.reduce((acc, { field, value }) => {
+                    acc[field] = value; // Directly assign the value as provided by the user
+                    return acc;
+                }, {});
+                const include = includeRelations ? this.generateInclude() : undefined;
+                const results = yield this.model.findMany({ where: whereClause, include });
+                return (0, class_transformer_1.plainToInstance)(this.entityClass, results);
+            }
+            catch (error) {
+                throw (0, prismaErrorHandler_1.handlePrismaError)(error);
+            }
         });
     }
     update(id, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.model.update({ where: { id }, data });
+            try {
+                const entity = yield this.findById(id);
+                if (!entity)
+                    return null;
+                const result = yield this.model.update({ where: { id: id }, data });
+                return (0, class_transformer_1.plainToInstance)(this.entityClass, result);
+            }
+            catch (error) {
+                throw (0, prismaErrorHandler_1.handlePrismaError)(error);
+            }
         });
     }
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.model.delete({ where: { id } });
+            try {
+                yield this.model.delete({ where: { id } });
+            }
+            catch (error) {
+                throw (0, prismaErrorHandler_1.handlePrismaError)(error);
+            }
         });
     }
 };
@@ -70,5 +186,5 @@ exports.GenericRepository = GenericRepository = __decorate([
     ]),
     (0, tsyringe_1.injectable)(),
     __param(0, (0, tsyringe_1.inject)("PrismaClient")),
-    __metadata("design:paramtypes", [client_1.PrismaClient, Object])
+    __metadata("design:paramtypes", [client_1.PrismaClient, Object, Function, Array])
 ], GenericRepository);

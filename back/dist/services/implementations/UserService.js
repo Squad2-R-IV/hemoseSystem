@@ -20,18 +20,88 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const tsyringe_1 = require("tsyringe");
 const GenericService_1 = require("./GenericService");
+const prisma_1 = __importDefault(require("../../config/prisma")); // Importa a instância do Prisma configurada
 const UserRepository_1 = require("../../repositories/implementations/UserRepository");
+const UserToRoleRepository_1 = require("../../repositories/implementations/UserToRoleRepository");
+const RoleRepository_1 = require("../../repositories/implementations/RoleRepository");
 let UserService = class UserService extends GenericService_1.GenericService {
     constructor(userRepository) {
         super(userRepository);
     }
+    findByRefreshToken(refreshToken) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield this.repository.findByFields([{ field: 'refreshToken', value: refreshToken }]);
+            return user;
+        });
+    }
     findByEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.repository.findByField("email", email); // Ensure repository is protected in GenericService
+            const user = yield this.repository.findByFields([{ field: 'email', value: email }]);
+            return user;
+        });
+    }
+    getUserRoles(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const userToRoleRepository = tsyringe_1.container.resolve(UserToRoleRepository_1.UserToRoleRepository);
+            const roleRepository = tsyringe_1.container.resolve(RoleRepository_1.RoleRepository);
+            const userToRoles = yield userToRoleRepository.findManyByFields([{ field: 'userId', value: userId }]);
+            let userRoles = [];
+            for (const userToRole of userToRoles) {
+                const role = yield roleRepository.findById(userToRole.roleId);
+                if (role) {
+                    userRoles.push(role);
+                }
+            }
+            return userRoles;
+        });
+    }
+    updateUserRoles(userId, roles) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const roleRepository = tsyringe_1.container.resolve(RoleRepository_1.RoleRepository);
+            // Verificar se todas as roles existem
+            const reqRoles = roles.map((role) => __awaiter(this, void 0, void 0, function* () {
+                const roleRecord = yield roleRepository.findByField("name", role);
+                if (!roleRecord) {
+                    throw new Error(`Role ${role} não encontrada`);
+                }
+                return roleRecord;
+            }));
+            const rolesRecords = yield Promise.all(reqRoles);
+            // Deletar as roles atuais do usuário
+            yield prisma_1.default.userToRole.deleteMany({
+                where: { userId }
+            });
+            // Inserir as novas roles
+            const userToRoleData = rolesRecords.map(role => ({
+                userId,
+                roleId: role.id
+            }));
+            yield prisma_1.default.userToRole.createMany({
+                data: userToRoleData
+            });
+        });
+    }
+    getUsersByRole(roleName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const roleRepository = tsyringe_1.container.resolve(RoleRepository_1.RoleRepository);
+            const userToRoleRepository = tsyringe_1.container.resolve(UserToRoleRepository_1.UserToRoleRepository);
+            const role = yield roleRepository.findByField("name", roleName);
+            if (!role) {
+                throw new Error(`Role ${roleName} não encontrada`);
+            }
+            const userToRoles = yield userToRoleRepository.findManyByFields([{ field: "roleId", value: role.id }]);
+            const userIds = userToRoles.map(userToRole => userToRole.userId);
+            const users = yield prisma_1.default.user.findMany({
+                where: { id: { in: userIds } },
+            });
+            return users;
         });
     }
 };

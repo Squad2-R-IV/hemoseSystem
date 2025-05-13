@@ -20,78 +20,174 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GenericController = void 0;
 const tsyringe_1 = require("tsyringe");
+const class_transformer_1 = require("class-transformer");
+const winston_logger_1 = __importDefault(require("../config/winston_logger"));
+const auditoria_entity_1 = require("../models/auditoria.entity");
 let GenericController = class GenericController {
-    constructor(service) {
+    constructor(service, entityClass, createDtoClass, updateDtoClass, readDtoClass, auditoriaService) {
         this.service = service;
+        this.entityClass = entityClass;
+        this.createDtoClass = createDtoClass;
+        this.updateDtoClass = updateDtoClass;
+        this.readDtoClass = readDtoClass;
+        this.auditoriaService = auditoriaService;
     }
     getAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const items = yield this.service.getAll();
-                return res.json(items);
-            }
-            catch (error) {
-                return res.status(500).json({ error: error.message });
-            }
+            // Removido o try/catch para permitir que erros sejam tratados pelo middleware global
+            const includeRelations = req.query.includeRelations === 'true';
+            const items = yield this.service.getAll(includeRelations);
+            const readDtos = (0, class_transformer_1.plainToInstance)(this.readDtoClass, items);
+            return res.json(readDtos);
         });
     }
     getById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { id } = req.params;
-                const item = yield this.service.getById(id);
-                if (!item)
-                    return res.status(404).json({ message: "Item não encontrado" });
-                return res.json(item);
+            // Removido o try/catch para permitir que erros sejam tratados pelo middleware global
+            let { id } = req.params;
+            const includeRelations = req.query.includeRelations === 'true';
+            //Verificar se TEntity é UsuarioEntity, se não for, converte id para number
+            const isUsuarioEntity = this.entityClass.name === "UserEntity";
+            let itemId;
+            if (!isUsuarioEntity) {
+                itemId = Number(id);
             }
-            catch (error) {
-                return res.status(500).json({ error: error.message });
+            else {
+                itemId = id;
             }
+            const item = yield this.service.getById(itemId, includeRelations);
+            if (!item)
+                return res.status(404).json({ message: "Item não encontrado" });
+            const readDto = (0, class_transformer_1.plainToInstance)(this.readDtoClass, item);
+            return res.json(readDto);
         });
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const newItem = yield this.service.create(req.body);
-                return res.status(201).json(newItem);
+            var _a;
+            // Removido o try/catch para permitir que erros sejam tratados pelo middleware global
+            const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+            if (!userId) {
+                return res.status(403).json({ message: "Você não tem permissão para criar um item" });
             }
-            catch (error) {
-                return res.status(500).json({ error: error.message });
-            }
+            const bodyDto = (0, class_transformer_1.plainToInstance)(this.entityClass, req.body);
+            const newItem = yield this.service.create(bodyDto);
+            const readDto = (0, class_transformer_1.plainToInstance)(this.readDtoClass, newItem);
+            if (userId)
+                yield winston_logger_1.default.info(`Na tabela ${this.entityClass.name} foi criado por ${userId}, com os dados: ${JSON.stringify(bodyDto)}`);
+            let auditoria = new auditoria_entity_1.AuditoriaEntity();
+            auditoria.id_usuario = userId;
+            auditoria.data_hora = new Date();
+            auditoria.acao = "CREATE";
+            auditoria.tabela = this.entityClass.name;
+            auditoria.dados_anteriores = null;
+            auditoria.dados_novos = JSON.stringify(newItem);
+            yield this.auditoriaService.create(auditoria);
+            return res.status(201).json(readDto);
         });
     }
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { id } = req.params;
-                const updatedItem = yield this.service.update(id, req.body);
-                if (!updatedItem)
-                    return res.status(404).json({ message: "Item não encontrado" });
-                return res.json(updatedItem);
+            var _a;
+            // Removido o try/catch para permitir que erros sejam tratados pelo middleware global
+            let { id } = req.params;
+            //Verificar se TEntity é UsuarioEntity, se nao for, converte id para number
+            const isUsuarioEntity = this.entityClass.name === "UserEntity";
+            let itemId;
+            if (!isUsuarioEntity) {
+                itemId = Number(id);
             }
-            catch (error) {
-                return res.status(500).json({ error: error.message });
+            else {
+                itemId = id;
             }
+            const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+            if (!userId) {
+                return res.status(403).json({ message: "Você não tem permissão para atualizar um item" });
+            }
+            const previousItemData = yield this.service.getById(itemId);
+            if (!previousItemData)
+                return res.status(404).json({ message: "Item não encontrado" });
+            const updateDto = (0, class_transformer_1.plainToInstance)(this.entityClass, req.body);
+            const updatedItem = yield this.service.update(itemId, updateDto);
+            if (!updatedItem)
+                return res.status(404).json({ message: "Item não encontrado" });
+            const readDto = (0, class_transformer_1.plainToInstance)(this.readDtoClass, updatedItem);
+            if (userId)
+                yield winston_logger_1.default.info(`Na tabela ${this.entityClass.name} o id ${itemId} foi atualizado por ${userId}, com os dados: ${JSON.stringify(updateDto)}`);
+            let auditoria = new auditoria_entity_1.AuditoriaEntity();
+            auditoria.id_usuario = userId;
+            auditoria.data_hora = new Date();
+            auditoria.acao = "UPDATE";
+            auditoria.tabela = this.entityClass.name;
+            auditoria.dados_anteriores = JSON.stringify(previousItemData);
+            auditoria.dados_novos = JSON.stringify(updatedItem);
+            yield this.auditoriaService.create(auditoria);
+            return res.json(readDto);
         });
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { id } = req.params;
-                yield this.service.delete(id);
-                return res.status(204).send();
+            var _a;
+            // Removido o try/catch para permitir que erros sejam tratados pelo middleware global
+            let { id } = req.params;
+            //Verificar se TEntity é UsuarioEntity, se nao for, converte id para number
+            const isUsuarioEntity = this.entityClass.name === "UserEntity";
+            let itemId;
+            if (!isUsuarioEntity) {
+                itemId = Number(id);
             }
-            catch (error) {
-                return res.status(500).json({ error: error.message });
+            else {
+                itemId = id;
             }
+            const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+            if (!userId) {
+                return res.status(403).json({ message: "Você não tem permissão para atualizar um item" });
+            }
+            if (userId === id) {
+                return res.status(403).json({ message: "Você não pode excluir a si mesmo" });
+            }
+            const item = yield this.service.getById(itemId);
+            if (!item)
+                return res.status(404).json({ message: "Item não encontrado" });
+            yield this.service.delete(itemId);
+            yield winston_logger_1.default.info(`Na tabela ${this.entityClass.name} o id ${itemId} foi excluído por ${userId}`);
+            let auditoria = new auditoria_entity_1.AuditoriaEntity();
+            auditoria.id_usuario = userId;
+            auditoria.data_hora = new Date();
+            auditoria.acao = "DELETE";
+            auditoria.tabela = this.entityClass.name;
+            auditoria.dados_anteriores = JSON.stringify(item);
+            auditoria.dados_novos = null;
+            yield this.auditoriaService.create(auditoria);
+            return res.status(204).send();
         });
     }
 };
 exports.GenericController = GenericController;
 exports.GenericController = GenericController = __decorate([
     __param(0, (0, tsyringe_1.inject)('GenericService')),
-    __metadata("design:paramtypes", [Object])
+    __param(5, (0, tsyringe_1.inject)('AuditoriaService')),
+    __metadata("design:paramtypes", [Object, Function, Function, Function, Function, Object])
 ], GenericController);
+/*
+
+    @AutoMap()
+    id_auditoria!: number;
+    @AutoMap()
+    id_usuario!: string;
+    @AutoMap()
+    data_hora!: Date;
+    @AutoMap()
+    acao!: string;
+    @AutoMap()
+    tabela!: string;
+    @AutoMap()
+    dados_anteriores!: string | null;
+    @AutoMap()
+    dados_novos!: string | null;*/ 
