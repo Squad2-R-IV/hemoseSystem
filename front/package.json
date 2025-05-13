@@ -26,6 +26,7 @@
     "@react-stately/data": "^3.12.2",
     "@reduxjs/toolkit": "^2.6.1",
     "concurrently": "^9.1.2",
+    "dotenv": "^16.5.0",
     "framer-motion": "^12.6.3",
     "isbot": "^5.1.17",
     "react": "^19.1.0",

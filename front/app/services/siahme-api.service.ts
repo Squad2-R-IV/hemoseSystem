@@ -23,10 +23,11 @@ import { ReadPacienteDto } from "~/Dtos/Paciente/ReadPacienteDto";
 import { showApiError } from "~/utils/handlers/api-error-handler";
 import { addToast } from "@heroui/react";
 import type { UpdatePacienteDto } from "~/Dtos/Paciente/UpdatePacienteDto";
+import 'dotenv/config'
 
 // Define a service using a base URL and expected endpoints
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:3000/",
+  baseUrl: process.env.API_URL,
   prepareHeaders: (headers) => {
     const token = localStorage.getItem("token");
     if (token) {
