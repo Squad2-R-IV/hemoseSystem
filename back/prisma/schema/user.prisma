@@ -15,4 +15,6 @@ model User {
   auditorias    Auditoria[]
   Anamneses     Anamnese[]
   Condutas      Conduta[]
+
+  @@map("user")
 }

@@ -8,4 +8,5 @@ model Conduta {
   Consulta        Consulta @relation(fields: [id_consulta], references: [id])
   User              User       @relation(fields: [id_funcionario], references: [id])
 
+  @@map("conduta")
 }

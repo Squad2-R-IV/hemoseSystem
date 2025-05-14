@@ -9,12 +9,16 @@ model Paciente {
   cpf_acompanhante   String   @db.VarChar(11)
 
   agendamentos       Agendamento[]
+
+  @@map("paciente")
 }
 
 enum Sexo {
   M // Masculino
   F // Feminino
   O // Outro
+
+  @@map("sexo")
 }
 
 enum EstadoCivil {
@@ -22,4 +26,6 @@ enum EstadoCivil {
   C // Casado(a)
   D // Divorciado(a)
   V // Viúvo(a)
+
+  @@map("estado_civil")
 }
