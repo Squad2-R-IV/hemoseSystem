@@ -18,8 +18,6 @@ jobs:
           username: ${{ secrets.BACKEND_UBUNTU_USER }}
           key: ${{ secrets.VPS_SSH }}
           script: |
-            sudo su -
-            su - application-well-api-siahme
             cd /home/application-well-api-siahme/htdocs/api-siahme.application-well.com.br
             git pull origin main
 
