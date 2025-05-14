@@ -25,7 +25,7 @@ import { addToast } from "@heroui/react";
 import type { UpdatePacienteDto } from "~/Dtos/Paciente/UpdatePacienteDto";
 
 // Define a service using a base URL and expected endpoints
-const env = await import.meta.env
+const env = import.meta.env
 const baseQuery = fetchBaseQuery({
   baseUrl: env.VITE_API_URL,
   prepareHeaders: (headers) => {
