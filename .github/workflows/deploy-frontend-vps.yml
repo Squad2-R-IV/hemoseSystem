@@ -1,0 +1,48 @@
+name: Deploy Frontend to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Pull and Deploy on VPS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Acessar VPS e fazer deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_URL }}
+          username: ${{ secrets.FRONTEND_UBUNTU_USER }}
+          key: ${{ secrets.VPS_SSH }}
+          script: |
+            # Navegar até o diretório onde o site está hospedado
+            cd /home/application-well-siahme/htdocs/
+
+            # Verificar se a pasta hemoseSystem existe, e fazer pull ou clone
+            if [ -d "hemoseSystem" ]; then
+              echo "hemoseSystem já existe. Fazendo git pull..."
+              cd hemoseSystem
+              git pull origin main
+            else
+              echo "hemoseSystem não existe. Fazendo git clone..."
+              git clone https://github.com/Squad2-R-IV/hemoseSystem.git
+              cd hemoseSystem
+            fi
+
+            # Entrar no diretório do frontend
+            cd front
+
+            # Carregar o NVM e definir a versão do Node.js
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm use 22.15.0
+
+            # Instalar dependências e gerar o build
+            npm install
+            npm run build
+
+            # Copiar os arquivos do build para o diretório do site
+            cp -r build/client/* /home/application-well-siahme/htdocs/siahme.application-well.com.br/
