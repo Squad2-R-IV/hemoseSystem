@@ -8,6 +8,7 @@ export interface IUserService extends IGenericService<UserEntity> {
     findByEmail(email: string): Promise<User | null>;
     getUserRoles(userId: string): Promise<Role[]>;
     updateUserRoles(userId: string, roles: string[]): Promise<void>;
+    getUsersByRole(roleName: string): Promise<User[]>;
 }
 
 

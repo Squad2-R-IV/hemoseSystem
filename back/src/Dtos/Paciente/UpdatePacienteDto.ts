@@ -1,4 +1,5 @@
 import { AutoMap } from "@automapper/classes";
+import { Sexo, EstadoCivil } from "@prisma/client";
 
 export class UpdatePacienteDto {
     @AutoMap()
@@ -8,9 +9,9 @@ export class UpdatePacienteDto {
     @AutoMap()
     idade?: number;
     @AutoMap()
-    sexo?: string;
+    sexo!: Sexo;
     @AutoMap()
-    estado_civil?: string;
+    estado_civil!: EstadoCivil;
     @AutoMap()
     endereco?: string;
     @AutoMap()

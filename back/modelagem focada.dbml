@@ -2,7 +2,6 @@ Table Paciente {
   id_paciente int [pk] 
   nome_paciente varchar(100)
   dt_nascimento date
-  idade int
   sexo varchar(20)
   estado_civil varchar(20)
   endereco varchar(50)

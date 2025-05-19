@@ -10,8 +10,8 @@ import agendamentoRoutes from "./routes/agendamento.routes";
 import pacienteRoutes from "./routes/paciente.routes";
 import anamneseRoutes from "./routes/anamnese.routes";
 import condutaRoutes from "./routes/conduta.routes";
-
 import path from 'path';
+import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();
 app.use(cors());
@@ -29,6 +29,9 @@ app.use("/conduta", condutaRoutes);
 
 // Configurar Swagger
 setupSwagger(app);
+
+// Global error handler middleware - must be after all routes
+app.use(errorHandler);
 
 // Alterado para servidor HTTP
 app.listen(3000, () => {

@@ -1,0 +1,29 @@
+name: Deploy Backend to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Pull and Deploy on VPS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Acessar VPS e fazer deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_URL }}
+          username: ${{ secrets.BACKEND_UBUNTU_USER }}
+          key: ${{ secrets.VPS_SSH }}
+          script: |
+            cd /home/application-well-api-siahme/htdocs/api-siahme.application-well.com.br
+            git pull origin main
+            cd back
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm use 22.15.0
+            yarn install
+            yarn build
+            pm2 restart api_siahme

@@ -4,4 +4,6 @@ model Role {
   description String
   users       UserToRole[]
   permissions RoleToPermission[]
+  
+  @@map("role")
 }

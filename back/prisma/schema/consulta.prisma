@@ -21,6 +21,8 @@ model Consulta {
   Exames               Exames[]
   EvolucoesMedicas     EvolucaoMedica[]
   LeitoConsultas       LeitoConsulta[]
+
+  @@map("consulta")
 }
 
 enum status_consulta_enum {

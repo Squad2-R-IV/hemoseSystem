@@ -4,4 +4,5 @@ model RoleToPermission {
   role         Role       @relation(fields: [roleId], references: [id])
   permission   Permission @relation(fields: [permissionId], references: [id])
   @@id([roleId, permissionId])
+  @@map("role_to_permission")
 }

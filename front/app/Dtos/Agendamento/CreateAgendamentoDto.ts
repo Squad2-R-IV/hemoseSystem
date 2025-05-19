@@ -6,7 +6,11 @@ export class CreateAgendamentoDto {
     
     id_funcionario!: string;
     
-    data_hora_agendamento!: Date;
+    dt_agendamento!: Date;
+    
+    dt_hora_agendamento!: number;
+    
+    dt_chegada?: Date;
     
     tipo_agendamento!: TipoAgendamentoEnum;
     

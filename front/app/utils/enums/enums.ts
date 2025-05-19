@@ -34,3 +34,23 @@ export const status_consulta_enum = {
 };
 
 export type status_consulta_enum = (typeof status_consulta_enum)[keyof typeof status_consulta_enum];
+
+
+
+export const Sexo = {
+  M: "Masculino",
+  F: "Feminino",
+  O: "Outro",
+};
+
+export type Sexo = (typeof Sexo)[keyof typeof Sexo];
+
+export const EstadoCivil = {
+  S: "Solteiro",
+  C: "Casado",
+  D: "Divorciado",
+  V: "Viúvo",
+};
+
+export type EstadoCivil = (typeof EstadoCivil)[keyof typeof EstadoCivil];
+

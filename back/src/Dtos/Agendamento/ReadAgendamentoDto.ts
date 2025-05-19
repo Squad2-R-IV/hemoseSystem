@@ -12,7 +12,11 @@ export class ReadAgendamentoDto {
     @AutoMap()
     id_funcionario!: string;
     @AutoMap()
-    data_hora_agendamento!: Date;
+    dt_agendamento!: Date;
+    @AutoMap()
+    dt_hora_agendamento!: number;
+    @AutoMap()
+    dt_chegada!: Date | null;
     @AutoMap()
     tipo_agendamento!: TipoAgendamentoEnum;
     @AutoMap()

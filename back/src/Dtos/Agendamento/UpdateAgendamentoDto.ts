@@ -3,11 +3,11 @@ import { TipoAgendamentoEnum, StatusAgendamentoEnum } from "@prisma/client";
 
 export class UpdateAgendamentoDto {
     @AutoMap()
-    id_paciente?: number;
+    dt_agendamento?: Date;
     @AutoMap()
-    id_funcionario?: string;
+    dt_hora_agendamento?: number;
     @AutoMap()
-    data_hora_agendamento?: Date;
+    dt_chegada!: Date | null;
     @AutoMap()
     tipo_agendamento?: TipoAgendamentoEnum;
     @AutoMap()

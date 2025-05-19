@@ -7,4 +7,6 @@ model Auditoria {
   dados_anteriores   Json? 
   dados_novos        Json? 
   Usuario            User                  @relation(fields: [id_usuario], references: [id])
+
+  @@map("auditoria")
 }

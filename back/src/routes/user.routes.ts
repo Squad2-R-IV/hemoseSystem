@@ -59,6 +59,162 @@ const userController = container.resolve(UserController);
 
 /**
  * @swagger
+ * /users/medicos:
+ *   get:
+ *     summary: Retorna todos os usuários com a role "medico"
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Lista de médicos retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Erro no servidor
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get(
+    "/medicos",
+    authMiddleware,
+    asyncHandler(userController.getMedicos.bind(userController))
+);
+
+/**
+ * @swagger
+ * /users/gestores:
+ *   get:
+ *     summary: Retorna todos os usuários com a role "gestor"
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Lista de gestores retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Erro no servidor
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get(
+    "/gestores",
+    authMiddleware,
+    asyncHandler(userController.getGestores.bind(userController))
+);
+
+/**
+ * @swagger
+ * /users/enfermeiros:
+ *   get:
+ *     summary: Retorna todos os usuários com a role "enfermeiro"
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Lista de enfermeiros retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Erro no servidor
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get(
+    "/enfermeiros",
+    authMiddleware,
+    asyncHandler(userController.getEnfermeiros.bind(userController))
+);
+
+/**
+ * @swagger
+ * /users/recepcionistas:
+ *   get:
+ *     summary: Retorna todos os usuários com a role "recepcionista"
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Lista de recepcionistas retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Erro no servidor
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get(
+    "/recepcionistas",
+    authMiddleware,
+    asyncHandler(userController.getRecepcionistas.bind(userController))
+);
+
+/**
+ * @swagger
+ * /users/dentistas:
+ *   get:
+ *     summary: Retorna todos os usuários com a role "dentista"
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Lista de dentistas retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Erro no servidor
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get(
+    "/dentistas",
+    authMiddleware,
+    asyncHandler(userController.getDentistas.bind(userController))
+);
+
+/**
+ * @swagger
+ * /users/fisioterapeutas:
+ *   get:
+ *     summary: Retorna todos os usuários com a role "fisioterapeuta"
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Lista de fisioterapeutas retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Erro no servidor
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get(
+    "/fisioterapeutas",
+    authMiddleware,
+    asyncHandler(userController.getFisioterapeutas.bind(userController))
+);
+
+/**
+ * @swagger
  * /users:
  *   get:
  *     summary: Retorna todos os usuários
@@ -392,5 +548,6 @@ router.post("/changeUserRoles",
     adminOnlyMiddleware,
     asyncHandler(userController.changeUserRoles.bind(userController))
 );
+
 
 export default router;

@@ -8,6 +8,7 @@ import {
     QuestionMarkCircleIcon,
     ClipboardDocumentListIcon,
     CalendarDaysIcon,
+    DocumentTextIcon,
   } from "@heroicons/react/24/outline";
 import { Link as RouteLink } from "react-router";
 
@@ -20,7 +21,10 @@ const menuItems = [
   { icon: HomeIcon, label: "Home", path: "/home" },
   { icon: ClipboardDocumentListIcon, label: "Consultas Abertas", path: "/selecao-agendamento" },
   { icon: CalendarDaysIcon, label: "Recepção", path: "/recepcao" },
+  { icon: DocumentTextIcon, label: "Prontuarios", path: "/prontuarios" },
+  { icon: UsersIcon, label: "Funcionários", path: "/funcionarios" },
   { icon: QuestionMarkCircleIcon, label: "Help", path: "/help" },
+  
 ];
 
 export default function SidebarMenu({ isOpen, onOpenChange }: SidebarMenuProps) {
@@ -51,6 +55,7 @@ export default function SidebarMenu({ isOpen, onOpenChange }: SidebarMenuProps) 
                 variant="flat"
                 className="justify-start"
                 startContent={<item.icon className="h-5 w-5" />}
+                onPress={() => onOpenChange(false)}
               >
                 {item.label}
               </Button>

@@ -71,6 +71,39 @@ const pacienteController = container.resolve(PacienteController);
 
 /**
  * @swagger
+ * /paciente/cpf/{cpf}:
+ *   get:
+ *     summary: Retorna um paciente pelo CPF
+ *     tags: [Paciente]
+ *     parameters:
+ *       - in: path
+ *         name: cpf
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: CPF do paciente
+ *     responses:
+ *       200:
+ *         description: Paciente encontrado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Paciente'
+ *       404:
+ *         description: Paciente não encontrado
+ *       500:
+ *         description: Erro no servidor
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get(
+    "/cpf/:cpf",
+    authMiddleware,
+    checkPermission("paciente_read"),
+    asyncHandler(pacienteController.findPacienteByCpf.bind(pacienteController))
+  );
+/**
+ * @swagger
  * /paciente:
  *   get:
  *     summary: Retorna todos os pacientes
@@ -286,5 +319,6 @@ router.put("/:id", authMiddleware, checkPermission("paciente_update"), asyncHand
  *       - bearerAuth: []
  */
 router.delete("/:id", authMiddleware, checkPermission("paciente_delete"), asyncHandler(pacienteController.delete.bind(pacienteController)));
+
 
 export default router;

@@ -18,4 +18,8 @@ export class PacienteService extends GenericService<PacienteWithRelations> imple
   ) {
     super(pacienteRepository);
   }
+
+  async findPacienteByCpf(cpf: string): Promise<PacienteWithRelations | null> {
+    return this.repository.findByFields([{ field: "cpf", value: cpf }]);
+  }
 }

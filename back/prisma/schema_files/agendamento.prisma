@@ -2,14 +2,17 @@ model Agendamento {
   id    Int                   @id @default(autoincrement())
   id_paciente         Int
   id_funcionario      String
-  data_hora_agendamento    DateTime
+  dt_agendamento      DateTime @db.Date
+  dt_hora_agendamento Int   
   tipo_agendamento    TipoAgendamentoEnum
   status_agendamento  StatusAgendamentoEnum
   observacoes         String?
-
+  dt_chegada          DateTime?
   Paciente            Paciente              @relation(fields: [id_paciente], references: [id])
   Usuario             User                  @relation(fields: [id_funcionario], references: [id])
   Consulta          Consulta?
+
+  @@map("agendamento")
 }
 
 enum StatusAgendamentoEnum {
@@ -18,10 +21,14 @@ enum StatusAgendamentoEnum {
   Realizado
   Cancelado
   Reagendado 
+
+  @@map("status_agendamento_enum")
 }
 
 enum TipoAgendamentoEnum {
   Consulta
   Exame
   Procedimento
+
+  @@map("tipo_agendamento_enum")
 }

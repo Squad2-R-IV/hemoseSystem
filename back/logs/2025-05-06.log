@@ -1,0 +1,215 @@
+2025-05-06 12:01:43 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-06 12:01:43 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create(
+Unique constraint failed on the constraint: `User_email_key`
+2025-05-06 14:47:43 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-06 14:47:44 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create(
+Unique constraint failed on the constraint: `User_email_key`
+2025-05-06 14:48:33 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create(
+Unique constraint failed on the constraint: `User_email_key`
+2025-05-06 14:49:36 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create(
+Unique constraint failed on the constraint: `User_email_key`
+2025-05-06 14:52:34 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-06 14:52:34 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create(
+Unique constraint failed on the constraint: `User_email_key`
+2025-05-06 14:55:21 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-06 14:56:02 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create(
+Unique constraint failed on the constraint: `User_email_key`
+2025-05-06 14:56:52 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create({
+       data: {
+         id_paciente: 123,
+         id_funcionario: "some-uuid-1",
+         data_hora_agendamento: "2025-03-10T10:00:00Z",
+         tipo_agendamento: "Consulta",
+         status_agendamento: "Agendado",
+         observacoes: "Primeira consulta",
+     +   dt_agendamento: DateTime
+       }
+     })
+
+Argument `dt_agendamento` is missing.
+2025-05-06 14:57:25 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create({
+       data: {
+         id_agendamento: 123,
+         procedimento: "PROCEDIMENTO_A",
+         dt_entrada: "2025-03-03T10:00:00Z",
+         status: "A",
+                 ~~~
+         observacoes: "Procedimento iniciado"
+       }
+     })
+
+Invalid value for argument `status`. Expected status_consulta_enum.
+2025-05-06 14:59:18 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create({
+       data: {
+         id_paciente: 123,
+         id_funcionario: "some-uuid-1",
+         data_hora_agendamento: "2025-03-10T10:00:00Z",
+         tipo_agendamento: "Consulta",
+         status_agendamento: "Agendado",
+         observacoes: "Primeira consulta",
+     +   dt_agendamento: DateTime
+       }
+     })
+
+Argument `dt_agendamento` is missing.
+2025-05-06 15:03:16 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create({
+       data: {
+         id_paciente: 123,
+         id_funcionario: "some-uuid-1",
+         data_hora_agendamento: "2025-03-10T10:00:00Z",
+         tipo_agendamento: "Consulta",
+         status_agendamento: "Agendado",
+         observacoes: "Primeira consulta",
+     +   dt_agendamento: DateTime
+       }
+     })
+
+Argument `dt_agendamento` is missing.
+2025-05-06 15:03:32 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create({
+       data: {
+         id_paciente: 123,
+         id_funcionario: "some-uuid-1",
+         data_hora_agendamento: "2025-03-10T10:00:00Z",
+         tipo_agendamento: "Consulta",
+         status_agendamento: "Agendado",
+         observacoes: "Primeira consulta",
+     +   dt_agendamento: DateTime
+       }
+     })
+
+Argument `dt_agendamento` is missing.
+2025-05-06 15:11:56 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-06 15:11:56 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create(
+Unique constraint failed on the constraint: `User_email_key`
+2025-05-06 15:12:01 [ERROR]: Error: Já existe um registro com o valor informado para o campo: email
+2025-05-06 15:12:17 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create({
+       data: {
+         id_paciente: 123,
+         id_funcionario: "some-uuid-1",
+         data_hora_agendamento: "2025-03-10T10:00:00Z",
+         tipo_agendamento: "Consulta",
+         status_agendamento: "Agendado",
+         observacoes: "Primeira consulta",
+     +   dt_agendamento: DateTime
+       }
+     })
+
+Argument `dt_agendamento` is missing.
+2025-05-06 15:12:17 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-06 15:33:14 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create(
+Unique constraint failed on the constraint: `User_email_key`
+2025-05-06 15:33:14 [ERROR]: Error: Já existe um registro com o valor informado para o campo: email
+2025-05-06 15:33:52 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:35:39
+
+  32 if (!this.model) {
+  33   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  34 }
+→ 35 const result = await this.model.create(
+Unique constraint failed on the constraint: `User_email_key`
+2025-05-06 15:33:52 [ERROR]: Error: Já existe um registro com o valor informado para o campo: email
+2025-05-06 15:39:23 [INFO]: Na tabela AgendamentoEntity foi criado por 9f5d4fa5-5e03-4437-a543-2454524b3afc, com os dados: {"id_paciente":4,"id_funcionario":"8a706193-cc11-4ec3-9e12-e469144f6bd8","dt_agendamento":"2025-05-06T00:00:00.000Z","dt_hora_agendamento":8,"tipo_agendamento":"Consulta","status_agendamento":"Agendado","observacoes":"nenhuma"}
+2025-05-06 15:41:39 [INFO]: Na tabela AgendamentoEntity o id 15 foi atualizado por 9f5d4fa5-5e03-4437-a543-2454524b3afc, com os dados: {"dt_agendamento":"2025-05-06T00:00:00.000Z","dt_hora_agendamento":8,"status_agendamento":"Reagendado","tipo_agendamento":"Consulta","observacoes":"nenhuma"}
+2025-05-06 15:41:40 [INFO]: Na tabela AgendamentoEntity foi criado por 9f5d4fa5-5e03-4437-a543-2454524b3afc, com os dados: {"id_paciente":4,"id_funcionario":"8a706193-cc11-4ec3-9e12-e469144f6bd8","dt_agendamento":"2025-05-06T00:00:00.000Z","dt_hora_agendamento":10,"tipo_agendamento":"Consulta","status_agendamento":"Agendado","observacoes":"Reagendado de 05/05/2025 8:00"}
+2025-05-06 15:50:29 [INFO]: Na tabela AgendamentoEntity o id 16 foi atualizado por 9f5d4fa5-5e03-4437-a543-2454524b3afc, com os dados: {"dt_agendamento":"2025-05-06T00:00:00.000Z","dt_hora_agendamento":10,"tipo_agendamento":"Consulta","status_agendamento":"Confirmado","dt_chegada":"2025-05-06T18:50:29.465Z","observacoes":"Reagendado de 05/05/2025 8:00"}
+2025-05-06 15:50:29 [INFO]: Na tabela ConsultaEntity foi criado por 9f5d4fa5-5e03-4437-a543-2454524b3afc, com os dados: {"id_agendamento":16,"procedimento":"PROCEDIMENTO_A","dt_entrada":"2025-05-06T18:50:29.465Z","status":"AGUARDANDO","observacoes":"Consulta criada automaticamente pelo check-in"}
+2025-05-06 16:30:05 [INFO]: Prisma info: Starting a mysql pool with 13 connections.

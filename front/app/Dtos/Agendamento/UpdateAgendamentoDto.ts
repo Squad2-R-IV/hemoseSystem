@@ -1,8 +1,10 @@
+import type { TipoAgendamentoEnum, StatusAgendamentoEnum } from "~/utils/enums/enums";
+
 export class UpdateAgendamentoDto {
-    id_paciente?: number;
-    id_funcionario?: string;
-    data_hora_agendamento?: Date;
-    tipo_agendamento?: string; // Changed from TipoAgendamentoEnum to string
-    status_agendamento?: string; // Changed from StatusAgendamentoEnum to string
+    dt_agendamento!: Date;
+    dt_hora_agendamento!: number;
+    tipo_agendamento!: TipoAgendamentoEnum;
+    status_agendamento!: StatusAgendamentoEnum;
     observacoes?: string;
+    dt_chegada?: Date;
 }

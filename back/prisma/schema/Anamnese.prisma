@@ -15,4 +15,6 @@ model Anamnese {
   Consulta              Consulta  @relation(fields: [id_consulta], references: [id])
   User                  User      @relation(fields: [id_funcionario], references: [id])
   ExameFisico           ExameFisico?
+  
+  @@map("anamnese")
 }

@@ -1,17 +1,58 @@
-import React, { useState } from "react";
-import { Button } from "@heroui/button";
-import { Input } from "@heroui/input";
-import { Link } from "@heroui/link";
-import { Checkbox } from "@heroui/checkbox";
-import { CircularProgress } from "@heroui/progress";
-import { addToast } from "@heroui/react";
+import React from "react";
+import { 
+  Button, 
+  Input, 
+  Link, 
+  Checkbox, 
+  CircularProgress,
+  Select,
+  SelectItem,
+  Card,
+  CardBody,
+  CardHeader,
+  addToast
+} from "@heroui/react";
 import { useCreateUserMutation } from "~/services/siahme-api.service";
-import logoDark from "@/assets/images/logo.svg";
 import { CreateUserDto } from "~/Dtos/User/CreateUser.dto";
 
+const roles = [
+  { name: "gestor", description: "Gestor" },
+  { name: "recepcionista", description: "Recepcionista" },
+  { name: "medico", description: "Médico" },
+  { name: "fisioterapeuta", description: "Fisioterapeuta" },
+  { name: "enfermeiro", description: "Enfermeiro" },
+  { name: "admin", description: "Administrador" },
+  { name: "nutricionista", description: "Nutricionista" },
+];
+
+const healthRoles = ["medico", "fisioterapeuta", "enfermeiro", "nutricionista", "dentista"];
+
+const councilMap: Record<string, string> = {
+  medico: "CRM",
+  fisioterapeuta: "CREFITO",
+  dentista: "CRO",
+  enfermeiro: "COREN",
+  nutricionista: "CRN",
+};
+
 export function Cadastro() {
-  const [isHealthProfessional, setIsHealthProfessional] = useState(false);
+  // Remova o useState do isHealthProfessional
+  const [selectedRole, setSelectedRole] = React.useState<Set<string>>(new Set([]));
+  const [council, setCouncil] = React.useState("");
   const [createUser, { isLoading }] = useCreateUserMutation();
+
+  const handleRoleChange = (keys: "all" | Set<string>) => {
+    if (keys === "all" || !(keys instanceof Set)) {
+      return;
+    }
+
+    setSelectedRole(keys);
+    const roleKey = Array.from(keys)[0];
+    setCouncil(councilMap[roleKey] || "");
+  };
+
+  const selectedRoleKey = Array.from(selectedRole)[0];
+  const isHealthProfessional = healthRoles.includes(selectedRoleKey);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -23,250 +64,95 @@ export function Cadastro() {
       cpf: formData.get("cpf") as string,
       contato: formData.get("contato") as string,
       especialidade: formData.get("especialidade") as string || undefined,
-      conselho: formData.get("conselho") as string || undefined,
+      conselho: council || undefined,
       registro: formData.get("registro") as string || undefined,
+      roles: selectedRole ? Array.from(selectedRole): undefined,
     };
 
     try {
-      const response = await createUser(data).unwrap();
-
+      await createUser(data).unwrap();
       addToast({
         title: "Sucesso",
         description: "Conta criada com sucesso",
         color: "success",
       });
     } catch (error) {
-      addToast({
-        title: "Erro",
-        description: "Erro ao criar conta",
-        color: "danger",
-      });
+      console.error("Erro ao criar conta:", error);
     }
   };
-
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#F0F4F7] py-12 px-4 sm:px-6 lg:px-8">
+return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-content2 py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">
-        <div className="flex flex-col items-center mb-8">
-          <img
-            src={logoDark}
-            alt="FSPH Logo"
-            width={180}
-            height={80}
-            className="mb-4"
-          />
-          <h2 className="text-[#768caa] text-lg">
-            Design do Painel de Administração
-          </h2>
-        </div>
+        <Card className="p-6">
+          <CardHeader>
+            <h1 className="text-2xl font-semibold text-center">
+              Crie sua conta
+            </h1>
+          </CardHeader>
+          <CardBody>
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              <Input name="name" label="Nome" placeholder="Digite seu nome" variant="bordered" isClearable />
+              <Input name="email" label="Email" placeholder="Digite seu email" type="email" variant="bordered" isClearable />
+              <Input name="password" label="Senha" placeholder="Digite sua senha" type="password" variant="bordered" isClearable />
+              <Input name="confirm-password" label="Confirmar Senha" placeholder="Confirme sua senha" type="password" variant="bordered" isClearable />
+              <Input name="cpf" label="CPF" placeholder="Digite seu CPF" variant="bordered" isClearable />
+              <Input name="contato" label="Contato" placeholder="Digite seu contato" variant="bordered" isClearable />
 
-        <div className="bg-white p-8 rounded-lg shadow-sm">
-          <h1 className="text-2xl font-semibold text-center text-[#4f4f5f] mb-8">
-            Crie sua conta
-          </h1>
-
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700 mb-1"
+              <Select
+                label="Função"
+                placeholder="Selecione sua função"
+                selectedKeys={selectedRole}
+                onSelectionChange={handleRoleChange}
+                selectionMode="single"
+                className="w-full"
               >
-                Nome
-              </label>
-              <Input
-                id="name"
-                name="name"
-                isClearable
-                placeholder="Digite seu nome"
-                type="text"
-                variant="bordered"
-                className="w-full text-gray-800 placeholder-gray-500"
-              />
-            </div>
+                {roles.map((role) => (
+                  <SelectItem key={role.name}>
+                    {role.description}
+                  </SelectItem>
+                ))}
+              </Select>
 
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Email
-              </label>
-              <Input
-                id="email"
-                name="email"
-                isClearable
-                placeholder="Digite seu email"
-                type="email"
-                variant="bordered"
-                className="w-full text-gray-800 placeholder-gray-500"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Senha
-              </label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                isClearable
-                variant="bordered"
-                placeholder="Digite sua senha"
-                className="w-full text-gray-800 placeholder-gray-500"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="confirm-password"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Confirmar Senha
-              </label>
-              <Input
-                id="confirm-password"
-                name="confirm-password"
-                type="password"
-                isClearable
-                variant="bordered"
-                placeholder="Confirme sua senha"
-                className="w-full text-gray-800 placeholder-gray-500"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="cpf"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                CPF
-              </label>
-              <Input
-                id="cpf"
-                name="cpf"
-                isClearable
-                placeholder="Digite seu CPF"
-                type="text"
-                variant="bordered"
-                className="w-full text-gray-800 placeholder-gray-500"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="contato"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Contato
-              </label>
-              <Input
-                id="contato"
-                name="contato"
-                isClearable
-                placeholder="Digite seu contato"
-                type="text"
-                variant="bordered"
-                className="w-full text-gray-800 placeholder-gray-500"
-              />
-            </div>
-
-            <div className="flex items-center">
-              <Checkbox
-                isSelected={isHealthProfessional}
-                onValueChange={setIsHealthProfessional}
-                radius="md"
-                color="primary"
-                className="text-gray-600 rounded-r-full"
-              >
-                Profissional da Saúde?
-              </Checkbox>
-            </div>
-
-            {isHealthProfessional && (
-              <>
-                <div>
-                  <label
-                    htmlFor="especialidade"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Especialidade
-                  </label>
+              {isHealthProfessional && (
+                <>
                   <Input
-                    id="especialidade"
                     name="especialidade"
-                    isClearable
+                    label="Especialidade"
                     placeholder="Digite sua especialidade"
-                    type="text"
                     variant="bordered"
-                    className="w-full text-gray-800 placeholder-gray-500"
+                    isClearable
                   />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="conselho"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Conselho
-                  </label>
                   <Input
-                    id="conselho"
                     name="conselho"
-                    isClearable
-                    placeholder="Digite seu conselho"
-                    type="text"
+                    label="Conselho"
+                    value={council}
+                    isReadOnly
                     variant="bordered"
-                    className="w-full text-gray-800 placeholder-gray-500"
                   />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="registro"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Registro
-                  </label>
                   <Input
-                    id="registro"
                     name="registro"
-                    isClearable
+                    label="Registro"
                     placeholder="Digite seu registro"
-                    type="text"
                     variant="bordered"
-                    className="w-full text-gray-800 placeholder-gray-500"
+                    isClearable
                   />
-                </div>
-              </>
-            )}
+                </>
+              )}
 
-            {isLoading ? (
-              <div className="flex items-center justify-center">
-                <CircularProgress label="Carregando..." />
-              </div>
-            ) : (
               <Button
                 type="submit"
-                className="w-full bg-[#2196F3] hover:bg-[#1976D2] rounded-lg"
+                color="primary"
+                className="w-full"
+                isLoading={isLoading}
+                spinner={<CircularProgress size="sm" aria-label="Loading..." />}
               >
                 Criar Conta
               </Button>
-            )}
-          </form>
+            </form>
+          </CardBody>
+        </Card>
 
-          <div className="mt-6 text-center text-sm">
-            <span className="text-gray-500">Já tem uma conta?</span>{" "}
-            <Link href="/login" className="text-[#2196F3] hover:text-[#1976D2]">
-              Entrar
-            </Link>
-          </div>
-        </div>
-
-        <div className="mt-8 text-center text-sm text-gray-500">
+        <div className="mt-8 text-center text-sm text-default-500">
           2025 © Fundação de Saúde Parreiras Horta
         </div>
       </div>

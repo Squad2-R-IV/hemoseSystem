@@ -1383,6 +1383,11 @@ path-to-regexp@0.1.12:
   resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-0.1.12.tgz#d5e1a12e478a976d432ef3c58d534b9923164bb7"
   integrity sha512-RA1GjUVMnvYFxuqovrEqZoxxW5NUZqbwKtYz/Tt7nXerk0LbLblQmrsgdeOxV5SFHf0UDggjS/bSeOZwt1pmEQ==
 
+prisma-better-errors@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/prisma-better-errors/-/prisma-better-errors-1.0.4.tgz#c35350cbdeffee72694f5c01f825419b17f65087"
+  integrity sha512-bx7lg6rRY6mFoRfITQLG+FzPa5RChhPGe8fQto9rPxOr7xBnx2s1imRgsWyVWLhfWLiEOklgOYchFUCouioCnw==
+
 prisma@^6.4.0:
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/prisma/-/prisma-6.4.1.tgz#8217325891466efaab5e896d9b11708c8503280e"

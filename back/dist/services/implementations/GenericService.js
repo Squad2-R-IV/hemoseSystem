@@ -27,14 +27,14 @@ let GenericService = class GenericService {
     constructor(repository) {
         this.repository = repository;
     }
-    getAll() {
+    getAll(includeRelations) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.repository.findAll();
+            return this.repository.findAll(includeRelations);
         });
     }
-    getById(id) {
+    getById(id, includeRelations) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.repository.findById(id);
+            return this.repository.findById(id, includeRelations);
         });
     }
     create(data) {

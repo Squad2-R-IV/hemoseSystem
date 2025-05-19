@@ -21,4 +21,6 @@ model User {
   ExamesRealizados          Exames[]
   EvolucoesMedicas          EvolucaoMedica[]
   AdministracoesCondutas    AdministracaoConduta[]
+
+  @@map("user")
 }

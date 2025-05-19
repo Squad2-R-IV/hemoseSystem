@@ -9,6 +9,7 @@ import { IPacienteService } from "../services/interfaces/IPacienteService";
 import { PacienteService } from "../services/implementations/PacienteService";
 import { AuditoriaService } from "../services/implementations/AuditoriaService";
 import { IAuditoriaService } from "../services/interfaces/IAuditoriaService";
+import { Request, Response } from "express";
 
 @injectable()
 export class PacienteController extends GenericController<PacienteEntity, CreatePacienteDto, UpdatePacienteDto, ReadPacienteDto> {
@@ -17,5 +18,17 @@ export class PacienteController extends GenericController<PacienteEntity, Create
     @inject(AuditoriaService) auditoriaService: IAuditoriaService
   ) {
     super(pacienteService, PacienteEntity, CreatePacienteDto, UpdatePacienteDto, ReadPacienteDto, auditoriaService);
+  }
+
+  async findPacienteByCpf(req: Request, res: Response): Promise<Response> {
+    const { cpf } = req.params;
+    const paciente = await this.pacienteService.findPacienteByCpf(cpf);
+    if (!paciente) {
+      return res.status(404).json({ 
+        titulo: "Paciente Não Encontrado", 
+        mensagem: "Não foi possível encontrar um paciente com este CPF" 
+      });
+    }
+    return res.json(paciente);
   }
 }

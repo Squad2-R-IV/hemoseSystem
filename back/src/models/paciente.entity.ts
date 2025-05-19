@@ -1,5 +1,6 @@
 import { AutoMap } from "@automapper/classes";
 import { AgendamentoEntity } from "./agendamento.entity";
+import { EstadoCivil, Sexo } from "@prisma/client";
 
 export class PacienteEntity {
     @AutoMap()
@@ -9,11 +10,9 @@ export class PacienteEntity {
     @AutoMap()
     dt_nascimento!: Date;
     @AutoMap()
-    idade!: number;
+    sexo!: Sexo;
     @AutoMap()
-    sexo!: string;
-    @AutoMap()
-    estado_civil!: string;
+    estado_civil!: EstadoCivil;
     @AutoMap()
     endereco!: string;
     @AutoMap()

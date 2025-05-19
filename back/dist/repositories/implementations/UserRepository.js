@@ -8,14 +8,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserRepository = void 0;
 const tsyringe_1 = require("tsyringe");
-const prisma_1 = require("../../config/prisma");
+const prisma_1 = __importDefault(require("../../config/prisma"));
 const GenericRepository_1 = require("./GenericRepository");
+const user_entity_1 = require("../../models/user.entity");
 let UserRepository = class UserRepository extends GenericRepository_1.GenericRepository {
     constructor() {
-        super(prisma_1.default, prisma_1.default.user);
+        super(prisma_1.default, prisma_1.default.user, user_entity_1.UserEntity, ['roles', 'agendamentos', 'auditorias', 'Anamneses']);
     }
 };
 exports.UserRepository = UserRepository;
@@ -23,7 +27,7 @@ exports.UserRepository = UserRepository = __decorate([
     (0, tsyringe_1.registry)([
         {
             token: 'UserRepository',
-            useClass: UserRepository
+            useClass: UserRepository,
         },
     ]),
     (0, tsyringe_1.injectable)(),
