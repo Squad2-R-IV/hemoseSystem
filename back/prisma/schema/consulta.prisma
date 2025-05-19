@@ -16,7 +16,6 @@ model Consulta {
   Anamnese             Anamnese?              
   Condutas             Conduta[]
   AltaMedica           AltaMedica?
-  Prescricao           Prescricao?
   Triagem              Triagem?
   Exames               Exames[]
   EvolucoesMedicas     EvolucaoMedica[]

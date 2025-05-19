@@ -5,8 +5,9 @@ model Conduta {
   dt_conduta        DateTime @default(now())
   conduta           String   @db.VarChar(5000)
 
-  Consulta        Consulta @relation(fields: [id_consulta], references: [id])
-  User              User       @relation(fields: [id_funcionario], references: [id])
-
+  Consulta          Consulta @relation(fields: [id_consulta], references: [id])
+  User              User     @relation(fields: [id_funcionario], references: [id])
+  AdministracoesCondutas AdministracaoConduta[]
+  
   @@map("conduta")
 }
