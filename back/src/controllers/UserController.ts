@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { container, inject, injectable } from "tsyringe";
 import { GenericController } from "./GenericController";
 import { IUserService } from "../services/interfaces/IUserService";
-import { UserEntity } from "../models/user.entity";
 import { CreateUserDto } from "../Dtos/User/CreateUser.dto";
 import { UpdateUserDto } from "../Dtos/User/UpdateUser.dto";
 import { ReadUserDto } from "../Dtos/User/ReadUser.dto";
@@ -10,7 +9,7 @@ import { plainToInstance } from "class-transformer";
 import * as jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import * as bcrypt from "bcrypt";
-import { Role } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { RoleRepository } from "../repositories/implementations/RoleRepository";
 import { UserToRoleRepository } from "../repositories/implementations/UserToRoleRepository";
@@ -20,12 +19,19 @@ import { AuditoriaService } from "../services/implementations/AuditoriaService";
 dotenv.config();
 
 @injectable()
-export class UserController extends GenericController<UserEntity, CreateUserDto, UpdateUserDto, ReadUserDto> {
+export class UserController extends GenericController<User, CreateUserDto, UpdateUserDto, ReadUserDto> {
   constructor(
     @inject("UserService") private readonly userService: IUserService,
     @inject(AuditoriaService) auditoriaService: IAuditoriaService
   ) {
-    super(userService, UserEntity, CreateUserDto, UpdateUserDto, ReadUserDto, auditoriaService);
+    super(
+      userService,
+      CreateUserDto,
+      UpdateUserDto,
+      ReadUserDto,
+      auditoriaService,
+      "User" // Pass the table name explicitly
+    );
   }
 
   async login(req: Request, res: Response): Promise<Response> {
@@ -48,7 +54,7 @@ export class UserController extends GenericController<UserEntity, CreateUserDto,
       { expiresIn: "1d" }
     );
 
-    await this.userService.update(user.id, { refreshToken } as Partial<UserEntity>);
+    await this.userService.update(user.id, { refreshToken } as Partial<User>);
     res.cookie("refreshToken", refreshToken, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 30 });
     res.cookie("jwt", token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 });
 
@@ -87,7 +93,7 @@ export class UserController extends GenericController<UserEntity, CreateUserDto,
       { expiresIn: "1d" }
     );
 
-    await this.userService.update(user.id, { refreshToken } as Partial<UserEntity>);
+    await this.userService.update(user.id, { refreshToken } as Partial<User>);
     res.cookie("refreshToken", refreshToken, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 30 });
     res.cookie("jwt", token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 });
 
@@ -106,7 +112,7 @@ export class UserController extends GenericController<UserEntity, CreateUserDto,
     }
 
     // Limpa o refreshToken no banco de dados
-    await this.userService.update(user.id, { refreshToken: "" } as Partial<UserEntity>);
+    await this.userService.update(user.id, { refreshToken: "" } as Partial<User>);
 
     // Limpa os cookies
     res.clearCookie("refreshToken", { httpOnly: true, sameSite: "none", secure: true });
@@ -117,11 +123,19 @@ export class UserController extends GenericController<UserEntity, CreateUserDto,
   
   override async create(req: Request, res: Response): Promise<Response> {
     const dto: CreateUserDto = req.body;
-    const createDto = plainToInstance(UserEntity, dto);
-    createDto.password = await bcrypt.hash(createDto.password, parseInt(process.env.SALT_ROUNDS as string));
-    createDto.id = randomUUID();
-    createDto.status = "A";
-    createDto.roles = undefined; // Limpa a propriedade roles para evitar que ela seja salva no banco de dados
+    const createDto: User = {
+      id: randomUUID(),
+      name: dto.name,
+      password: await bcrypt.hash(dto.password, parseInt(process.env.SALT_ROUNDS as string)),
+      email: dto.email,
+      cpf: dto.cpf,
+      contato: dto.contato,
+      status: "A",
+      especialidade: dto.especialidade || "",
+      conselho: dto.conselho || "",
+      registro: dto.registro || "",
+      refreshToken: "",
+    };
     const newItem = await this.userService.create(createDto);
     const userToRoleRepository = container.resolve(UserToRoleRepository);
     const roleRepository = container.resolve(RoleRepository);

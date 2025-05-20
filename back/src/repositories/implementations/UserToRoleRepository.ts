@@ -3,7 +3,6 @@ import { PrismaClient, UserToRole } from "@prisma/client";
 import { GenericRepository } from "./GenericRepository";
 import { IUserToRoleRepository } from "../interfaces/IUserToRoleRepository";
 import prisma from "../../config/prisma";
-import { UserToRoleEntity } from "../../models/userToRole.entity";
 
 
 
@@ -16,6 +15,6 @@ import { UserToRoleEntity } from "../../models/userToRole.entity";
 ])
 export class UserToRoleRepository extends GenericRepository<UserToRole> implements IUserToRoleRepository {
   constructor() {
-    super(prisma, prisma.userToRole, UserToRoleEntity, ['user', 'role']);
+    super(prisma, prisma.userToRole, ['user', 'role']);
   }
 }

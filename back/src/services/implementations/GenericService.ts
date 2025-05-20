@@ -1,8 +1,6 @@
 import { inject, injectable, registry } from "tsyringe";
 import { IGenericRepository } from "../../repositories/interfaces/IGenericRepository";
 import { IGenericService } from "../interfaces/IGenericService";
-import { IAuditoriaService } from "../interfaces/IAuditoriaService";
-import { AuditoriaEntity } from "../../models/auditoria.entity";
 
 @registry([
   {

@@ -1,7 +1,8 @@
-import { ConsultaEntity } from "../../models/consulta.entity";
+
+import { Consulta } from "@prisma/client";
 import { IGenericService } from "./IGenericService";
 
-export interface IConsultaService extends IGenericService<ConsultaEntity> {
+export interface IConsultaService extends IGenericService<Consulta> {
 
     
 }

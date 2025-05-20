@@ -1,7 +1,6 @@
 import { inject, injectable, registry } from "tsyringe";
 import { PrismaClient } from "@prisma/client";
 import { IGenericRepository } from "../interfaces/IGenericRepository";
-import { plainToInstance } from "class-transformer";
 import { handlePrismaError } from "../../utils/prismaErrorHandler";
 
 @registry([
@@ -15,11 +14,10 @@ export class GenericRepository<T> implements IGenericRepository<T> {
   constructor(
     @inject("PrismaClient") private prisma: PrismaClient,
     private model: any,
-    private entityClass: new () => T,
-    protected availableRelations: string[] = [] // Renomeado para availableRelations
+    protected availableRelations: string[] = [] // Renamed to availableRelations
   ) { }
 
-  // Método auxiliar para gerar o include a partir das relações disponíveis
+  // Helper method to generate the include object from available relations
   private generateInclude() {
     return this.availableRelations.reduce((acc, relation) => {
       acc[relation] = true;
@@ -33,7 +31,7 @@ export class GenericRepository<T> implements IGenericRepository<T> {
         throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
       }
       const result = await this.model.create({ data });
-      return plainToInstance(this.entityClass, result);
+      return result as T;
     } catch (error) {
       throw handlePrismaError(error);
     }
@@ -46,22 +44,21 @@ export class GenericRepository<T> implements IGenericRepository<T> {
       }
       const include = includeRelations ? this.generateInclude() : undefined;
       const results = await this.model.findMany({ include });
-      return plainToInstance(this.entityClass, results) as T[];
+      return results as T[];
     } catch (error) {
       throw handlePrismaError(error);
     }
   }
 
   async findById(id: string | number, includeRelations: boolean = true): Promise<T | null> {
-    try{
+    try {
       const include = includeRelations ? this.generateInclude() : undefined;
       const result = await this.model.findUnique({
         where: { id },
         include,
       });
-      return result ? plainToInstance(this.entityClass, result) : null;
-    }
-    catch (error) {
+      return result as T | null;
+    } catch (error) {
       throw handlePrismaError(error);
     }
   }
@@ -69,7 +66,7 @@ export class GenericRepository<T> implements IGenericRepository<T> {
   async findByField(field: string, value: any): Promise<T | null> {
     try {
       const result = await this.model.findFirst({ where: { [field]: value } });
-      return result ? plainToInstance(this.entityClass, result) : null;
+      return result as T | null;
     } catch (error) {
       throw handlePrismaError(error);
     }
@@ -79,7 +76,7 @@ export class GenericRepository<T> implements IGenericRepository<T> {
     try {
       const include = includeRelations ? this.generateInclude() : undefined;
       const results = await this.model.findMany({ ...query, include });
-      return plainToInstance(this.entityClass, results) as T[];
+      return results as T[];
     } catch (error) {
       throw handlePrismaError(error);
     }
@@ -88,7 +85,7 @@ export class GenericRepository<T> implements IGenericRepository<T> {
   async findManyByField(field: string, value: any): Promise<T[]> {
     try {
       const results = await this.model.findMany({ where: { [field]: value } });
-      return plainToInstance(this.entityClass, results) as T[];
+      return results as T[];
     } catch (error) {
       throw handlePrismaError(error);
     }
@@ -97,13 +94,13 @@ export class GenericRepository<T> implements IGenericRepository<T> {
   async findByFields(fields: { field: string; value: any }[], includeRelations: boolean = true): Promise<T | null> {
     try {
       const whereClause: { [key: string]: any } = fields.reduce((acc, { field, value }) => {
-        acc[field] = value; // Directly assign the value as provided by the user
+        acc[field] = value;
         return acc;
       }, {} as { [key: string]: any });
 
       const include = includeRelations ? this.generateInclude() : undefined;
       const result = await this.model.findFirst({ where: whereClause, include });
-      return result ? plainToInstance(this.entityClass, result) : null;
+      return result as T | null;
     } catch (error) {
       throw handlePrismaError(error);
     }
@@ -112,14 +109,14 @@ export class GenericRepository<T> implements IGenericRepository<T> {
   async findManyByFields(fields: { field: string; value: any }[], includeRelations: boolean = true): Promise<T[]> {
     try {
       const whereClause: { [key: string]: any } = fields.reduce((acc, { field, value }) => {
-        acc[field] = value; // Directly assign the value as provided by the user
+        acc[field] = value;
         return acc;
       }, {} as { [key: string]: any });
 
       const include = includeRelations ? this.generateInclude() : undefined;
 
       const results = await this.model.findMany({ where: whereClause, include });
-      return plainToInstance(this.entityClass, results) as T[];
+      return results as T[];
     } catch (error) {
       throw handlePrismaError(error);
     }
@@ -130,7 +127,7 @@ export class GenericRepository<T> implements IGenericRepository<T> {
       const entity = await this.findById(id);
       if (!entity) return null;
       const result = await this.model.update({ where: { id: id }, data });
-      return plainToInstance(this.entityClass, result);
+      return result as T;
     } catch (error) {
       throw handlePrismaError(error);
     }

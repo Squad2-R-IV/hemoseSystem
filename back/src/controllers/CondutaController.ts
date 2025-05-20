@@ -1,7 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { Request, Response } from "express";
 import { GenericController } from "./GenericController";
-import { CondutaEntity } from "../models/conduta.entity";
 import { IGenericService } from "../services/interfaces/IGenericService";
 import { CreateCondutaDto } from "../Dtos/Conduta/CreateCondutaDto";
 import { UpdateCondutaDto } from "../Dtos/Conduta/UpdateCondutaDto";
@@ -10,10 +9,11 @@ import { ICondutaService } from "../services/interfaces/ICondutaService";
 import { CondutaService } from "../services/implementations/CondutaService";
 import { IAuditoriaService } from "../services/interfaces/IAuditoriaService";
 import { AuditoriaService } from "../services/implementations/AuditoriaService";
+import { Conduta } from "@prisma/client";
 
 @injectable()
 export class CondutaController extends GenericController<
-  CondutaEntity,
+  Conduta,
   CreateCondutaDto,
   UpdateCondutaDto,
   ReadCondutaDto
@@ -24,11 +24,11 @@ export class CondutaController extends GenericController<
   ) {
     super(
       condutaService,
-      CondutaEntity,
       CreateCondutaDto,
       UpdateCondutaDto,
       ReadCondutaDto,
-      auditoriaService
+      auditoriaService,
+      "Conduta" // Pass the table name explicitly
     );
   }
   async getCondutasByConsultaId(req: Request, res: Response): Promise<Response> {

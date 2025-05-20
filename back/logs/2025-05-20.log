@@ -1,0 +1,146 @@
+2025-05-19 22:36:11 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-19 22:38:26 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-19 22:38:33 [INFO]: Na tabela o id 6 foi atualizado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"status":"CHAMADO"}
+2025-05-19 22:38:37 [INFO]: Na tabela o id 6 foi atualizado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"status":"EM_ATENDIMENTO"}
+2025-05-19 22:38:41 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_consulta":6,"id_funcionario":"2967b6b1-5ac0-4297-b2df-46f0816e5324","conduta":"aavsvavs"}
+2025-05-19 22:39:41 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_paciente":3,"id_funcionario":"9ac88da0-486b-46d8-a83a-79cbaf74ade6","dt_agendamento":"2025-05-20T00:00:00.000Z","dt_hora_agendamento":8,"tipo_agendamento":"Consulta","status_agendamento":"Agendado","observacoes":""}
+2025-05-19 22:39:58 [INFO]: Na tabela o id 7 foi atualizado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"dt_agendamento":"2025-05-20T00:00:00.000Z","dt_hora_agendamento":8,"status_agendamento":"Reagendado","tipo_agendamento":"Consulta","observacoes":""}
+2025-05-19 22:39:58 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:33:39
+
+  30 if (!this.model) {
+  31   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  32 }
+→ 33 const result = await this.model.create({
+       data: {
+         id_paciente: 3,
+         id_funcionario: "9ac88da0-486b-46d8-a83a-79cbaf74ade6",
+         dt_agendamento: "2025-05-21",
+                         ~~~~~~~~~~~~
+         dt_hora_agendamento: 8,
+         tipo_agendamento: "Consulta",
+         status_agendamento: "Agendado",
+         observacoes: "Reagendado de 19/05/2025 8:00"
+       }
+     })
+
+Invalid value for argument `dt_agendamento`: premature end of input. Expected ISO-8601 DateTime.
+2025-05-19 22:39:58 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-19 22:40:56 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"nome_paciente":"Jose Wellingtonsdadsa","dt_nascimento":"1998-03-26T00:00:00.000Z","sexo":"M","estado_civil":"C","endereco":"Rua dos Lirios","cpf":"00000000013","cpf_acompanhante":"00000000033"}
+2025-05-19 22:41:46 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:33:39
+
+  30 if (!this.model) {
+  31   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  32 }
+→ 33 const result = await this.model.create({
+       data: {
+         name: "dsajduiah",
+         password: "$2b$10$y53T9PcctYBvlReCw6Lag.zFFGNHIO7L2YHQIQS5XbYnJWA7Z6AbC",
+         email: "jose.britto@souunit.com.br",
+         cpf: "04132135465",
+         contato: "79991459347",
+         roles: [
+           "admin"
+         ],
+         ~~~~~~~~~
+         id: "79d1a610-1911-410e-9981-1be7a4c40cdc",
+         status: "A",
+         refreshToken: "",
+         especialidade: "",
+         conselho: "",
+         registro: ""
+       }
+     })
+
+Argument `roles`: Invalid value provided. Expected UserToRoleCreateNestedManyWithoutUserInput or UserToRoleUncheckedCreateNestedManyWithoutUserInput, provided (String).
+2025-05-19 22:41:46 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-19 22:41:58 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:33:39
+
+  30 if (!this.model) {
+  31   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  32 }
+→ 33 const result = await this.model.create({
+       data: {
+         name: "dsajduiah",
+         password: "$2b$10$nq1sYSPDCPDSB24XV5e4N.sRjO6QbvKkhDdOwlke7jg5x2Llt6Lfm",
+         email: "jose.britto@souunit.com.br",
+         cpf: "04132135465",
+         contato: "79991459347",
+         roles: [
+           "recepcionista"
+         ],
+         ~~~~~~~~~~~~~~~~~
+         id: "fb55f6cd-e4e0-437d-8a8c-3065156f5b93",
+         status: "A",
+         refreshToken: "",
+         especialidade: "",
+         conselho: "",
+         registro: ""
+       }
+     })
+
+Argument `roles`: Invalid value provided. Expected UserToRoleCreateNestedManyWithoutUserInput or UserToRoleUncheckedCreateNestedManyWithoutUserInput, provided (String).
+2025-05-19 22:41:58 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-19 22:42:23 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:33:39
+
+  30 if (!this.model) {
+  31   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  32 }
+→ 33 const result = await this.model.create({
+       data: {
+         name: "dsajduiah",
+         password: "$2b$10$JyX8apCfNn6kCJaoI1ruzOKlzxTinDOkTfl1.8PMNMaGv2Pk7twzi",
+         email: "jose.britto@souunit.com.br",
+         cpf: "04132135465",
+         contato: "79991459347",
+         roles: [
+           "recepcionista"
+         ],
+         ~~~~~~~~~~~~~~~~~
+         id: "ad4ecf6a-e682-4b78-8318-16dc1b073e44",
+         status: "A",
+         refreshToken: "",
+         especialidade: "",
+         conselho: "",
+         registro: ""
+       }
+     })
+
+Argument `roles`: Invalid value provided. Expected UserToRoleCreateNestedManyWithoutUserInput or UserToRoleUncheckedCreateNestedManyWithoutUserInput, provided (String).
+2025-05-19 22:42:23 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-19 22:43:34 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:33:39
+
+  30 if (!this.model) {
+  31   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  32 }
+→ 33 const result = await this.model.create({
+       data: {
+         name: "dsajduiah",
+         password: "$2b$10$R66JP5q8qskzTbbSLtQZXeak2Ms1fGH6t.jpoHsgMgxv.9//lWtwG",
+         email: "jose.britto@souunit.com.br",
+         cpf: "04132135465",
+         contato: "79991459347",
+         roles: [
+           "recepcionista"
+         ],
+         ~~~~~~~~~~~~~~~~~
+         id: "8e9c8d2c-39c7-4ca7-b7ed-7b105921d4c2",
+         status: "A",
+         refreshToken: "",
+         especialidade: "",
+         conselho: "",
+         registro: ""
+       }
+     })
+
+Argument `roles`: Invalid value provided. Expected UserToRoleCreateNestedManyWithoutUserInput or UserToRoleUncheckedCreateNestedManyWithoutUserInput, provided (String).
+2025-05-19 22:43:36 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.

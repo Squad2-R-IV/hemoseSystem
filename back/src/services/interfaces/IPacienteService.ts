@@ -1,6 +1,7 @@
-import { PacienteEntity } from "../../models/paciente.entity";
+
+import { Paciente } from "@prisma/client";
 import { IGenericService } from "./IGenericService";
 
-export interface IPacienteService extends IGenericService<PacienteEntity> {
-    findPacienteByCpf(cpf: string): Promise<PacienteEntity | null>;
+export interface IPacienteService extends IGenericService<Paciente> {
+    findPacienteByCpf(cpf: string): Promise<Paciente | null>;
 }

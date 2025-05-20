@@ -2,7 +2,6 @@ import { inject, injectable, registry } from "tsyringe";
 import { GenericService } from "./GenericService";
 import { AuditoriaRepository } from "../../repositories/implementations/AuditoriaRepository";
 import { IAuditoriaService } from "../interfaces/IAuditoriaService";
-import { AuditoriaEntity } from "../../models/auditoria.entity";
 import { Auditoria } from "@prisma/client";
 
 @injectable()
@@ -12,7 +11,7 @@ import { Auditoria } from "@prisma/client";
       useClass: AuditoriaService
   },
 ])
-export class AuditoriaService extends GenericService<Auditoria> implements IAuditoriaService {
+export class AuditoriaService extends GenericService<Partial<Auditoria>> implements IAuditoriaService {
   constructor(
     @inject("AuditoriaRepository") auditoriaRepository: AuditoriaRepository,
   ) {

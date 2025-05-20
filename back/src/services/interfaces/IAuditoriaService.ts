@@ -1,6 +1,7 @@
-import { AuditoriaEntity } from "../../models/auditoria.entity";
+
+import { Auditoria } from "@prisma/client";
 import { IGenericService } from "./IGenericService";
 
-export interface IAuditoriaService extends IGenericService<AuditoriaEntity> {
+export interface IAuditoriaService extends IGenericService<Partial<Auditoria>> {
 
 }

@@ -1,6 +1,5 @@
 import { inject, injectable } from "tsyringe";
 import { GenericController } from "./GenericController";
-import { AgendamentoEntity } from "../models/agendamento.entity";
 import { IGenericService } from "../services/interfaces/IGenericService";
 import { CreateAgendamentoDto } from "../Dtos/Agendamento/CreateAgendamentoDto";
 import { UpdateAgendamentoDto } from "../Dtos/Agendamento/UpdateAgendamentoDto";
@@ -10,14 +9,22 @@ import { AgendamentoService } from "../services/implementations/AgendamentoServi
 import { IAuditoriaService } from "../services/interfaces/IAuditoriaService";
 import { AuditoriaService } from "../services/implementations/AuditoriaService";
 import { Request, Response } from "express";
+import { Agendamento } from "@prisma/client";
 
 @injectable()
-export class AgendamentoController extends GenericController<AgendamentoEntity, CreateAgendamentoDto, UpdateAgendamentoDto, ReadAgendamentoDto> {
+export class AgendamentoController extends GenericController<Agendamento, CreateAgendamentoDto, UpdateAgendamentoDto, ReadAgendamentoDto> {
   constructor(
     @inject(AgendamentoService) private readonly agendamentoService: IAgendamentoService,
     @inject(AuditoriaService) auditoriaService: IAuditoriaService
   ) {
-    super(agendamentoService, AgendamentoEntity, CreateAgendamentoDto, UpdateAgendamentoDto, ReadAgendamentoDto, auditoriaService);
+    super(
+      agendamentoService,
+      CreateAgendamentoDto,
+      UpdateAgendamentoDto,
+      ReadAgendamentoDto,
+      auditoriaService,
+      "Agendamento" // Pass the table name explicitly
+    );
   }
 
   async getAgendamentosComConsultasAtivas(req: Request, res: Response): Promise<Response> {

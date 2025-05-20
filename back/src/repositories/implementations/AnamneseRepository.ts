@@ -2,7 +2,6 @@ import { injectable, registry } from "tsyringe";
 import prisma from "../../config/prisma";
 import { IAnamneseRepository } from "../interfaces/IAnamneseRepository";
 import { GenericRepository } from "./GenericRepository";
-import { AnamneseEntity } from "../../models/anamnese.entity";
 import { Anamnese } from "@prisma/client";
 
 @registry([
@@ -14,6 +13,6 @@ import { Anamnese } from "@prisma/client";
 @injectable()
 export class AnamneseRepository extends GenericRepository<Anamnese> implements IAnamneseRepository {
   constructor() {
-    super(prisma, prisma.anamnese, AnamneseEntity, ['Consulta', 'User']);
+    super(prisma, prisma.anamnese, ['Consulta', 'User']);
   }
 }
