@@ -20,6 +20,7 @@ import {
   useDisclosure,
   Chip,
   Textarea,
+
 } from "@heroui/react";
 import { ArrowLeftIcon, PlusIcon } from "@heroicons/react/24/outline";
 import ConsultaDetails from "~/components/ambulatorio/ConsultaDetails";
@@ -32,7 +33,7 @@ export default function ConsultaRoute() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
-  const { data, isLoading } = useFetchAllConsultaDetailsQuery({
+  const { data, isLoading, refetch } = useFetchAllConsultaDetailsQuery({
     id: Number(id),
     includeRelations: true,
   });
@@ -117,6 +118,7 @@ export default function ConsultaRoute() {
         ...formData,
       }).unwrap();
       onClose();
+      refetch(); // Trigger refetch after creating anamnese
     } catch (error) {
       console.error("Error creating anamnese:", error);
     }
@@ -142,6 +144,7 @@ export default function ConsultaRoute() {
     try {
       await createConduta(condutaFormData).unwrap();
       setIsCondutaModalOpen(false);
+      refetch(); // Trigger refetch after creating conduta
     } catch (error) {
       console.error("Error creating conduta:", error);
     }

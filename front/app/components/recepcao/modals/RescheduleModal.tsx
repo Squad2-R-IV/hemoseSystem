@@ -12,7 +12,7 @@ import {
   Spinner,
 } from "@heroui/react";
 import type { ReadAgendamentoDto } from "~/Dtos/Agendamento/ReadAgendamentoDto";
-import { formatDateForInput } from "../../../utils/recepcao/utils";
+import { format } from "date-fns"; // Adicionar importação para formatar datas
 
 interface RescheduleModalProps {
   isOpen: boolean;
@@ -35,8 +35,13 @@ export function RescheduleModal({
   onChange,
   isLoading = false,
 }: RescheduleModalProps) {
-  const formatHour = (hour: number) => {
-    return `${hour}:00`;
+  const formatHour = (hour: number) => `${hour}:00`;
+
+  const formatDateAgendamento = (date?: Date) => {
+    if (!date) return "";
+    const formattedDate = new Date(date);
+    formattedDate.setUTCHours(0, 0, 0, 0); // Garantir horário 00:00:00.000Z
+    return formattedDate.toISOString().split("T")[0]; // Retornar apenas a data no formato ISO-8601
   };
 
   return (
@@ -49,7 +54,6 @@ export function RescheduleModal({
               <p className="mb-3">
                 Paciente: <strong>{appointment.Paciente?.nome_paciente}</strong>
               </p>
-
               <Input
                 name="dt_agendamento"
                 label="Data do Agendamento"
@@ -57,10 +61,9 @@ export function RescheduleModal({
                 placeholder="Selecione a data do agendamento"
                 onChange={onChange}
                 className="mb-4"
-                value={formatDateForInput(formData.dt_agendamento)}
+                value={formatDateAgendamento(formData.dt_agendamento)} // Garantir formato correto
                 isDisabled={isLoading}
               />
-
               <Select
                 name="dt_hora_agendamento"
                 label="Hora do Agendamento"

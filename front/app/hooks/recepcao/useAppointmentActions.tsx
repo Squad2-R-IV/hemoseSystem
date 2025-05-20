@@ -72,7 +72,7 @@ export function useAppointmentActions({
   // Reschedule operation
   const rescheduleAppointment = async () => {
     if (!selectedAppointment) return;
-    
+
     try {
       // Create update DTO
       const updateDto: UpdateAgendamentoDto = {
@@ -82,17 +82,24 @@ export function useAppointmentActions({
         tipo_agendamento: selectedAppointment.tipo_agendamento,
         observacoes: selectedAppointment.observacoes
       };
-      
+        // Formatar data para o formato ISO com horário 00:00:00.000Z
+  const formatDateToISO = (date?: Date) => {
+    if (!date) return null; // Retornar null se a data for indefinida
+    const formattedDate = new Date(date);
+    formattedDate.setUTCHours(0, 0, 0, 0); // Garantir horário 00:00:00.000Z
+    return formattedDate; // Retornar como objeto Date
+  };
       // Create new appointment DTO
       const newAppointmentDto: CreateAgendamentoDto = {
         id_paciente: selectedAppointment.id_paciente,
         id_funcionario: selectedAppointment.id_funcionario,
-        dt_agendamento: formData.dt_agendamento as Date,
+        dt_agendamento: formatDateToISO(formData.dt_agendamento as Date)!, // Garantir que seja um objeto Date
         dt_hora_agendamento: Number(formData.dt_hora_agendamento),
         tipo_agendamento: selectedAppointment.tipo_agendamento,
         status_agendamento: StatusAgendamentoEnum.Agendado,
         observacoes: `Reagendado de ${new Date(selectedAppointment.dt_agendamento).toLocaleDateString()} ${selectedAppointment.dt_hora_agendamento}:00`
       };
+
 
       // Call rescheduling endpoint
       await reagendarAgendamento({
