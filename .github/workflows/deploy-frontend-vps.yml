@@ -23,9 +23,11 @@ jobs:
 
             # Verificar se a pasta hemoseSystem existe, e fazer pull ou clone
             if [ -d "hemoseSystem" ]; then
-              echo "hemoseSystem já existe. Fazendo git pull..."
+              echo "hemoseSystem já existe. Fazendo git pull com rebase..."
               cd hemoseSystem
-              git pull origin main
+              git reset --hard HEAD         # Garante que não há mudanças locais
+              git clean -fd                 # Remove arquivos não versionados
+              git pull --rebase origin main # Rebase evita merges desnecessários
             else
               echo "hemoseSystem não existe. Fazendo git clone..."
               git clone https://github.com/Squad2-R-IV/hemoseSystem.git
@@ -45,4 +47,5 @@ jobs:
             npm run build
 
             # Copiar os arquivos do build para o diretório do site
+            rm -rf /home/application-well-siahme/htdocs/siahme.application-well.com.br/*
             cp -r build/client/* /home/application-well-siahme/htdocs/siahme.application-well.com.br/

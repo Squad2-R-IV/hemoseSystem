@@ -19,7 +19,9 @@ jobs:
           key: ${{ secrets.VPS_SSH }}
           script: |
             cd /home/application-well-api-siahme/htdocs/api-siahme.application-well.com.br
-            git pull origin main
+            git reset --hard HEAD   # opcional: evita conflitos locais
+            git clean -fd           # opcional: remove arquivos não versionados
+            git pull --rebase origin main
             cd back
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -27,3 +29,4 @@ jobs:
             yarn install
             yarn build
             pm2 restart api_siahme
+
