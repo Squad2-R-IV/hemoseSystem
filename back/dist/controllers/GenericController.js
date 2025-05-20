@@ -177,17 +177,17 @@ exports.GenericController = GenericController = __decorate([
 ], GenericController);
 /*
 
-    @AutoMap()
+    
     id_auditoria!: number;
-    @AutoMap()
+    
     id_usuario!: string;
-    @AutoMap()
+    
     data_hora!: Date;
-    @AutoMap()
+    
     acao!: string;
-    @AutoMap()
+    
     tabela!: string;
-    @AutoMap()
+    
     dados_anteriores!: string | null;
-    @AutoMap()
+    
     dados_novos!: string | null;*/ 

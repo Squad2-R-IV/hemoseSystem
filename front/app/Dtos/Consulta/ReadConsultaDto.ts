@@ -5,21 +5,21 @@ import { ReadAnamneseDto } from "../Anamnese/ReadAnamneseDto";
 import type { ReadCondutaDto } from "../Conduta/ReadCondutaDto";
 
 export class ReadConsultaDto {
-    // @AutoMap()
+    // 
     id!: number;
-    // @AutoMap()
+    // 
     id_agendamento!: number;
-    // @AutoMap()
+    // 
     procedimento!: string; // Changed from tipo_procedimento_enum to string
-    // @AutoMap()
+    // 
     dt_entrada!: Date;
-    // @AutoMap()
+    // 
     dt_saida: Date | null | undefined;
-    // @AutoMap()
+    // 
     status!: status_consulta_enum;
-    // @AutoMap()
+    // 
     observacoes!: string;
-    // @AutoMap(() => [ReadAnamneseDto])
+    //  => [ReadAnamneseDto])
     Anamnese!: ReadAnamneseDto;
     Condutas?: ReadCondutaDto[];
 }
