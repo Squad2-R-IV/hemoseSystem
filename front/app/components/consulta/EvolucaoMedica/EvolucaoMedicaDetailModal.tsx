@@ -61,12 +61,12 @@ export default function EvolucaoMedicaDetailModal({
 
         <div className="mt-2">
           <p className="text-sm text-gray-500">
-            Por: {evolucaoMedica.User?.name || "Usuário não identificado"}
-            {evolucaoMedica.User?.conselho && evolucaoMedica.User?.registro && (
+            Por: {evolucaoMedica.Usuario?.name || "Usuário não identificado"}
+            {evolucaoMedica.Usuario?.conselho && evolucaoMedica.Usuario?.registro && (
               <>
                 <br />
-                Registro profissional: {evolucaoMedica.User.conselho}:{" "}
-                {evolucaoMedica.User.registro}
+                Registro profissional: {evolucaoMedica.Usuario.conselho}:{" "}
+                {evolucaoMedica.Usuario.registro}
               </>
             )}
           </p>
