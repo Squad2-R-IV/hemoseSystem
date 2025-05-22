@@ -1,0 +1,135 @@
+2025-05-21 21:53:51 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-21 21:57:37 [INFO]: Na tabela foi criado por 9ac88da0-486b-46d8-a83a-79cbaf74ade6, com os dados: {"id_consulta":3,"id_funcionario":"9ac88da0-486b-46d8-a83a-79cbaf74ade6","conduta":"fafsa"}
+2025-05-21 22:02:11 [INFO]: Na tabela foi criado por 9ac88da0-486b-46d8-a83a-79cbaf74ade6, com os dados: {"id_consulta":3,"id_funcionario":"9ac88da0-486b-46d8-a83a-79cbaf74ade6","conduta":"dsadadasda"}
+2025-05-21 22:09:03 [INFO]: Na tabela foi criado por 9ac88da0-486b-46d8-a83a-79cbaf74ade6, com os dados: {"id_consulta":3,"id_funcionario":"9ac88da0-486b-46d8-a83a-79cbaf74ade6","conduta":"fdsfsdfsdfsdffsaasffsfdsfsdfsdfsdffsaasffsfdsfsdfsdfsdffsaasffsfdsfsdfsdfsdffsaasffsfdsfsdfsdfsdffsaasffsfdsfsdfsdfsdffsaasffsfdsfsdfsdfsdffsaasffsfdsfsdfsdfsdffsaasffsfdsfsdfsdfsdffsaasffs"}
+2025-05-21 22:14:51 [INFO]: Na tabela foi criado por 9ac88da0-486b-46d8-a83a-79cbaf74ade6, com os dados: {"id_consulta":3,"id_funcionario":"9ac88da0-486b-46d8-a83a-79cbaf74ade6","conduta":"2. Superinscrição\nLogo abaixo do cabeçalho, a superinscrição traz informações básicas do paciente, como nome completo e endereço.\n\nDados como idade, peso e altura podem ser incluídos, caso sejam de interesse para o tratamento.\n\nOutro registro adicional facultativo corresponde ao aviso “uso interno” (via enteral) ou “uso externo” (via parenteral)."}
+2025-05-21 23:22:45 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-21 23:22:46 [ERROR]: Database error: 
+Invalid `this.model.findMany()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:118:40
+
+  115 
+  116 const include = includeRelations ? this.generateInclude() : undefined;
+  117 
+→ 118 const results = await this.model.findMany({
+        where: {
+          id_consulta: 3
+        },
+        include: {
+          User: true,
+          ~~~~
+          Consulta: true,
+      ?   Usuario?: true
+        }
+      })
+
+Unknown field `User` for include statement on model `EvolucaoMedica`. Available options are marked with ?.
+2025-05-21 23:22:46 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-21 23:24:42 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-21 23:24:56 [ERROR]: Database error: 
+Invalid `this.model.findMany()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:118:40
+
+  115 
+  116 const include = includeRelations ? this.generateInclude() : undefined;
+  117 
+→ 118 const results = await this.model.findMany({
+        where: {
+          id_consulta: 3
+        },
+        include: {
+          User: true,
+          ~~~~
+          Consulta: true,
+      ?   Usuario?: true
+        }
+      })
+
+Unknown field `User` for include statement on model `EvolucaoMedica`. Available options are marked with ?.
+2025-05-21 23:24:56 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-21 23:25:16 [ERROR]: Database error: 
+Invalid `this.model.findMany()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:118:40
+
+  115 
+  116 const include = includeRelations ? this.generateInclude() : undefined;
+  117 
+→ 118 const results = await this.model.findMany({
+        where: {
+          id_consulta: 3
+        },
+        include: {
+          User: true,
+          ~~~~
+          Consulta: true,
+      ?   Usuario?: true
+        }
+      })
+
+Unknown field `User` for include statement on model `EvolucaoMedica`. Available options are marked with ?.
+2025-05-21 23:25:16 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-21 23:28:56 [ERROR]: Database error: 
+Invalid `this.model.findMany()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:118:40
+
+  115 
+  116 const include = includeRelations ? this.generateInclude() : undefined;
+  117 
+→ 118 const results = await this.model.findMany({
+        where: {
+          id_consulta: 3
+        },
+        include: {
+          User: true,
+          ~~~~
+          Consulta: true,
+      ?   Usuario?: true
+        }
+      })
+
+Unknown field `User` for include statement on model `EvolucaoMedica`. Available options are marked with ?.
+2025-05-21 23:28:56 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-21 23:30:29 [ERROR]: Database error: 
+Invalid `this.model.findMany()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:118:40
+
+  115 
+  116 const include = includeRelations ? this.generateInclude() : undefined;
+  117 
+→ 118 const results = await this.model.findMany({
+        where: {
+          id_consulta: 3
+        },
+        include: {
+          User: true,
+          ~~~~
+          Consulta: true,
+      ?   Usuario?: true
+        }
+      })
+
+Unknown field `User` for include statement on model `EvolucaoMedica`. Available options are marked with ?.
+2025-05-21 23:30:29 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-21 23:31:46 [ERROR]: Database error: 
+Invalid `this.model.findMany()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:118:40
+
+  115 
+  116 const include = includeRelations ? this.generateInclude() : undefined;
+  117 
+→ 118 const results = await this.model.findMany({
+        where: {
+          id_consulta: 3
+        },
+        include: {
+          User: true,
+          ~~~~
+          Consulta: true,
+      ?   Usuario?: true
+        }
+      })
+
+Unknown field `User` for include statement on model `EvolucaoMedica`. Available options are marked with ?.
+2025-05-21 23:34:24 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-21 23:35:04 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_consulta":3,"id_funcionario":"2967b6b1-5ac0-4297-b2df-46f0816e5324","conduta":"diusaoiduasoiduasoidau","queixas":"djshadjihaidhaij","exame_fisico":"udasudoiasuoiduao","observacoes":"sdioaoduasdas"}
+2025-05-21 23:38:48 [INFO]: Prisma info: Starting a mysql pool with 13 connections.

@@ -1,22 +1,22 @@
 import React from "react";
 import { Button, Textarea } from "@heroui/react";
+import type { CreateCondutaDto } from "~/Dtos/Conduta/CreateCondutaDto";
 
-interface CreateCondutaModalProps {
+interface CondutaFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  conduta: string;
-  onCondutaChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-
-  onCreate: () => void;
+  formData: CreateCondutaDto;
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  handleCreateConduta: () => Promise<void>;
 }
 
-const CreateCondutaModal: React.FC<CreateCondutaModalProps> = ({
+export default function CondutaFormModal({
   isOpen,
   onClose,
-  conduta,
-  onCondutaChange,
-  onCreate,
-}) => {
+  formData,
+  handleInputChange,
+  handleCreateConduta,
+}: CondutaFormModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -26,20 +26,18 @@ const CreateCondutaModal: React.FC<CreateCondutaModalProps> = ({
         <Textarea
           name="conduta"
           label="Descreva a conduta"
-          value={conduta}
-          onChange={onCondutaChange}
+          value={formData.conduta}
+          onChange={handleInputChange}
         />
         <div className="flex justify-end gap-2">
           <Button color="secondary" onPress={onClose}>
             Cancelar
           </Button>
-          <Button color="primary" onPress={onCreate}>
+          <Button color="primary" onPress={handleCreateConduta}>
             Adicionar
           </Button>
         </div>
       </div>
     </div>
   );
-};
-
-export default CreateCondutaModal;
+}
