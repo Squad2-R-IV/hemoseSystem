@@ -15,6 +15,7 @@ model Consulta {
   observacoes          String                
   Anamnese             Anamnese?              
   Condutas             Conduta[]
+  Evolucoes            EvolucaoMedica[]
 
   @@map("consulta")
 }

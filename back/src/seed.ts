@@ -92,11 +92,14 @@ async function main() {
     {
       name: "prescricao_delete",
       description: "Permissão para deletar prescrição",
-    },
-    { name: "conduta_create", description: "Permissão para criar conduta" },
+    },    { name: "conduta_create", description: "Permissão para criar conduta" },
     { name: "conduta_read", description: "Permissão para ler conduta" },
     { name: "conduta_update", description: "Permissão para atualizar conduta" },
     { name: "conduta_delete", description: "Permissão para deletar conduta" },
+    { name: "evolucao_medica_create", description: "Permissão para criar evolução médica" },
+    { name: "evolucao_medica_read", description: "Permissão para ler evolução médica" },
+    { name: "evolucao_medica_update", description: "Permissão para atualizar evolução médica" },
+    { name: "evolucao_medica_delete", description: "Permissão para deletar evolução médica" },
   ];
 
   // Upsert roles (only creates if not exists)
@@ -163,6 +166,10 @@ async function main() {
     "conduta_read",
     "conduta_update",
     "conduta_delete",
+    "evolucao_medica_create",	
+    "evolucao_medica_read",
+    "evolucao_medica_update",
+    "evolucao_medica_delete",
   ];
   const permissionsMap: { [key: string]: Permission } = await prisma.permission
     .findMany({
@@ -193,6 +200,9 @@ async function main() {
         "paciente_create",
         "paciente_update",
         "paciente_delete",
+        "anamnese_create",
+        "anamnese_update",
+        "anamnese_delete",
         "anamnese_read",
         "exame_create",
         "exame_read",
@@ -206,6 +216,11 @@ async function main() {
         "prescricao_read",
         "prescricao_update",
         "prescricao_delete",
+        "evolucao_medica_create",
+        "evolucao_medica_read",
+        "evolucao_medica_update",
+        "evolucao_medica_delete",
+
       ],
     },
     {
@@ -264,6 +279,8 @@ async function main() {
         "prescricao_read",
         "conduta_create",
         "conduta_read",
+        "evolucao_medica_create",
+        "evolucao_medica_read",
       ],
     },
   ];

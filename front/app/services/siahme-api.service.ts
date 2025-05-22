@@ -15,6 +15,9 @@ import { UpdateAnamneseDto } from "~/Dtos/Anamnese/UpdateAnamneseDto";
 import { CreateCondutaDto } from "~/Dtos/Conduta/CreateCondutaDto";
 import { ReadCondutaDto } from "~/Dtos/Conduta/ReadCondutaDto";
 import { UpdateCondutaDto } from "~/Dtos/Conduta/UpdateCondutaDto";
+import { CreateEvolucaoMedicaDto } from "~/Dtos/EvolucaoMedica/CreateEvolucaoMedicaDto";
+import { ReadEvolucaoMedicaDto } from "~/Dtos/EvolucaoMedica/ReadEvolucaoMedicaDto";
+import { UpdateEvolucaoMedicaDto } from "~/Dtos/EvolucaoMedica/UpdateEvolucaoMedicaDto";
 import { CreatePrescricaoDto } from "~/Dtos/Prescricao/CreatePrescricaoDto";
 import { ReadPrescricaoDto } from "~/Dtos/Prescricao/ReadPrescricaoDto";
 import { UpdatePrescricaoDto } from "~/Dtos/Prescricao/UpdatePrescricaoDto";
@@ -57,6 +60,8 @@ export const siahmeApi = createApi({
   baseQuery: baseQueryWithErrorHandling, // Usando o query modificado com tratamento de erro
   tagTypes: ["Agendamento", "Consulta", "Anamnese", "Conduta", "Prescricao"],
   endpoints: (builder) => ({
+
+
     ///////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////
     /////////////////USER ENDPOINTS////////////////////////
@@ -310,12 +315,11 @@ export const siahmeApi = createApi({
         url: `consulta/${id}`,
         method: "DELETE",
       }),
-    }),
-
-    fetchAllConsultaDetails: builder.query<
+    }),    fetchAllConsultaDetails: builder.query<
       {
         consulta: ReadConsultaDto;
         condutas: ReadCondutaDto[];
+        evolucoesMedicas: ReadEvolucaoMedicaDto[];
         agendamento: ReadAgendamentoDto;
       },
       { id: number; includeRelations?: boolean }
@@ -361,11 +365,22 @@ export const siahmeApi = createApi({
         if (condutasResult.error) {
           return { error: condutasResult.error };
         }
+        
+        // Fetch evoluções médicas using getEvolucoesMedicasByConsultaId
+        const evolucoesMedicasResult = await baseQuery({
+          url: `evolucao-medica/consulta?consultaId=${id}`,
+        });
+        console.log("evolucoesMedicasResult", evolucoesMedicasResult);
+
+        if (evolucoesMedicasResult.error) {
+          return { error: evolucoesMedicasResult.error };
+        }
 
         return {
           data: {
             consulta,
             condutas: condutasResult.data as ReadCondutaDto[],
+            evolucoesMedicas: evolucoesMedicasResult.data as ReadEvolucaoMedicaDto[],
             agendamento: agendamentoResult.data as ReadAgendamentoDto,
           },
         };
@@ -458,13 +473,64 @@ export const siahmeApi = createApi({
         url: `conduta/${id}`,
         method: "DELETE",
       }),
-    }),
-    getCondutasByConsultaId: builder.query<
+    }),    getCondutasByConsultaId: builder.query<
       ReadCondutaDto[],
       { consultaId: number }
     >({
       query: ({ consultaId }) => ({
         url: `conduta/consulta?consultaId=${consultaId}`,
+      }),
+    }),
+    ///////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////
+    /////////////////EvolucaoMedica ENDPOINTS//////////////
+    ///////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////
+    getEvolucoesMedicas: builder.query<
+      ReadEvolucaoMedicaDto[],
+      { includeRelations?: boolean }
+    >({
+      query: ({ includeRelations = false }) => ({
+        url: `evolucao-medica?includeRelations=${includeRelations}`,
+      }),
+    }),
+    getEvolucaoMedicaById: builder.query<
+      ReadEvolucaoMedicaDto,
+      { id: number; includeRelations?: boolean }
+    >({
+      query: ({ id, includeRelations = false }) => ({
+        url: `evolucao-medica/${id}?includeRelations=${includeRelations}`,
+      }),
+    }),
+    createEvolucaoMedica: builder.mutation<ReadEvolucaoMedicaDto, CreateEvolucaoMedicaDto>({
+      query: (body) => ({
+        url: "evolucao-medica",
+        method: "POST",
+        body,
+      }),
+    }),
+    updateEvolucaoMedica: builder.mutation<
+      ReadEvolucaoMedicaDto,
+      { id: number; body: UpdateEvolucaoMedicaDto }
+    >({
+      query: ({ id, body }) => ({
+        url: `evolucao-medica/${id}`,
+        method: "PUT",
+        body,
+      }),
+    }),
+    deleteEvolucaoMedica: builder.mutation<{ success: boolean }, number>({
+      query: (id) => ({
+        url: `evolucao-medica/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    getEvolucoesMedicasByConsultaId: builder.query<
+      ReadEvolucaoMedicaDto[],
+      { consultaId: number }
+    >({
+      query: ({ consultaId }) => ({
+        url: `evolucao-medica/consulta?consultaId=${consultaId}`,
       }),
     }),
     ///////////////////////////////////////////////////////
@@ -640,10 +706,15 @@ export const {
   useGetCondutasQuery,
   useGetCondutaByIdQuery,
   useCreateCondutaMutation,
-  useUpdateCondutaMutation,
-  useDeleteCondutaMutation,
-  useGetCondutasByConsultaIdQuery, // Add this hook for the new endpoint
-  useFetchAllConsultaDetailsQuery, // Add this hook for the new endpoint
+  useUpdateCondutaMutation,  useDeleteCondutaMutation,
+  useGetCondutasByConsultaIdQuery,
+  useFetchAllConsultaDetailsQuery,
+  useGetEvolucoesMedicasQuery,
+  useGetEvolucaoMedicaByIdQuery,
+  useCreateEvolucaoMedicaMutation,
+  useUpdateEvolucaoMedicaMutation,
+  useDeleteEvolucaoMedicaMutation,
+  useGetEvolucoesMedicasByConsultaIdQuery,
   useGetPacientesQuery,
   useGetPacienteByIdQuery,
   useCreatePacienteMutation,

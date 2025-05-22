@@ -108,7 +108,7 @@ export class GenericRepository<T> implements IGenericRepository<T> {
 
   async findManyByFields(fields: { field: string; value: any }[], includeRelations: boolean = true): Promise<T[]> {
     try {
-      const whereClause: { [key: string]: any } = fields.reduce((acc, { field, value }) => {
+      const whereClause: { [key: string]: any } = fields. reduce((acc, { field, value }) => {
         acc[field] = value;
         return acc;
       }, {} as { [key: string]: any });

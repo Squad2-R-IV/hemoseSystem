@@ -9,6 +9,7 @@ import agendamentoRoutes from "./routes/agendamento.routes";
 import pacienteRoutes from "./routes/paciente.routes";
 import anamneseRoutes from "./routes/anamnese.routes";
 import condutaRoutes from "./routes/conduta.routes";
+import evolucaoMedicaRoutes from "./routes/evolucao-medica.routes";
 import path from 'path';
 import { errorHandler } from "./middlewares/errorHandler";
 
@@ -23,6 +24,7 @@ app.use("/agendamento", agendamentoRoutes);
 app.use("/paciente", pacienteRoutes);
 app.use("/anamnese", anamneseRoutes);
 app.use("/conduta", condutaRoutes);
+app.use("/evolucao-medica", evolucaoMedicaRoutes);
 
 // Configurar Swagger
 setupSwagger(app);
