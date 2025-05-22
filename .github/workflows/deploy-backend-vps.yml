@@ -27,8 +27,6 @@ jobs:
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             nvm use 22.15.0
             yarn install
-            yarn build
-            
             # Run Prisma commands
             echo "Running Prisma migrations..."
             npx prisma migrate deploy
@@ -38,6 +36,7 @@ jobs:
             
             echo "Running Prisma seed..."
             npm run seed
+            yarn build
             
             # Restart the application
             pm2 restart api_siahme
