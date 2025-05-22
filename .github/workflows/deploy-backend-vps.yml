@@ -28,5 +28,17 @@ jobs:
             nvm use 22.15.0
             yarn install
             yarn build
+            
+            # Run Prisma commands
+            echo "Running Prisma migrations..."
+            npx prisma migrate deploy
+            
+            echo "Generating Prisma client..."
+            npx prisma generate
+            
+            echo "Running Prisma seed..."
+            npm run seed
+            
+            # Restart the application
             pm2 restart api_siahme
 
