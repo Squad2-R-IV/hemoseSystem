@@ -1,12 +1,32 @@
 model Paciente {
-  id                 Int      @id @default(autoincrement())
-  nome_paciente      String   @db.VarChar(100)
-  dt_nascimento      DateTime @db.Date
+  id                 Int          @id @default(autoincrement())
+  nome_paciente      String       @db.VarChar(100)
+  dt_nascimento      DateTime     @db.Date
   sexo               Sexo
   estado_civil       EstadoCivil
-  endereco           String   @db.VarChar(50)
-  cpf                String   @unique @db.VarChar(11)
-  cpf_acompanhante   String   @db.VarChar(11)
+  raca               Raca?
+  naturalidade       String?      @db.VarChar(90)
+  nacionalidade      String?      @db.VarChar(90)
+  nm_pai             String?      @db.VarChar(150)
+  nm_mae             String?      @db.VarChar(150)
+  cpf                String       @unique @db.VarChar(11)
+  rg_num             String?      @db.VarChar(25)
+  rg_org             String?      @db.VarChar(45)
+  cns                String?      @db.VarChar(20)
+  dt_cadastro        DateTime?    @db.DateTime
+  endereco           String       @db.VarChar(50)
+  numero             String?      @db.VarChar(10)
+  bairro             String?      @db.VarChar(100)
+  cidade             String?      @db.VarChar(100)
+  uf                 String?      @db.Char(2)
+  cep                String?      @db.VarChar(12)
+  celular_i          String?      @db.VarChar(20)
+  celular_ii         String?      @db.VarChar(20)
+  email              String?      @db.VarChar(100)
+  abo                String?      @db.VarChar(5)
+  tem_alergia        String?      @db.VarChar(3)
+  qual_alergia       String?      @db.VarChar(70)
+  cpf_acompanhante   String       @db.VarChar(11)
 
   agendamentos       Agendamento[]
 
@@ -28,4 +48,15 @@ enum EstadoCivil {
   V // Viúvo(a)
 
   @@map("estado_civil")
+}
+
+enum Raca {
+  P // Preta
+  O // Parda
+  B // Branca
+  A // Amarela
+  I // Indígena
+  N // Não informada
+
+  @@map("raca")
 }

@@ -23,14 +23,13 @@ const pacienteController = container.resolve(PacienteController);
  *       required:
  *         - nome_paciente
  *         - dt_nascimento
- *         - idade
  *         - sexo
  *         - estado_civil
  *         - endereco
  *         - cpf
  *         - cpf_acompanhante
  *       properties:
- *         id_paciente:
+ *         id:
  *           type: integer
  *           description: ID único do paciente
  *           example: 1
@@ -43,30 +42,115 @@ const pacienteController = container.resolve(PacienteController);
  *           format: date
  *           description: Data de nascimento do paciente
  *           example: "1980-01-01"
- *         idade:
- *           type: integer
- *           description: Idade do paciente
- *           example: 45
  *         sexo:
  *           type: string
- *           description: Sexo do paciente
- *           example: "Masculino"
+ *           enum: [M, F, O]
+ *           description: "Sexo do paciente (M: Masculino, F: Feminino, O: Outro)"
+ *           example: "M"
  *         estado_civil:
  *           type: string
- *           description: Estado civil do paciente
- *           example: "Casado"
- *         endereco:
+ *           enum: [S, C, D, V]
+ *           description: "Estado civil do paciente (S: Solteiro(a), C: Casado(a), D: Divorciado(a), V: Viúvo(a))"
+ *           example: "C"
+ *         raca:
  *           type: string
- *           description: Endereço do paciente
- *           example: "Rua das Flores, 123"
+ *           enum: [P, O, B, A, I, N]
+ *           description: "Raça/Cor do paciente (P: Preta, O: Parda, B: Branca, A: Amarela, I: Indígena, N: Não informada)"
+ *           example: "B"
+ *         naturalidade:
+ *           type: string
+ *           description: Naturalidade do paciente
+ *           example: "Recife"
+ *         nacionalidade:
+ *           type: string
+ *           description: Nacionalidade do paciente
+ *           example: "Brasileira"
+ *         nm_pai:
+ *           type: string
+ *           description: Nome do pai
+ *           example: "José da Silva"
+ *         nm_mae:
+ *           type: string
+ *           description: Nome da mãe
+ *           example: "Maria da Silva"
  *         cpf:
  *           type: string
  *           description: CPF do paciente
  *           example: "12345678901"
+ *         rg_num:
+ *           type: string
+ *           description: Número do RG
+ *           example: "1234567"
+ *         rg_org:
+ *           type: string
+ *           description: Órgão emissor do RG
+ *           example: "SSP"
+ *         cns:
+ *           type: string
+ *           description: Cartão Nacional de Saúde
+ *           example: "123456789012345"
+ *         dt_cadastro:
+ *           type: string
+ *           format: date-time
+ *           description: Data de cadastro do paciente
+ *           example: "2024-05-01T12:00:00Z"
+ *         endereco:
+ *           type: string
+ *           description: Endereço do paciente
+ *           example: "Rua das Flores"
+ *         numero:
+ *           type: string
+ *           description: Número do endereço
+ *           example: "123"
+ *         bairro:
+ *           type: string
+ *           description: Bairro do paciente
+ *           example: "Centro"
+ *         cidade:
+ *           type: string
+ *           description: Cidade do paciente
+ *           example: "Recife"
+ *         uf:
+ *           type: string
+ *           description: UF do paciente
+ *           example: "PE"
+ *         cep:
+ *           type: string
+ *           description: CEP do paciente
+ *           example: "50000000"
+ *         celular_i:
+ *           type: string
+ *           description: Celular principal
+ *           example: "(81)99999-9999"
+ *         celular_ii:
+ *           type: string
+ *           description: Celular secundário
+ *           example: "(81)98888-8888"
+ *         email:
+ *           type: string
+ *           description: E-mail do paciente
+ *           example: "joao@email.com"
+ *         abo:
+ *           type: string
+ *           description: Tipo sanguíneo ABO
+ *           example: "O+"
+ *         tem_alergia:
+ *           type: string
+ *           description: Indica se o paciente tem alergia (Sim/Não)
+ *           example: "Sim"
+ *         qual_alergia:
+ *           type: string
+ *           description: Qual alergia o paciente possui
+ *           example: "Dipirona"
  *         cpf_acompanhante:
  *           type: string
  *           description: CPF do acompanhante do paciente
  *           example: "10987654321"
+ *         agendamentos:
+ *           type: array
+ *           description: Lista de agendamentos do paciente
+ *           items:
+ *             $ref: '#/components/schemas/Agendamento'
  */
 
 /**
@@ -179,7 +263,6 @@ router.get("/:id", authMiddleware, checkPermission("paciente_read"), asyncHandle
  *             required:
  *               - nome_paciente
  *               - dt_nascimento
- *               - idade
  *               - sexo
  *               - estado_civil
  *               - endereco
@@ -193,15 +276,14 @@ router.get("/:id", authMiddleware, checkPermission("paciente_read"), asyncHandle
  *                 type: string
  *                 format: date
  *                 example: "1980-01-01"
- *               idade:
- *                 type: integer
- *                 example: 45
  *               sexo:
  *                 type: string
- *                 example: "Masculino"
+ *                 enum: [M, F, O]
+ *                 example: "M"
  *               estado_civil:
  *                 type: string
- *                 example: "Casado"
+ *                 enum: [S, C, D, V]
+ *                 example: "C"
  *               endereco:
  *                 type: string
  *                 example: "Rua das Flores, 123"
@@ -211,6 +293,68 @@ router.get("/:id", authMiddleware, checkPermission("paciente_read"), asyncHandle
  *               cpf_acompanhante:
  *                 type: string
  *                 example: "10987654321"
+ *               raca:
+ *                 type: string
+ *                 enum: [P, O, B, A, I, N]
+ *                 example: "B"
+ *               naturalidade:
+ *                 type: string
+ *                 example: "Recife"
+ *               nacionalidade:
+ *                 type: string
+ *                 example: "Brasileira"
+ *               nm_pai:
+ *                 type: string
+ *                 example: "José da Silva"
+ *               nm_mae:
+ *                 type: string
+ *                 example: "Maria da Silva"
+ *               rg_num:
+ *                 type: string
+ *                 example: "1234567"
+ *               rg_org:
+ *                 type: string
+ *                 example: "SSP"
+ *               cns:
+ *                 type: string
+ *                 example: "123456789012345"
+ *               dt_cadastro:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2024-05-01T12:00:00Z"
+ *               numero:
+ *                 type: string
+ *                 example: "123"
+ *               bairro:
+ *                 type: string
+ *                 example: "Centro"
+ *               cidade:
+ *                 type: string
+ *                 example: "Recife"
+ *               uf:
+ *                 type: string
+ *                 example: "PE"
+ *               cep:
+ *                 type: string
+ *                 example: "50000000"
+ *               celular_i:
+ *                 type: string
+ *                 example: "(81)99999-9999"
+ *               celular_ii:
+ *                 type: string
+ *                 example: "(81)98888-8888"
+ *               email:
+ *                 type: string
+ *                 example: "joao@email.com"
+ *               abo:
+ *                 type: string
+ *                 example: "O+"
+ *               tem_alergia:
+ *                 type: string
+ *                 example: "Sim"
+ *               qual_alergia:
+ *                 type: string
+ *                 example: "Dipirona"
  *     responses:
  *       201:
  *         description: Paciente criado com sucesso
@@ -247,7 +391,6 @@ router.post("/", authMiddleware, checkPermission("paciente_create"), asyncHandle
  *             required:
  *               - nome_paciente
  *               - dt_nascimento
- *               - idade
  *               - sexo
  *               - estado_civil
  *               - endereco
@@ -261,15 +404,14 @@ router.post("/", authMiddleware, checkPermission("paciente_create"), asyncHandle
  *                 type: string
  *                 format: date
  *                 example: "1980-01-01"
- *               idade:
- *                 type: integer
- *                 example: 45
  *               sexo:
  *                 type: string
- *                 example: "Masculino"
+ *                 enum: [M, F, O]
+ *                 example: "M"
  *               estado_civil:
  *                 type: string
- *                 example: "Casado"
+ *                 enum: [S, C, D, V]
+ *                 example: "C"
  *               endereco:
  *                 type: string
  *                 example: "Rua das Flores, 123"
@@ -279,6 +421,68 @@ router.post("/", authMiddleware, checkPermission("paciente_create"), asyncHandle
  *               cpf_acompanhante:
  *                 type: string
  *                 example: "10987654321"
+ *               raca:
+ *                 type: string
+ *                 enum: [P, O, B, A, I, N]
+ *                 example: "B"
+ *               naturalidade:
+ *                 type: string
+ *                 example: "Recife"
+ *               nacionalidade:
+ *                 type: string
+ *                 example: "Brasileira"
+ *               nm_pai:
+ *                 type: string
+ *                 example: "José da Silva"
+ *               nm_mae:
+ *                 type: string
+ *                 example: "Maria da Silva"
+ *               rg_num:
+ *                 type: string
+ *                 example: "1234567"
+ *               rg_org:
+ *                 type: string
+ *                 example: "SSP"
+ *               cns:
+ *                 type: string
+ *                 example: "123456789012345"
+ *               dt_cadastro:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2024-05-01T12:00:00Z"
+ *               numero:
+ *                 type: string
+ *                 example: "123"
+ *               bairro:
+ *                 type: string
+ *                 example: "Centro"
+ *               cidade:
+ *                 type: string
+ *                 example: "Recife"
+ *               uf:
+ *                 type: string
+ *                 example: "PE"
+ *               cep:
+ *                 type: string
+ *                 example: "50000000"
+ *               celular_i:
+ *                 type: string
+ *                 example: "(81)99999-9999"
+ *               celular_ii:
+ *                 type: string
+ *                 example: "(81)98888-8888"
+ *               email:
+ *                 type: string
+ *                 example: "joao@email.com"
+ *               abo:
+ *                 type: string
+ *                 example: "O+"
+ *               tem_alergia:
+ *                 type: string
+ *                 example: "Sim"
+ *               qual_alergia:
+ *                 type: string
+ *                 example: "Dipirona"
  *     responses:
  *       200:
  *         description: Paciente atualizado com sucesso
