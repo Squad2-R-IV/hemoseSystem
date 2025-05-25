@@ -1,0 +1,30 @@
+/*
+Table Exames {
+  id_exame int [pk]
+  id_consulta int [ref: > Consulta.id_consulta]
+  id_funcionario int [ref: > Usuario.id_usuario]
+  tipo_do_exame varchar(500)
+  resultado varchar(1000)
+  dt_exame date
+  profissional_responsavel varchar(100)
+  status varchar(50)
+}
+
+*/
+
+
+model Exame {
+  id                Int                   @id @default(autoincrement())
+  id_consulta            Int
+  id_funcionario         String?
+  tipo_do_exame          String
+  resultado              String?
+  dt_exame               DateTime @db.Date
+  profissional_responsavel String
+  status                 String
+
+  
+  //Usuario                User                  @relation(fields: [id_funcionario], references: [id])
+
+  @@map("exame")
+}
