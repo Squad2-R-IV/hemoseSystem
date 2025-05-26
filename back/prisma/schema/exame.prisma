@@ -1,30 +1,31 @@
-/*
-Table Exames {
-  id_exame int [pk]
-  id_consulta int [ref: > Consulta.id_consulta]
-  id_funcionario int [ref: > Usuario.id_usuario]
-  tipo_do_exame varchar(500)
-  resultado varchar(1000)
-  dt_exame date
-  profissional_responsavel varchar(100)
-  status varchar(50)
-}
-
-*/
-
-
 model Exame {
   id                Int                   @id @default(autoincrement())
-  id_consulta            Int
-  id_funcionario         String?
-  tipo_do_exame          String
+  id_paciente         Int
+  tipo_do_exame          tipo_exame_enum
   resultado              String?
   dt_exame               DateTime @db.Date
   profissional_responsavel String
-  status                 String
+  crm_profissional_responsavel String
+  status                 status_exame_enum
 
-  
-  //Usuario                User                  @relation(fields: [id_funcionario], references: [id])
+  Paciente                Paciente                  @relation(fields: [id_paciente], references: [id])
+  Arquivos                ArquivoExame[]
 
   @@map("exame")
 }
+
+
+enum status_exame_enum {
+  PENDENTE
+  REALIZADO
+}
+
+enum tipo_exame_enum {
+  SANGUE
+  URINA
+  FEZES
+  IMAGEM
+  ENDOSCOPICO
+  OUTRO
+}
+

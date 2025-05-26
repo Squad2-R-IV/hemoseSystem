@@ -1,0 +1,244 @@
+2025-05-25 21:33:59 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-25 21:33:59 [ERROR]: Database error: 
+Invalid `this.model.findUnique()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:56:39
+
+  53 async findById(id: string | number, includeRelations: boolean = true): Promise<T | null> {
+  54   try {
+  55     const include = includeRelations ? this.generateInclude() : undefined;
+→ 56     const result = await this.model.findUnique({
+           where: {
+             id: "pacienteId"
+                 ~~~~~~~~~~~~
+           },
+           include: undefined
+         })
+
+Argument `id`: Invalid value provided. Expected Int, provided String.
+2025-05-25 21:33:59 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-25 21:34:31 [ERROR]: Database error: 
+Invalid `this.model.findUnique()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:56:39
+
+  53 async findById(id: string | number, includeRelations: boolean = true): Promise<T | null> {
+  54   try {
+  55     const include = includeRelations ? this.generateInclude() : undefined;
+→ 56     const result = await this.model.findUnique({
+           where: {
+             id: "pacienteId"
+                 ~~~~~~~~~~~~
+           },
+           include: undefined
+         })
+
+Argument `id`: Invalid value provided. Expected Int, provided String.
+2025-05-25 21:34:31 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-25 21:37:30 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-25 21:37:30 [ERROR]: Database error: 
+Invalid `this.model.findUnique()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:56:39
+
+  53 async findById(id: string | number, includeRelations: boolean = true): Promise<T | null> {
+  54   try {
+  55     const include = includeRelations ? this.generateInclude() : undefined;
+→ 56     const result = await this.model.findUnique({
+           where: {
+             id: "pacienteId"
+                 ~~~~~~~~~~~~
+           },
+           include: undefined
+         })
+
+Argument `id`: Invalid value provided. Expected Int, provided String.
+2025-05-25 21:37:30 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-25 21:45:21 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-26 00:42:29 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-26 00:50:32 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-26 00:50:32 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:33:39
+
+  30 if (!this.model) {
+  31   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  32 }
+→ 33 const result = await this.model.create({
+       data: {
+         id_paciente: 2,
+         tipo_exame: "IMAGEM",
+         data_exame: "2024-01-15T10:30:00Z",
+         status: "PENDENTE",
+         observacoes: "Paciente em jejum",
+         resultado: "",
+     +   id_consulta: Int
+       }
+     })
+
+Argument `id_consulta` is missing.
+2025-05-26 00:50:32 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-26 00:51:12 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:33:39
+
+  30 if (!this.model) {
+  31   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  32 }
+→ 33 const result = await this.model.create({
+       data: {
+         id_paciente: 2,
+         tipo_exame: "IMAGEM",
+         data_exame: "2024-01-15T10:30:00Z",
+         status: "PENDENTE",
+         observacoes: "Paciente em jejum",
+         resultado: "",
+     +   id_consulta: Int
+       }
+     })
+
+Argument `id_consulta` is missing.
+2025-05-26 00:51:15 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-26 00:55:48 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-26 00:55:51 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:33:39
+
+  30 if (!this.model) {
+  31   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  32 }
+→ 33 const result = await this.model.create({
+       data: {
+         id_paciente: 2,
+         tipo_exame: "IMAGEM",
+         data_exame: "2024-01-15T10:30:00Z",
+         status: "PENDENTE",
+         observacoes: "Paciente em jejum",
+         resultado: "",
+     +   tipo_do_exame: tipo_exame_enum
+       }
+     })
+
+Argument `tipo_do_exame` is missing.
+2025-05-26 00:55:51 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-26 00:56:59 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:33:39
+
+  30 if (!this.model) {
+  31   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  32 }
+→ 33 const result = await this.model.create({
+       data: {
+         id_paciente: 2,
+         tipo_do_exame: "ENDOSCOPICO",
+         data_exame: "2024-01-15T10:30:00Z",
+         status: "PENDENTE",
+         observacoes: "Paciente em jejum",
+         resultado: "",
+     +   dt_exame: DateTime
+       }
+     })
+
+Argument `dt_exame` is missing.
+2025-05-26 00:56:59 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-26 00:57:20 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:33:39
+
+  30 if (!this.model) {
+  31   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  32 }
+→ 33 const result = await this.model.create({
+       data: {
+         id_paciente: 2,
+         tipo_do_exame: "ENDOSCOPICO",
+         dt_exame: "2024-01-15T10:30:00Z",
+         status: "PENDENTE",
+         observacoes: "Paciente em jejum",
+         resultado: "",
+     +   profissional_responsavel: String
+       }
+     })
+
+Argument `profissional_responsavel` is missing.
+2025-05-26 00:57:20 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-26 00:57:50 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:33:39
+
+  30 if (!this.model) {
+  31   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  32 }
+→ 33 const result = await this.model.create({
+       data: {
+         id_paciente: 2,
+         tipo_do_exame: "ENDOSCOPICO",
+         dt_exame: "2024-01-15T10:30:00Z",
+         status: "PENDENTE",
+         observacoes: "Paciente em jejum",
+         resultado: "",
+         profissional_responsavel: "joao",
+     +   crm_profissional_responsavel: String
+       }
+     })
+
+Argument `crm_profissional_responsavel` is missing.
+2025-05-26 00:57:50 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-26 00:58:15 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:33:39
+
+  30 if (!this.model) {
+  31   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  32 }
+→ 33 const result = await this.model.create({
+       data: {
+         id_paciente: 2,
+         tipo_do_exame: "ENDOSCOPICO",
+         dt_exame: "2024-01-15T10:30:00Z",
+         status: "PENDENTE",
+         observacoes: "Paciente em jejum",
+         ~~~~~~~~~~~
+         resultado: "",
+         profissional_responsavel: "joao",
+         crm_profissional_responsavel: "51243",
+     ?   id?: Int,
+     ?   Arquivos?: ArquivoExameUncheckedCreateNestedManyWithoutExameInput
+       }
+     })
+
+Unknown argument `observacoes`. Available options are marked with ?.
+2025-05-26 00:58:15 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-26 00:58:23 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:33:39
+
+  30 if (!this.model) {
+  31   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  32 }
+→ 33 const result = await this.model.create({
+       data: {
+         id_paciente: 2,
+         tipo_do_exame: "ENDOSCOPICO",
+         dt_exame: "2024-01-15T10:30:00Z",
+         status: "PENDENTE",
+         observacoes: "Paciente em jejum",
+         ~~~~~~~~~~~
+         resultado: "",
+         profissional_responsavel: "joao",
+         crm_profissional_responsavel: "51243",
+     ?   id?: Int,
+     ?   Arquivos?: ArquivoExameUncheckedCreateNestedManyWithoutExameInput
+       }
+     })
+
+Unknown argument `observacoes`. Available options are marked with ?.
+2025-05-26 00:58:23 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-26 00:58:57 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_paciente":2,"tipo_do_exame":"ENDOSCOPICO","dt_exame":"2024-01-15T10:30:00Z","status":"PENDENTE","resultado":"","profissional_responsavel":"joao","crm_profissional_responsavel":"51243"}
+2025-05-26 01:01:38 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-26 01:01:38 [ERROR]: Error: Unexpected field
+2025-05-26 01:02:10 [ERROR]: Error: Unexpected field
+2025-05-26 01:02:24 [ERROR]: Error: Unexpected field
+2025-05-26 01:02:41 [ERROR]: Error: Unexpected field
+2025-05-26 01:03:03 [ERROR]: Error: Unexpected field
+2025-05-26 01:13:05 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-26 01:24:26 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-26 01:29:06 [INFO]: Prisma info: Starting a mysql pool with 13 connections.

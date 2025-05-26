@@ -13,6 +13,6 @@ import { Paciente } from "@prisma/client";
 @injectable()
 export class PacienteRepository extends GenericRepository<Paciente> implements IPacienteRepository {
   constructor() {
-    super(prisma, prisma.paciente, ['agendamentos']);
+    super(prisma, prisma.paciente, ['agendamentos', 'exames']);
   }
 }

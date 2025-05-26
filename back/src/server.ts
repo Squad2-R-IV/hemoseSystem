@@ -10,6 +10,8 @@ import pacienteRoutes from "./routes/paciente.routes";
 import anamneseRoutes from "./routes/anamnese.routes";
 import condutaRoutes from "./routes/conduta.routes";
 import evolucaoMedicaRoutes from "./routes/evolucao-medica.routes";
+import exameRoutes from "./routes/exame.routes";
+import arquivoExameRoutes from "./routes/arquivo-exame.routes";
 import path from 'path';
 import { errorHandler } from "./middlewares/errorHandler";
 
@@ -25,6 +27,8 @@ app.use("/paciente", pacienteRoutes);
 app.use("/anamnese", anamneseRoutes);
 app.use("/conduta", condutaRoutes);
 app.use("/evolucao-medica", evolucaoMedicaRoutes);
+app.use("/exame", exameRoutes);
+app.use("/arquivo-exame", arquivoExameRoutes);
 
 // Configurar Swagger
 setupSwagger(app);

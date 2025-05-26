@@ -9,6 +9,7 @@ model Paciente {
   cpf_acompanhante   String   @db.VarChar(11)
 
   agendamentos       Agendamento[]
+  exames            Exame[]
 
   @@map("paciente")
 }

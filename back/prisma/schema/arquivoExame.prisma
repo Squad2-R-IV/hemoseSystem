@@ -1,0 +1,13 @@
+model ArquivoExame {
+  id           Int    @id @default(autoincrement())
+  id_exame     Int
+  nome_arquivo String
+  tipo_arquivo String @default("application/pdf")
+  tamanho      Int
+  conteudo     Bytes  @db.LongBlob
+  dt_upload    DateTime @default(now())
+
+  Exame        Exame  @relation(fields: [id_exame], references: [id], onDelete: Cascade)
+
+  @@map("arquivo_exame")
+}

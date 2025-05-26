@@ -1,1 +1,71 @@
 2025-05-25 20:10:30 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-25 20:38:08 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-25 20:43:37 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-25 21:30:03 [ERROR]: Database error: 
+Invalid `this.model.findUnique()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:56:39
+
+  53 async findById(id: string | number, includeRelations: boolean = true): Promise<T | null> {
+  54   try {
+  55     const include = includeRelations ? this.generateInclude() : undefined;
+→ 56     const result = await this.model.findUnique({
+           where: {
+             id: "pacienteId"
+                 ~~~~~~~~~~~~
+           },
+           include: undefined
+         })
+
+Argument `id`: Invalid value provided. Expected Int, provided String.
+2025-05-25 21:30:03 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-25 21:31:05 [ERROR]: Database error: 
+Invalid `this.model.findUnique()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:56:39
+
+  53 async findById(id: string | number, includeRelations: boolean = true): Promise<T | null> {
+  54   try {
+  55     const include = includeRelations ? this.generateInclude() : undefined;
+→ 56     const result = await this.model.findUnique({
+           where: {
+             id: "pacienteId"
+                 ~~~~~~~~~~~~
+           },
+           include: undefined
+         })
+
+Argument `id`: Invalid value provided. Expected Int, provided String.
+2025-05-25 21:31:05 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-25 21:32:32 [ERROR]: Database error: 
+Invalid `this.model.findUnique()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:56:39
+
+  53 async findById(id: string | number, includeRelations: boolean = true): Promise<T | null> {
+  54   try {
+  55     const include = includeRelations ? this.generateInclude() : undefined;
+→ 56     const result = await this.model.findUnique({
+           where: {
+             id: "pacienteId"
+                 ~~~~~~~~~~~~
+           },
+           include: undefined
+         })
+
+Argument `id`: Invalid value provided. Expected Int, provided String.
+2025-05-25 21:32:32 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-25 21:32:47 [ERROR]: Database error: 
+Invalid `this.model.findUnique()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:56:39
+
+  53 async findById(id: string | number, includeRelations: boolean = true): Promise<T | null> {
+  54   try {
+  55     const include = includeRelations ? this.generateInclude() : undefined;
+→ 56     const result = await this.model.findUnique({
+           where: {
+             id: "pacienteId"
+                 ~~~~~~~~~~~~
+           },
+           include: undefined
+         })
+
+Argument `id`: Invalid value provided. Expected Int, provided String.
+2025-05-25 21:32:47 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
