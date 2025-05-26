@@ -62,7 +62,6 @@ const consultaController = container.resolve(ConsultaController);
  *           description: Observações sobre o histórico
  *           example: "Procedimento realizado com sucesso"
  */
-
 /**
  * @swagger
  * /consulta:
@@ -90,6 +89,42 @@ const consultaController = container.resolve(ConsultaController);
  *       - bearerAuth: []
  */
 router.get("/", authMiddleware, checkPermission("consultas_read"), asyncHandler(consultaController.getAll.bind(consultaController)));
+
+/**
+ * @swagger
+ * /consulta/paciente:
+ *   get:
+ *     summary: Retorna todas as consultas relacionadas a um paciente específico
+ *     tags: [Consulta]
+ *     parameters:
+ *       - in: query
+ *         name: pacienteId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do paciente
+ *     responses:
+ *       200:
+ *         description: Lista de consultas retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Consulta'
+ *       404:
+ *         description: Nenhuma consulta encontrada para o paciente
+ *       500:
+ *         description: Erro no servidor
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get(
+  "/paciente",
+  authMiddleware,
+  checkPermission("consultas_read"),
+  asyncHandler(consultaController.getConsultasByPacientId.bind(consultaController))
+);
 
 /**
  * @swagger

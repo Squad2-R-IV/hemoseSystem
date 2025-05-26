@@ -18,5 +18,25 @@ export class ConsultaService extends GenericService<ConsultaWithRelations> imple
   ) {
     super(consultaRepository);
   }
- 
+
+  async getConsultasByPacientId(pacienteId: number): Promise<ConsultaWithRelations[]> {
+    return await this.repository.findManyByQuery({
+      where: {
+        Agendamento: {
+          id_paciente: pacienteId
+        }
+      },
+      include: {
+        Anamnese: true,
+        Agendamento: {
+          include: {
+            Paciente: true,
+            Usuario: true
+          }
+        },
+        Condutas: true,
+        Evolucoes: true,
+      }
+    }, true) as ConsultaWithRelations[];
+  }
 }

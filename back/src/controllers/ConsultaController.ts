@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { GenericController } from "./GenericController";
+import { Request, Response } from "express";
 import { IGenericService } from "../services/interfaces/IGenericService";
 import { CreateConsultaDto } from "../Dtos/Consulta/CreateConsultaDto";
 import { UpdateConsultaDto } from "../Dtos/Consulta/UpdateConsultaDto";
@@ -25,6 +26,17 @@ export class ConsultaController extends GenericController<Consulta, CreateConsul
       "Consulta" // Pass the table name explicitly
     );
   }
+  async getConsultasByPacientId(req: Request, res: Response): Promise<Response> {
+    // PacienteId : number
+    const pacienteId = parseInt(req.query.pacienteId as string);
+    
+    if (isNaN(pacienteId)) {
+      return res.status(400).json({ message: "Id o paciente deve ser um número válido" });
+    }
+    const consultas = await this.consultaService.getConsultasByPacientId(Number(pacienteId));
+    return res.json(consultas);
+  }
+  
 
 
 }
