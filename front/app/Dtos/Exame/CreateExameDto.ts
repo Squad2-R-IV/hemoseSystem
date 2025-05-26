@@ -1,4 +1,4 @@
-import { status_exame_enum, tipo_exame_enum } from "@prisma/client";
+import type { status_exame_enum, tipo_exame_enum } from "~/utils/enums/enums";
 
 export class CreateExameDto {
     

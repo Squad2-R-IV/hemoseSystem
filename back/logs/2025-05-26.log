@@ -242,3 +242,31 @@ Unknown argument `observacoes`. Available options are marked with ?.
 2025-05-26 01:13:05 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
 2025-05-26 01:24:26 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
 2025-05-26 01:29:06 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-26 19:20:01 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-26 20:01:59 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_paciente":4,"tipo_do_exame":"ENDOSCOPICO","dt_exame":"2025-05-26T23:01:20.528Z","crm_profissional_responsavel":"25420SE","profissional_responsavel":"Joao","status":"PENDENTE","resultado":""}
+2025-05-26 20:02:19 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:33:39
+
+  30 if (!this.model) {
+  31   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  32 }
+→ 33 const result = await this.model.create({
+       data: {
+         id_paciente: 1,
+         id_funcionario: "9ac88da0-486b-46d8-a83a-79cbaf74ade6",
+         dt_agendamento: "2025-05-26T23:02:07.052Z",
+         dt_hora_agendamento: 11,
+         tipo_agendamento: "",
+                           ~~
+         status_agendamento: "Agendado",
+         observacoes: ""
+       }
+     })
+
+Invalid value for argument `tipo_agendamento`. Expected TipoAgendamentoEnum.
+2025-05-26 20:02:19 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-26 20:02:26 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_paciente":1,"id_funcionario":"9ac88da0-486b-46d8-a83a-79cbaf74ade6","dt_agendamento":"2025-05-26T23:02:07.052Z","dt_hora_agendamento":11,"tipo_agendamento":"Consulta","status_agendamento":"Agendado","observacoes":""}
+2025-05-26 20:03:00 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"nome_paciente":"Marcelinho","dt_nascimento":"1978-05-26T00:00:00.000Z","sexo":"M","estado_civil":"C","endereco":"Rua de fulano","cpf":"45648994984","cpf_acompanhante":"419549487"}
+2025-05-26 20:20:21 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_paciente":4,"tipo_do_exame":"SANGUE","dt_exame":"2025-05-26T23:19:31.061Z","crm_profissional_responsavel":"25420SE","profissional_responsavel":"Joao","status":"PENDENTE","resultado":"Doido da cabeça"}
+2025-05-26 20:21:18 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_paciente":2,"tipo_do_exame":"SANGUE","dt_exame":"2025-05-26T23:20:42.928Z","crm_profissional_responsavel":"25420SE","profissional_responsavel":"dfsdfsfds","status":"PENDENTE","resultado":"Doido da cabeça"}

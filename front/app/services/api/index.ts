@@ -7,12 +7,13 @@ import { anamneseEndpoints } from "./anamnese-api.service";
 import { condutaEndpoints } from "./conduta-api.service";
 import { evolucaoMedicaEndpoints } from "./evolucao-medica-api.service";
 import { pacienteEndpoints } from "./paciente-api.service";
+import { exameEndpoints } from "./exame-api.service";
+import { arquivoExameEndpoints } from "./arquivo-exame-api.service";
 
 export const siahmeApi = createApi({
   reducerPath: "siahmeApi",
   baseQuery: baseQueryWithErrorHandling,
-  tagTypes: API_TAGS,
-  endpoints: (builder) => ({
+  tagTypes: API_TAGS,  endpoints: (builder) => ({
     // User endpoints
     ...userEndpoints(builder),
     
@@ -33,6 +34,12 @@ export const siahmeApi = createApi({
     
     // Paciente endpoints
     ...pacienteEndpoints(builder),
+    
+    // Exame endpoints
+    ...exameEndpoints(builder),
+    
+    // Arquivo Exame endpoints
+    ...arquivoExameEndpoints(builder),
   }),
 });
 
@@ -95,8 +102,7 @@ export const {
   useUpdateEvolucaoMedicaMutation,
   useDeleteEvolucaoMedicaMutation,
   useGetEvolucoesMedicasByConsultaIdQuery,
-  
-  // Paciente hooks
+    // Paciente hooks
   useGetPacientesQuery,
   useGetPacienteByIdQuery,
   useCreatePacienteMutation,
@@ -105,4 +111,22 @@ export const {
   useGetPacienteByCpfQuery,
   useReagendarAgendamentoMutation,
   useRealizarCheckinMutation,
+    // Exame hooks
+  useGetExamesQuery,
+  useGetExameByIdQuery,
+  useCreateExameMutation,
+  useUpdateExameMutation,
+  useDeleteExameMutation,  useGetExamesByPacienteQuery,
+  useGetExamesByStatusQuery,
+    // Arquivo Exame hooks
+  useGetArquivosExameQuery,
+  useGetArquivoExameByIdQuery,
+  useCreateArquivoExameMutation,
+  useUpdateArquivoExameMutation,
+  useDeleteArquivoExameMutation,
+  useUploadArquivoMutation,
+  useUploadMultiplosArquivosMutation,
+  useDownloadArquivoQuery,
+  useGetArquivosByExameIdQuery,
+  useGetArquivosByTipoQuery,
 } = siahmeApi;

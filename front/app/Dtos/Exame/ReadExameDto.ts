@@ -1,6 +1,11 @@
-import { status_exame_enum, tipo_exame_enum } from "@prisma/client";
+import type { tipo_exame_enum, status_exame_enum } from "~/utils/enums/enums";
+import { ReadArquivoExameDto } from "../ArquivoExame/ReadArquivoExameDto"
 
-export class CreateExameDto {
+
+
+export class ReadExameDto {
+    
+    id!: number;
     
     
     id_paciente!: number;
@@ -16,4 +21,6 @@ export class CreateExameDto {
     crm_profissional_responsavel!: string;
     
     status!: status_exame_enum;
+
+    arquivos?: ReadArquivoExameDto[];
 }

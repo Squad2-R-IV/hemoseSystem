@@ -1,19 +1,14 @@
 import React, { useState } from "react";
 import { Button, Spinner } from "@heroui/react";
-import { UserIcon, CalendarIcon } from "@heroicons/react/24/outline";
+import { UserIcon, CalendarIcon, BookOpenIcon } from "@heroicons/react/24/outline";
 import { parseDate } from "@internationalized/date";
 import type { DateValue } from "@internationalized/date";
-import { CreatePacienteDto } from "~/Dtos/Paciente/CreatePacienteDto";
-import { CreateAgendamentoDto } from "~/Dtos/Agendamento/CreateAgendamentoDto";
-import { 
-  useCreatePacienteMutation, 
-  useCreateAgendamentoMutation,
-  useGetAgendamentosByDateQuery 
-} from "~/services/siahme-api.service";
+import { useGetAgendamentosByDateQuery } from "~/services/siahme-api.service";
 
 // Import componentized modules
 import { PacienteModal } from "../../components/recepcao/PacienteModal";
 import { AgendamentoModal } from "../../components/recepcao/AgendamentoModal";
+import { ExamesModal } from "../../components/recepcao/ExamesModal";
 import { AppointmentsTable } from "../../components/recepcao/AppointmentsTable";
 import { CalendarSidebar } from "../../components/recepcao/CalendarSidebar";
 import { formatDateForApi } from "../../utils/recepcao/utils";
@@ -24,15 +19,13 @@ export default function Recepcao() {
   );
   const [isPacienteModalOpen, setPacienteModalOpen] = useState(false);
   const [isAgendamentoModalOpen, setAgendamentoModalOpen] = useState(false);
-  const [createPaciente] = useCreatePacienteMutation();
-  const [createAgendamento] = useCreateAgendamentoMutation();
-  
+  const [isExameModalOpen, setExameModalOpen] = useState(false);
+
   // Format the date for API call (YYYY-MM-DD)
   const formattedDate = formatDateForApi(selectedDate);
-  
   // Fetch agendamentos for the selected date
-  const { data: appointments = [], isLoading, refetch } = useGetAgendamentosByDateQuery({ 
-    date: formattedDate 
+  const { data: appointments = [], isLoading, refetch } = useGetAgendamentosByDateQuery({
+    date: formattedDate
   }, {
     // Re-fetch when coming back to the window/tab
     refetchOnMountOrArgChange: true
@@ -48,26 +41,6 @@ export default function Recepcao() {
   const handleDateChange = (date: DateValue): void => {
     setSelectedDate(date);
     // The query will automatically re-fetch when the dependency (formattedDate) changes
-  };
-
-  const handlePacienteSubmit = async (data: CreatePacienteDto) => {
-    try {
-      await createPaciente(data).unwrap();
-      setPacienteModalOpen(false);
-    } catch (error) {
-      console.error("Error creating patient:", error);
-    }
-  };
-
-  const handleAgendamentoSubmit = async (data: CreateAgendamentoDto) => {
-    try {
-      await createAgendamento(data).unwrap();
-      setAgendamentoModalOpen(false);
-      // Refetch appointments after creating a new appointment
-      refetch();
-    } catch (error) {
-      console.error("Error creating appointment:", error);
-    }
   };
 
   return (
@@ -91,6 +64,13 @@ export default function Recepcao() {
             onClick={() => setAgendamentoModalOpen(true)}
           >
             Novo Agendamento
+          </Button>          <Button
+            color="warning"
+            className="h-12"
+            startContent={<BookOpenIcon className="h-5 w-5" />}
+            onClick={() => setExameModalOpen(true)}
+          >
+            Cadastrar Exames
           </Button>
         </div>
 
@@ -100,31 +80,32 @@ export default function Recepcao() {
             <Spinner size="lg" />
           </div>
         ) : (
-          <AppointmentsTable 
-            selectedDate={selectedDate} 
-            appointments={appointments} 
+          <AppointmentsTable
+            selectedDate={selectedDate}
+            appointments={appointments}
             onAppointmentUpdated={handleAppointmentUpdated}
           />
         )}
       </div>
 
       {/* Calendar Sidebar */}
-      <CalendarSidebar 
-        selectedDate={selectedDate} 
-        onDateChange={handleDateChange} 
-      />
-
-      {/* Modals */}
+      <CalendarSidebar
+        selectedDate={selectedDate}
+        onDateChange={handleDateChange}
+      />      {/* Modals */}
       {isPacienteModalOpen && (
         <PacienteModal
           onClose={() => setPacienteModalOpen(false)}
-          onSubmit={handlePacienteSubmit}
         />
       )}
       {isAgendamentoModalOpen && (
         <AgendamentoModal
           onClose={() => setAgendamentoModalOpen(false)}
-          onSubmit={handleAgendamentoSubmit}
+        />
+      )}
+      {isExameModalOpen && (
+        <ExamesModal
+          onClose={() => setExameModalOpen(false)}
         />
       )}
     </div>

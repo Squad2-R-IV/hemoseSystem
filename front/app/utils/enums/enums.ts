@@ -54,3 +54,25 @@ export const EstadoCivil = {
 
 export type EstadoCivil = (typeof EstadoCivil)[keyof typeof EstadoCivil];
 
+
+export const status_exame_enum = {
+  PENDENTE: 'PENDENTE',
+  REALIZADO: 'REALIZADO'
+};
+
+export type status_exame_enum = (typeof status_exame_enum)[keyof typeof status_exame_enum]
+
+
+export const tipo_exame_enum = {
+  SANGUE: 'SANGUE',
+  URINA: 'URINA',
+  FEZES: 'FEZES',
+  IMAGEM: 'IMAGEM',
+  ENDOSCOPICO: 'ENDOSCOPICO',
+  OUTRO: 'OUTRO'
+};
+
+export type tipo_exame_enum = (typeof tipo_exame_enum)[keyof typeof tipo_exame_enum]
+
+
+

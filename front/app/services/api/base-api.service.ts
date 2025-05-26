@@ -38,5 +38,7 @@ export const API_TAGS = [
   "Conduta", 
   "EvolucaoMedica",
   "Prescricao",
-  "Paciente"
+  "Paciente",
+  "Exame",
+  "ArquivoExame"
 ] as const;

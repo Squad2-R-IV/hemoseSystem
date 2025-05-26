@@ -9,16 +9,19 @@ import {
   ModalFooter,
   Select,
   SelectItem,
+  addToast,
 } from "@heroui/react";
 import { CreatePacienteDto } from "~/Dtos/Paciente/CreatePacienteDto";
 import { Sexo, EstadoCivil } from "~/utils/enums/enums";
+import { useCreatePacienteMutation } from "~/services/siahme-api.service";
 
 interface PacienteModalProps {
   onClose: () => void;
-  onSubmit: (data: CreatePacienteDto) => void;
 }
 
-export function PacienteModal({ onClose, onSubmit }: PacienteModalProps) {
+export function PacienteModal({ onClose }: PacienteModalProps) {
+  const [createPaciente, { isLoading }] = useCreatePacienteMutation();
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [formData, setFormData] = useState<CreatePacienteDto>({
     nome_paciente: "",
     dt_nascimento: new Date(),
@@ -36,6 +39,60 @@ export function PacienteModal({ onClose, onSubmit }: PacienteModalProps) {
       ...prev,
       [name]: name === "dt_nascimento" ? new Date(value) : value
     }));
+
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!formData.nome_paciente.trim()) {
+      newErrors.nome_paciente = "Nome do paciente é obrigatório";
+    }
+
+    if (!formData.cpf.trim()) {
+      newErrors.cpf = "CPF é obrigatório";
+    }
+
+    if (!formData.endereco.trim()) {
+      newErrors.endereco = "Endereço é obrigatório";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    try {
+      await createPaciente(formData).unwrap();
+      addToast({
+        title: "Sucesso",
+        description: "Paciente cadastrado com sucesso!",
+        color: "success",
+      });
+      onClose();
+    } catch (error) {
+      console.error("Erro ao cadastrar paciente:", error);
+      addToast({
+        title: "Erro",
+        description: "Erro ao cadastrar paciente. Tente novamente.",
+        color: "danger",
+      });
+    }
+  };
+
+  // Format date for input field
+  const formatDateForInput = (date: Date | undefined) => {
+    if (!date) return "";
+    const d = new Date(date);
+    return d.toISOString().split('T')[0];
   };
 
   return (
@@ -43,13 +100,15 @@ export function PacienteModal({ onClose, onSubmit }: PacienteModalProps) {
       <ModalContent>
         <ModalHeader>Cadastrar Paciente</ModalHeader>
         <ModalBody>
-          <form>
-            <Input
+          <form>            <Input
               name="nome_paciente"
               label="Nome"
               placeholder="Nome do Paciente"
               onChange={handleChange}
               className="mb-4"
+              value={formData.nome_paciente}
+              isInvalid={!!errors.nome_paciente}
+              errorMessage={errors.nome_paciente}
             />
             <Input
               name="dt_nascimento"
@@ -58,6 +117,7 @@ export function PacienteModal({ onClose, onSubmit }: PacienteModalProps) {
               placeholder="Selecione a data de nascimento"
               onChange={handleChange}
               className="mb-4"
+              value={formatDateForInput(formData.dt_nascimento)}
             />
             <Select
               name="sexo"
@@ -86,13 +146,15 @@ export function PacienteModal({ onClose, onSubmit }: PacienteModalProps) {
                   {label}
                 </SelectItem>
               ))}
-            </Select>
-            <Input
+            </Select>            <Input
               name="endereco"
               label="Endereço"
               placeholder="Digite o endereço"
               onChange={handleChange}
               className="mb-4"
+              value={formData.endereco}
+              isInvalid={!!errors.endereco}
+              errorMessage={errors.endereco}
             />
             <Input
               name="cpf"
@@ -100,6 +162,9 @@ export function PacienteModal({ onClose, onSubmit }: PacienteModalProps) {
               placeholder="Digite o CPF"
               onChange={handleChange}
               className="mb-4"
+              value={formData.cpf}
+              isInvalid={!!errors.cpf}
+              errorMessage={errors.cpf}
             />
             <Input
               name="cpf_acompanhante"
@@ -107,14 +172,26 @@ export function PacienteModal({ onClose, onSubmit }: PacienteModalProps) {
               placeholder="Digite o CPF do acompanhante"
               onChange={handleChange}
               className="mb-4"
+              value={formData.cpf_acompanhante}
             />
+            {Object.keys(errors).length > 0 && (
+              <div className="mb-4 text-red-500">
+                {Object.values(errors).map((error, index) => (
+                  <div key={index}>{error}</div>
+                ))}
+              </div>
+            )}
           </form>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={() => onSubmit(formData)}>
-            Salvar
+        </ModalBody>        <ModalFooter>
+          <Button 
+            color="primary" 
+            onClick={handleSubmit} 
+            isLoading={isLoading}
+            disabled={isLoading}
+          >
+            {isLoading ? "Salvando..." : "Salvar"}
           </Button>
-          <Button variant="light" onClick={onClose}>
+          <Button variant="light" onClick={onClose} disabled={isLoading}>
             Cancelar
           </Button>
         </ModalFooter>
