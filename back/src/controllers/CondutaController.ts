@@ -1,7 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { Request, Response } from "express";
 import { GenericController } from "./GenericController";
-import { IGenericService } from "../services/interfaces/IGenericService";
 import { CreateCondutaDto } from "../Dtos/Conduta/CreateCondutaDto";
 import { UpdateCondutaDto } from "../Dtos/Conduta/UpdateCondutaDto";
 import { ReadCondutaDto } from "../Dtos/Conduta/ReadCondutaDto";
