@@ -1,4 +1,4 @@
-import { AutoMap } from "@automapper/classes";
+
 import { TipoAgendamentoEnum, StatusAgendamentoEnum } from "@prisma/client";
 import { ReadPacienteDto } from "../Paciente/ReadPacienteDto";
 import { ReadUserDto } from "../User/ReadUser.dto";

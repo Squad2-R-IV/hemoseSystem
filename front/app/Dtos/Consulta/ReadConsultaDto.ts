@@ -1,4 +1,4 @@
-// import { AutoMap } from "@automapper/classes";
+// 
 // import { tipo_procedimento_enum } from "@prisma/client";
 import type { status_consulta_enum } from "~/utils/enums/enums";
 import { ReadAnamneseDto } from "../Anamnese/ReadAnamneseDto";

@@ -1,4 +1,4 @@
-import { AutoMap } from "@automapper/classes";
+
 import { tipo_procedimento_enum } from "@prisma/client";
 
 export class CreateConsultaDto {

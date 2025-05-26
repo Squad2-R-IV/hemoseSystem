@@ -1,4 +1,4 @@
-import { AutoMap } from "@automapper/classes";
+
 import { ReadUserDto } from "../User/ReadUser.dto";
 import { ReadConsultaDto } from "../Consulta/ReadConsultaDto";
 

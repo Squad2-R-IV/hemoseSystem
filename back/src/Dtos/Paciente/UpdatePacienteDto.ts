@@ -1,4 +1,4 @@
-import { AutoMap } from "@automapper/classes";
+
 import { Sexo, EstadoCivil } from "@prisma/client";
 
 export class UpdatePacienteDto {

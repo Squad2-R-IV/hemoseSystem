@@ -1,4 +1,4 @@
-import { AutoMap } from "@automapper/classes";
+
 import { TipoAgendamentoEnum, StatusAgendamentoEnum } from "@prisma/client";
 
 export class CreateAgendamentoDto {

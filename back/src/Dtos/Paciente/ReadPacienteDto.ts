@@ -1,4 +1,4 @@
-import { AutoMap } from "@automapper/classes";
+
 import { ReadAgendamentoDto } from "../Agendamento/ReadAgendamentoDto";
 import { Sexo, EstadoCivil } from "@prisma/client";
 

@@ -1,4 +1,4 @@
-import { AutoMap } from "@automapper/classes";
+
 import { status_consulta_enum, tipo_procedimento_enum } from "@prisma/client";
 
 
