@@ -27,10 +27,13 @@ export default [
     route(
       "consulta/:id",
       "./routes/modulos/consulta.tsx"
-    ),
-    route(
+    ),    route(
       "prontuarios",
       "./routes/prontuarios.tsx"
+    ),
+    route(
+      "prontuarios/:pacienteId",
+      "./pages/pacientes/pacienteDetail.tsx"
     ),
     route(
       "funcionarios",
