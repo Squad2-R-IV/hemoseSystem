@@ -60,13 +60,11 @@ const columns = [
 ];
 
 export function SelecaoAgendamento() {
-  const [filterValue, setFilterValue] = React.useState("");
   const [page, setPage] = React.useState(1);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "id_paciente",
     direction: "ascending",
   });
-  const [selectedStatus, setSelectedStatus] = React.useState("");
 
   const rowsPerPage = 4;
 
@@ -86,70 +84,8 @@ export function SelecaoAgendamento() {
       agendamento.Consulta.status === 'EM_ATENDIMENTO'
     );
 
-    const applyFilters = (items: ReadAgendamentoDto[]) => {
-      let filtered = [...items];
-
-      if (filterValue) {
-        filtered = filtered.filter((item) =>
-          item.Paciente?.nome_paciente?.toLowerCase().includes(filterValue.toLowerCase()) ||
-          item.id_paciente.toString().includes(filterValue)
-        );
-      }
-
-      if (selectedStatus) {
-        filtered = filtered.filter((item) => item.status_agendamento === selectedStatus);
-      }
-
-      if (sortDescriptor.column) {
-        filtered.sort((a, b) => {
-          let first, second;
-
-          if (sortDescriptor.column.toString().includes('.')) {
-            const parts = sortDescriptor.column.toString().split('.');
-            first = (a[parts[0] as keyof typeof a] as any)?.[parts[1]] ?? '';
-            second = (b[parts[0] as keyof typeof b] as any)?.[parts[1]] ?? '';
-          } else {
-            first = a[sortDescriptor.column as keyof typeof a] ?? '';
-            second = b[sortDescriptor.column as keyof typeof b] ?? '';
-          }
-
-          const cmp = first < second ? -1 : first > second ? 1 : 0;
-          return sortDescriptor.direction === "descending" ? -cmp : cmp;
-        });
-      }
-
-      return filtered;
-    };
-
-    return [
-      applyFilters(waitingAndCalled),
-      applyFilters(inProgress)
-    ];
-  }, [filterValue, selectedStatus, sortDescriptor, agendamentos]);
-
-  const waitingPages = Math.ceil(waitingAndCalledItems.length / rowsPerPage);
-  const inProgressPages = Math.ceil(inProgressItems.length / rowsPerPage);
-  
-  const waitingItems = React.useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-    return waitingAndCalledItems
-      .filter(item => item.id_paciente !== undefined && item.id_paciente !== null)
-      .slice(start, end);
-  }, [page, waitingAndCalledItems]);
-
-  const inProgressItemsPaginated = React.useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-    return inProgressItems
-      .filter(item => item.id_paciente !== undefined && item.id_paciente !== null)
-      .slice(start, end);
-  }, [page, inProgressItems]);
-
-  const onSearchChange = React.useCallback((value: string) => {
-    setFilterValue(value);
-    setPage(1);
-  }, []);
+    return [waitingAndCalled, inProgress];
+  }, [agendamentos]);
 
   const getCustomKeyValue = (item: ReadAgendamentoDto, columnKey: Key) => {
     switch (columnKey) {
@@ -203,30 +139,6 @@ export function SelecaoAgendamento() {
 
   return (
     <div className="flex flex-col gap-4">
-      <Card>
-        <CardBody className="flex flex-row gap-4">
-          <Input
-            placeholder="Busca por nome do paciente ou id do paciente"
-            label="Buscar"
-            type="text"
-            startContent={<MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />}
-            onChange={(e) => onSearchChange(e.target.value)}
-          />
-          <Select
-            className="max-w-xs"
-            label="Filtrar por Status"
-            onChange={(e) => setSelectedStatus(e.target.value)}
-          >
-            <>
-              <SelectItem key="all">Todos</SelectItem>
-              {Object.values(StatusAgendamentoEnum).map((status) => (
-                <SelectItem key={status}>{status}</SelectItem>
-              ))}
-            </>
-          </Select>
-        </CardBody>
-      </Card>
-
       <div className="flex flex-col gap-6">
         <TabelaAguardandoChamados
           items={waitingAndCalledItems}

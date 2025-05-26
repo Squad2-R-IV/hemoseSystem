@@ -14,7 +14,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { CreateAgendamentoDto } from "~/Dtos/Agendamento/CreateAgendamentoDto";
 import { TipoAgendamentoEnum, StatusAgendamentoEnum } from "~/utils/enums/enums";
 import { useGetPacientesQuery, useGetMedicosQuery } from "~/services/siahme-api.service";
-import { SearchModal } from "./SearchModal";
+import { SearchModal } from "../SearchModal";
 
 
 interface AgendamentoModalProps {

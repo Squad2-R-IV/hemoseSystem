@@ -16,6 +16,7 @@ import {
   addToast,
 } from "@heroui/react";
 import { FunnelIcon, EyeIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router";
 import type { ReadPacienteDto } from "~/Dtos/Paciente/ReadPacienteDto";
 import { useGetPacientesQuery, useDeletePacienteMutation, useUpdatePacienteMutation } from "~/services/siahme-api.service";
 import { DeletePacienteModal } from "./DeletePacienteModal";
@@ -33,6 +34,8 @@ export function PacientesTable({
   onPacienteSelected,
   onPacienteUpdated 
 }: PacientesTableProps) {
+  
+  const navigate = useNavigate();
   
   // Search functionality
   const [searchQuery, setSearchQuery] = useState("");
@@ -107,9 +110,12 @@ const formatEstadoCivil = (estadoCivil: string) => {
         default:
         return 'Não informado';
     }
-};
-  // Handle view patient details
+};  // Handle view patient details
   const handleViewPaciente = (paciente: ReadPacienteDto) => {
+    // Navigate to patient detail page
+    navigate(`/prontuarios/${paciente.id}`);
+    
+    // Also call the callback if provided (for backward compatibility)
     if (onPacienteSelected) {
       onPacienteSelected(paciente);
     }
