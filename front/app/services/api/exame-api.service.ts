@@ -14,7 +14,7 @@ export const exameEndpoints = (builder: EndpointBuilder<any, any, any>) => ({
   
   getExameById: builder.query<ReadExameDto, number>({
     query: (id) => ({
-      url: `exame/${id}`,
+      url: `exame/${id}?includeRelations=true`,
     }),
     providesTags: ["Exame"],
   }),

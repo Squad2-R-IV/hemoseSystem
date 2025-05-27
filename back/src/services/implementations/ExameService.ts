@@ -20,10 +20,10 @@ export class ExameService extends GenericService<ExameWithRelations> implements 
   }
 
   async findExamesByPacienteId(pacienteId: number): Promise<ExameWithRelations[]> {
-    return this.repository.findManyByFields([{ field: "id_paciente", value: pacienteId }]);
+    return this.repository.findManyByFields([{ field: "id_paciente", value: pacienteId }], false);
   }
 
   async findExamesByStatus(status: string): Promise<ExameWithRelations[]> {
-    return this.repository.findManyByFields([{ field: "status", value: status }]);
+    return this.repository.findManyByFields([{ field: "status", value: status }], false);
   }
 }

@@ -78,8 +78,7 @@ export const arquivoExameEndpoints = (builder: EndpointBuilder<any, any, any>) =
       };
     },
     invalidatesTags: ["ArquivoExame"],
-  }),
-  // Download endpoint
+  }),  // Download endpoint
   downloadArquivo: builder.query<Blob, number>({
     query: (id) => ({
       url: `arquivo-exame/download/${id}`,
@@ -87,7 +86,10 @@ export const arquivoExameEndpoints = (builder: EndpointBuilder<any, any, any>) =
         return response.blob();
       },
     }),
-    providesTags: ["ArquivoExame"],
+    // Use a unique tag for each file to prevent cache conflicts
+    providesTags: (result, error, id) => [{ type: "ArquivoExame", id: `download-${id}` }],
+    // Ensure fresh data on each request
+    keepUnusedDataFor: 0,
   }),
 
   // Get files by exam ID

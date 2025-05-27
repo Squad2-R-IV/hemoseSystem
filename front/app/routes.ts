@@ -30,10 +30,13 @@ export default [
     ),    route(
       "prontuarios",
       "./routes/prontuarios.tsx"
-    ),
-    route(
+    ),    route(
       "prontuarios/:pacienteId",
       "./pages/pacientes/pacienteDetail.tsx"
+    ),
+    route(
+      "exame/:exameId",
+      "./pages/pacientes/exameDetail.tsx"
     ),
     route(
       "funcionarios",

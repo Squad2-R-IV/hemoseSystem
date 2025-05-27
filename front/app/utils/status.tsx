@@ -1,5 +1,6 @@
 import { Badge, Chip } from "@heroui/react";
 import React from "react";
+import type { status_exame_enum } from "./enums/enums";
 
 /**
  * Utility functions for handling status display with consistent colors and styles
@@ -47,6 +48,20 @@ export function getAppointmentStatusColor(status: string): "default" | "primary"
 }
 
 /**
+ * Get color for exam status
+ */
+export function getExamStatusColor(status: status_exame_enum): "default" | "primary" | "secondary" | "success" | "warning" | "danger" {
+  switch (status) {
+    case 'PENDENTE':
+      return 'warning';
+    case 'REALIZADO':
+      return 'success';
+    default:
+      return 'default';
+  }
+}
+
+/**
  * Render a status chip with appropriate color
  */
 export function getStatusChip(status: string): React.ReactElement {
@@ -67,6 +82,19 @@ export function getAppointmentStatusChip(status: string): React.ReactElement {
   
   return (
     <Chip color={color} variant="flat">
+      {status}
+    </Chip>
+  );
+}
+
+/**
+ * Render an exam status chip with appropriate color
+ */
+export function getExamStatusChip(status: status_exame_enum): React.ReactElement {
+  const color = getExamStatusColor(status);
+  
+  return (
+    <Chip variant="flat" color={color}>
       {status}
     </Chip>
   );

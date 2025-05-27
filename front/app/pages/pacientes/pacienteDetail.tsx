@@ -18,19 +18,20 @@ import {
     Pagination,
 } from "@heroui/react";
 import { ArrowLeftIcon, EyeIcon } from "@heroicons/react/24/outline";
-import { useGetPacienteByIdQuery, useGetConsultasByPacientIdQuery } from "~/services/api";
+import { useGetPacienteByIdQuery, useGetConsultasByPacientIdQuery, useGetExamesByPacienteQuery } from "~/services/api";
 import { useGenericFilter } from "~/hooks/useGenericFilter";
 import { GenericFilter } from "~/components/GenericFilter";
+import { GenericPagination } from "~/components/GenericPagination";
 import type { ReadConsultaDto } from "~/Dtos/Consulta/ReadConsultaDto";
-import { formatDate, formatDateTime, formatSex, formatEstadoCivil } from "~/utils/formatting";
-import { getStatusColor, getStatusChip } from "~/utils/status";
+import type { ReadExameDto } from "~/Dtos/Exame/ReadExameDto";
+import { formatDate, formatDateTime, formatSex, formatEstadoCivil, formatExamType, formatExamStatus } from "~/utils/formatting";
+import { getStatusColor, getStatusChip, getExamStatusChip } from "~/utils/status";
 
 export default function PacienteDetail() {
     const { pacienteId } = useParams<{ pacienteId: string }>();
-    const navigate = useNavigate();
-
-    // Pagination state
+    const navigate = useNavigate();    // Pagination state
     const [page, setPage] = useState(1);
+    const [examPage, setExamPage] = useState(1);
     const rowsPerPage = 10;
     // Fetch patient data
     const {
@@ -42,9 +43,7 @@ export default function PacienteDetail() {
         includeRelations: true
     }, {
         skip: !pacienteId
-    });
-
-    // Fetch patient consultations
+    });    // Fetch patient consultations
     const {
         data: consultas = [],
         isLoading: isLoadingConsultas,
@@ -54,7 +53,15 @@ export default function PacienteDetail() {
     }, {
         skip: !pacienteId
     });
-    // Generic filter for consultations
+
+    // Fetch patient exams
+    const {
+        data: exames = [],
+        isLoading: isLoadingExames,
+        error: examesError
+    } = useGetExamesByPacienteQuery(Number(pacienteId), {
+        skip: !pacienteId
+    });    // Generic filter for consultations
     const {
         filteredData: filteredConsultas,
         selectedColumn,
@@ -65,6 +72,19 @@ export default function PacienteDetail() {
     } = useGenericFilter<ReadConsultaDto>({
         data: consultas,
         searchableFields: ['status', 'dt_entrada', 'observacoes']
+    });
+
+    // Generic filter for exams
+    const {
+        filteredData: filteredExames,
+        selectedColumn: examSelectedColumn,
+        filterValue: examFilterValue,
+        setSelectedColumn: setExamSelectedColumn,
+        setFilterValue: setExamFilterValue,
+        resetFilter: resetExamFilter
+    } = useGenericFilter<ReadExameDto>({
+        data: exames,
+        searchableFields: ['status', 'tipo_do_exame', 'dt_exame', 'profissional_responsavel']
     });    // Pagination logic
     const pages = Math.ceil(filteredConsultas.length / rowsPerPage);
     const paginatedConsultas = useMemo(() => {
@@ -73,8 +93,18 @@ export default function PacienteDetail() {
         return filteredConsultas.slice(start, end);
     }, [filteredConsultas, page]);
 
-    const handleViewConsulta = (consultaId: number) => {
+    // Exam pagination logic
+    const examPages = Math.ceil(filteredExames.length / rowsPerPage);
+    const paginatedExames = useMemo(() => {
+        const start = (examPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        return filteredExames.slice(start, end);
+    }, [filteredExames, examPage]);    const handleViewConsulta = (consultaId: number) => {
         navigate(`/consulta/${consultaId}`, { viewTransition: true });
+    };
+
+    const handleViewExame = (exameId: number) => {
+        navigate(`/exame/${exameId}`, { viewTransition: true });
     };
 
     // Get filterable columns for GenericFilter
@@ -82,6 +112,14 @@ export default function PacienteDetail() {
         { key: 'status', label: 'Status' },
         { key: 'dt_entrada', label: 'Data de Entrada' },
         { key: 'observacoes', label: 'Observações' }
+    ];
+
+    // Get filterable columns for exams
+    const examFilterableColumns = [
+        { key: 'status', label: 'Status' },
+        { key: 'tipo_do_exame', label: 'Tipo do Exame' },
+        { key: 'dt_exame', label: 'Data do Exame' },
+        { key: 'profissional_responsavel', label: 'Profissional Responsável' }
     ];
 
     if (isLoadingPaciente) {
@@ -230,34 +268,90 @@ export default function PacienteDetail() {
                                         </TableRow>
                                     ))}
                                 </TableBody>
-                            </Table>
-
-                            {/* Pagination */}
-                            {filteredConsultas.length > 0 && (
-                                <div className="flex justify-center p-4">
-                                    <Pagination
-                                        total={pages}
-                                        page={page}
-                                        onChange={setPage}
-                                        color="primary"
-                                        showControls
-                                        showShadow
-                                    />
-                                </div>
-                            )}
+                            </Table>                            {/* Pagination */}
+                            <GenericPagination
+                                totalItems={filteredConsultas.length}
+                                currentPage={page}
+                                rowsPerPage={rowsPerPage}
+                                onPageChange={setPage}
+                            />
                         </>
                     )}
                 </CardBody>
-            </Card>
-
-            {/* Exames Table */}
-            {/* Placeholder for Exames table, if needed in the future */}
+            </Card>            {/* Exams Table */}
             <Card>
-                <CardHeader>
+                <CardHeader className="grid grid-cols-1 sm:grid-cols-1 items-center justify-between p-4">
                     <h2 className="text-lg font-semibold">Exames</h2>
+                    <GenericFilter
+                        columns={examFilterableColumns}
+                        selectedColumn={examSelectedColumn}
+                        filterValue={examFilterValue}
+                        onColumnChange={setExamSelectedColumn}
+                        onFilterChange={setExamFilterValue}
+                        placeholder="Digite para filtrar exames..."
+                    />
                 </CardHeader>
                 <Divider />
-                <CardBody>
+                <CardBody className="p-0">
+                    {isLoadingExames ? (
+                        <div className="flex justify-center items-center h-32">
+                            <Spinner />
+                        </div>
+                    ) : (
+                        <>
+                            <Table aria-label="Tabela de exames do paciente">
+                                <TableHeader>
+                                    <TableColumn>Data do Exame</TableColumn>
+                                    <TableColumn>Tipo do Exame</TableColumn>
+                                    <TableColumn>Status</TableColumn>
+                                    <TableColumn>Profissional</TableColumn>
+                                    <TableColumn>Resultado</TableColumn>
+                                    <TableColumn>Ações</TableColumn>
+                                </TableHeader>
+                                <TableBody emptyContent="Nenhum exame encontrado">
+                                    {paginatedExames.map((exame) => (
+                                        <TableRow key={exame.id}>
+                                            <TableCell>
+                                                {formatDateTime(exame.dt_exame)}
+                                            </TableCell>
+                                            <TableCell>
+                                                {formatExamType(exame.tipo_do_exame)}
+                                            </TableCell>
+                                            <TableCell>
+                                                {getExamStatusChip(exame.status)}
+                                            </TableCell>
+                                            <TableCell>
+                                                {exame.profissional_responsavel || "Não informado"}
+                                            </TableCell>
+                                            <TableCell>
+                                                {exame.resultado || "Sem resultado"}
+                                            </TableCell>
+                                            <TableCell>
+                                                <Button
+                                                    isIconOnly
+                                                    size="sm"
+                                                    variant="light"
+                                                    color="primary"
+                                                    onClick={() => handleViewExame(exame.id)}
+                                                    aria-label="Ver detalhes"
+                                                >
+                                                    <EyeIcon className="h-[18px] w-[18px]" />
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+
+                            {/* Pagination */}
+                            <GenericPagination
+                                totalItems={filteredExames.length}
+                                currentPage={examPage}
+                                rowsPerPage={rowsPerPage}
+                                onPageChange={setExamPage}
+                            />
+                        </>
+                    )}
                 </CardBody>
             </Card>
         </div>

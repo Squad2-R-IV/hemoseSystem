@@ -1,5 +1,6 @@
 import type { tipo_exame_enum, status_exame_enum } from "~/utils/enums/enums";
 import { ReadArquivoExameDto } from "../ArquivoExame/ReadArquivoExameDto"
+import type { ReadPacienteDto } from "../Paciente/ReadPacienteDto";
 
 
 
@@ -22,5 +23,6 @@ export class ReadExameDto {
     
     status!: status_exame_enum;
 
-    arquivos?: ReadArquivoExameDto[];
+    Paciente?: ReadPacienteDto;
+
 }

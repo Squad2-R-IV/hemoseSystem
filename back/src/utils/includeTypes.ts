@@ -44,7 +44,6 @@ export type EvolucaoMedicaWithRelations = EvolucaoMedica & {
 
 export type ExameWithRelations = Exame & {
   Paciente?: Paciente;
-  Arquivos?: ArquivoExame[];
 };
 
 export type ArquivoExameWithRelations = ArquivoExame & {

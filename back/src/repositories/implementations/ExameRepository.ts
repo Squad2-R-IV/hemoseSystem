@@ -13,6 +13,6 @@ import { Exame } from "@prisma/client";
 @injectable()
 export class ExameRepository extends GenericRepository<Exame> implements IExameRepository {
   constructor() {
-    super(prisma, prisma.exame, ['Paciente', 'Arquivos']);
+    super(prisma, prisma.exame, ['Paciente']);
   }
 }

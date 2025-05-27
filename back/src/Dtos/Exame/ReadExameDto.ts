@@ -1,4 +1,5 @@
 import { ReadArquivoExameDto } from "../ArquivoExame/ReadArquivoExameDto"
+import { ReadPacienteDto } from "../Paciente/ReadPacienteDto";
 
 
 
@@ -20,6 +21,5 @@ export class ReadExameDto {
     crm_profissional_responsavel!: string;
     
     status!: string;
-
-    arquivos?: ReadArquivoExameDto[];
+    Paciente?: ReadPacienteDto;
 }

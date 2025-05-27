@@ -1,4 +1,5 @@
 import type { DateValue } from "@internationalized/date";
+import type { tipo_exame_enum, status_exame_enum } from "./enums/enums";
 
 /**
  * Utility functions for formatting data consistently across the application
@@ -168,4 +169,40 @@ export function formatDateDetailed(date: DateValue | undefined): string {
 export function formatDateValueForApi(date: DateValue | undefined): string {
   if (!date) return new Date().toISOString().split("T")[0];
   return new Date(date.toString()).toISOString().split("T")[0];
+}
+
+/**
+ * Format exam type for display
+ */
+export function formatExamType(type: tipo_exame_enum): string {
+  switch (type) {
+    case 'SANGUE':
+      return 'Exame de Sangue';
+    case 'URINA':
+      return 'Exame de Urina';
+    case 'FEZES':
+      return 'Exame de Fezes';
+    case 'IMAGEM':
+      return 'Exame de Imagem';
+    case 'ENDOSCOPICO':
+      return 'Exame Endoscópico';
+    case 'OUTRO':
+      return 'Outro';
+    default:
+      return 'Não informado';
+  }
+}
+
+/**
+ * Format exam status for display
+ */
+export function formatExamStatus(status: status_exame_enum): string {
+  switch (status) {
+    case 'PENDENTE':
+      return 'Pendente';
+    case 'REALIZADO':
+      return 'Realizado';
+    default:
+      return 'Não informado';
+  }
 }
