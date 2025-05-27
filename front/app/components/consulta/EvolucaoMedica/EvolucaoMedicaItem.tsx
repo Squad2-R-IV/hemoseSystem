@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, CardHeader, CardBody } from "@heroui/react";
 import type { ReadEvolucaoMedicaDto } from "~/Dtos/EvolucaoMedica/ReadEvolucaoMedicaDto";
+import { formatDate } from "~/utils/formatting";
 
 interface EvolucaoMedicaItemProps {
   evolucaoMedica: ReadEvolucaoMedicaDto;
@@ -31,10 +32,9 @@ export default function EvolucaoMedicaItem({
   };
 
   return (
-    <Card className="h-full min-h-[200px]">
-      <CardHeader>
+    <Card className="h-full min-h-[200px]">      <CardHeader>
         <h4 className="font-bold">
-          {new Date(evolucaoMedica.dt_evolucao).toLocaleDateString()}
+          {formatDate(evolucaoMedica.dt_evolucao)}
         </h4>
       </CardHeader>
       <CardBody className="flex flex-col justify-between">
@@ -51,7 +51,7 @@ export default function EvolucaoMedicaItem({
               <br />
             </>
           )}
-          {new Date(evolucaoMedica.dt_evolucao).toLocaleDateString()}
+          {formatDate(evolucaoMedica.dt_evolucao)}
         </p>
       </CardBody>
     </Card>

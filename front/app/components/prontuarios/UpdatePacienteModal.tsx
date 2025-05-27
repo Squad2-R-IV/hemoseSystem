@@ -14,6 +14,7 @@ import {
 import { UpdatePacienteDto } from "~/Dtos/Paciente/UpdatePacienteDto";
 import { ReadPacienteDto } from "~/Dtos/Paciente/ReadPacienteDto";
 import { Sexo, EstadoCivil } from "~/utils/enums/enums";
+import { formatDateForInput } from "~/utils/formatting";
 
 interface UpdatePacienteModalProps {
   isOpen: boolean;
@@ -65,19 +66,11 @@ export function UpdatePacienteModal({
       [name]: name === "dt_nascimento" ? new Date(value) : value
     }));
   };
-
   const handleSubmit = async () => {
     const success = await onSubmit(formData);
     if (success) {
       onClose();
     }
-  };
-
-  // Format date for input field
-  const formatDateForInput = (date: Date | undefined) => {
-    if (!date) return "";
-    const d = new Date(date);
-    return d.toISOString().split('T')[0];
   };
 
   return (

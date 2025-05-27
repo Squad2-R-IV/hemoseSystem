@@ -22,6 +22,7 @@ import { useGetPacientesQuery, useDeletePacienteMutation, useUpdatePacienteMutat
 import { DeletePacienteModal } from "./DeletePacienteModal";
 import { UpdatePacienteModal } from "./UpdatePacienteModal";
 import { UpdatePacienteDto } from "~/Dtos/Paciente/UpdatePacienteDto";
+import { formatDate, formatSex, formatEstadoCivil } from "~/utils/formatting";
 
 interface PacientesTableProps {
   pacientes?: ReadPacienteDto[];
@@ -64,7 +65,6 @@ export function PacientesTable({
 
   // Use provided pacientes or fetched ones
   const pacientes = providedPacientes || fetchedPacientes || [];
-
   // Filter pacientes based on search query
   const filteredPacientes = pacientes.filter(paciente => {
     if (!searchQuery) return true;
@@ -76,44 +76,10 @@ export function PacientesTable({
     return nome.includes(query) || cpf.includes(query);
   });
 
-  // Format date for display
-  const formatDate = (date: Date) => {
-    if (!date) return "-";
-    const dateObj = new Date(date);
-    return dateObj.toLocaleDateString('pt-BR');
-  };
-
-// Format sex for display
-const formatSex = (sex: string) => {
-  switch (sex) {
-    case 'M':
-      return 'Masculino';
-    case 'F':
-      return 'Feminino';
-    case 'O':
-      return 'Outro';
-    default:
-      return 'Não informado';
-  }
-};
-
-const formatEstadoCivil = (estadoCivil: string) => {
-    switch (estadoCivil) {
-        case 'S':
-        return 'Solteiro(a)';
-        case 'C':
-        return 'Casado(a)';
-        case 'D':
-        return 'Divorciado(a)';
-        case 'V':
-        return 'Viúvo(a)';
-        default:
-        return 'Não informado';
-    }
-};  // Handle view patient details
+  // Handle view patient details
   const handleViewPaciente = (paciente: ReadPacienteDto) => {
     // Navigate to patient detail page
-    navigate(`/prontuarios/${paciente.id}`);
+    navigate(`/prontuarios/${paciente.id}`, { viewTransition: true });
     
     // Also call the callback if provided (for backward compatibility)
     if (onPacienteSelected) {

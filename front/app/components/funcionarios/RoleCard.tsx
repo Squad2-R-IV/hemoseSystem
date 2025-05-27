@@ -9,14 +9,15 @@ interface RoleCardProps {
 
 const RoleCard: React.FC<RoleCardProps> = ({ title, imageSrc, role }) => {
   return (
-    <Link 
-      to={`/funcionarios/${role}`} 
+    <Link
+      viewTransition
+      to={`/funcionarios/${role}`}
       className="flex flex-col items-center bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow p-6 cursor-pointer"
     >
       <div className="w-32 h-32 overflow-hidden mb-4">
-        <img 
-          src={imageSrc} 
-          alt={title} 
+        <img
+          src={imageSrc}
+          alt={title}
           className="w-full h-full object-contain"
         />
       </div>

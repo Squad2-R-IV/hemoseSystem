@@ -21,6 +21,7 @@ import type { CreateAnamneseDto } from "~/Dtos/Anamnese/CreateAnamneseDto";
 import type { CreateCondutaDto } from "~/Dtos/Conduta/CreateCondutaDto";
 import type { CreateEvolucaoMedicaDto } from "~/Dtos/EvolucaoMedica/CreateEvolucaoMedicaDto";
 import EvolucaoMedicaContainer from "~/components/consulta/EvolucaoMedica/EvolucaoMedicaContainer";
+import { getStatusChip } from "~/utils/status";
 
 export default function ConsultaRoute() {
   const navigate = useNavigate();
@@ -49,42 +50,7 @@ export default function ConsultaRoute() {
     cirurgias_previas: "",
     observacoes: "",
   }));
-
   const userId = getUserIdFromLocalStorage();
-
-  const getStatusChip = (status: string) => {
-    let color:
-      | "default"
-      | "primary"
-      | "secondary"
-      | "success"
-      | "warning"
-      | "danger" = "default";
-    switch (status) {
-      case "AGUARDANDO":
-        color = "warning";
-        break;
-      case "EM_ATENDIMENTO":
-        color = "primary";
-        break;
-      case "CHAMADO":
-        color = "secondary";
-        break;
-      case "FINALIZADO":
-        color = "success";
-        break;
-      case "CANCELADO":
-        color = "danger";
-        break;
-      default:
-        color = "default";
-    }
-    return (
-      <Chip variant="flat" color={color}>
-        {status}
-      </Chip>
-    );
-  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

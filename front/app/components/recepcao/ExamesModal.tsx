@@ -17,6 +17,7 @@ import { useGetPacientesQuery } from "~/services/siahme-api.service";
 import { SearchModal } from "../SearchModal";
 import type { CreateExameDto } from "~/Dtos/Exame/CreateExameDto";
 import { useCreateExameWithFiles } from "~/hooks/useCreateExameWithFiles";
+import { formatDateForInput } from "~/utils/recepcao/utils";
 
 interface ExamesModalProps {
   onClose: () => void;
@@ -107,7 +108,6 @@ export function ExamesModal({ onClose }: ExamesModalProps) {
       });
     }
   };
-
   const handlePacienteSelect = (paciente: { id: number; nome_paciente: string }) => {
     if (paciente && paciente.id && paciente.nome_paciente) {
       setFormData((prev) => ({ ...prev, id_paciente: paciente.id }));
@@ -116,13 +116,6 @@ export function ExamesModal({ onClose }: ExamesModalProps) {
       console.error("Paciente inválido selecionado:", paciente);
     }
     setPacienteSearchModalOpen(false);
-  };
-
-  // Format date for input field
-  const formatDateForInput = (date: Date | undefined) => {
-    if (!date) return "";
-    const d = new Date(date);
-    return d.toISOString().split('T')[0];
   };
   return (
     <>

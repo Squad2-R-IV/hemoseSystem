@@ -22,6 +22,8 @@ import { useGetPacienteByIdQuery, useGetConsultasByPacientIdQuery } from "~/serv
 import { useGenericFilter } from "~/hooks/useGenericFilter";
 import { GenericFilter } from "~/components/GenericFilter";
 import type { ReadConsultaDto } from "~/Dtos/Consulta/ReadConsultaDto";
+import { formatDate, formatDateTime, formatSex, formatEstadoCivil } from "~/utils/formatting";
+import { getStatusColor, getStatusChip } from "~/utils/status";
 
 export default function PacienteDetail() {
     const { pacienteId } = useParams<{ pacienteId: string }>();
@@ -63,9 +65,7 @@ export default function PacienteDetail() {
     } = useGenericFilter<ReadConsultaDto>({
         data: consultas,
         searchableFields: ['status', 'dt_entrada', 'observacoes']
-    });
-
-    // Pagination logic
+    });    // Pagination logic
     const pages = Math.ceil(filteredConsultas.length / rowsPerPage);
     const paginatedConsultas = useMemo(() => {
         const start = (page - 1) * rowsPerPage;
@@ -73,51 +73,8 @@ export default function PacienteDetail() {
         return filteredConsultas.slice(start, end);
     }, [filteredConsultas, page]);
 
-    // Format functions
-    const formatDate = (date: Date | string) => {
-        if (!date) return "-";
-        const dateObj = new Date(date);
-        return dateObj.toLocaleDateString('pt-BR');
-    };
-
-    const formatDateTime = (date: Date | string) => {
-        if (!date) return "-";
-        const dateObj = new Date(date);
-        return dateObj.toLocaleString('pt-BR');
-    };
-
-    const formatSex = (sex: string) => {
-        switch (sex) {
-            case 'M': return 'Masculino';
-            case 'F': return 'Feminino';
-            case 'O': return 'Outro';
-            default: return 'Não informado';
-        }
-    };
-
-    const formatEstadoCivil = (estadoCivil: string) => {
-        switch (estadoCivil) {
-            case 'S': return 'Solteiro(a)';
-            case 'C': return 'Casado(a)';
-            case 'D': return 'Divorciado(a)';
-            case 'V': return 'Viúvo(a)';
-            default: return 'Não informado';
-        }
-    };
-
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case 'AGUARDANDO': return 'warning';
-            case 'EM_ATENDIMENTO': return 'primary';
-            case 'CHAMADO': return 'secondary';
-            case 'FINALIZADO': return 'success';
-            case 'CANCELADO': return 'danger';
-            default: return 'default';
-        }
-    };
-
     const handleViewConsulta = (consultaId: number) => {
-        navigate(`/consulta/${consultaId}`);
+        navigate(`/consulta/${consultaId}`, { viewTransition: true });
     };
 
     // Get filterable columns for GenericFilter
@@ -139,7 +96,7 @@ export default function PacienteDetail() {
         return (
             <div className="flex flex-col items-center justify-center h-64">
                 <p className="text-red-500 mb-4">Erro ao carregar dados do paciente</p>
-                <Button color="primary" onClick={() => navigate('/prontuarios')}>
+                <Button color="primary" onClick={() => navigate('/prontuarios', { viewTransition: true })}>
                     Voltar aos Prontuários
                 </Button>
             </div>
@@ -173,26 +130,26 @@ export default function PacienteDetail() {
                             label="Nome Completo"
                             value={paciente.nome_paciente || ""}
                             isReadOnly
-                            
+
                         />
                         <Input
                             label="CPF"
                             value={paciente.cpf || ""}
                             isReadOnly
-                            
+
                         />
                         {/* Second row */}
                         <Input
                             label="Data de Nascimento"
                             value={formatDate(paciente.dt_nascimento)}
                             isReadOnly
-                            
+
                         />
                         <Input
                             label="Sexo"
                             value={formatSex(paciente.sexo)}
                             isReadOnly
-                            
+
                         />
                     </div>
 
@@ -202,13 +159,13 @@ export default function PacienteDetail() {
                             label="Estado Civil"
                             value={formatEstadoCivil(paciente.estado_civil)}
                             isReadOnly
-                            
+
                         />
                         <Input
                             label="Endereço"
                             value={paciente.endereco || "Não informado"}
                             isReadOnly
-                            
+
                         />
                     </div>
                 </CardBody>
@@ -216,7 +173,7 @@ export default function PacienteDetail() {
 
             {/* Consultations Table */}
             <Card>
-                <CardHeader className="flex justify-between flex-col items-start">
+                <CardHeader className="grid grid-cols-1 sm:grid-cols-1 items-center justify-between p-4">
                     <h2 className="text-lg font-semibold">Histórico de Consultas</h2>
                     <GenericFilter
                         columns={filterableColumns}
@@ -248,14 +205,9 @@ export default function PacienteDetail() {
                                         <TableRow key={consulta.id}>
                                             <TableCell>
                                                 {formatDateTime(consulta.dt_entrada)}
-                                            </TableCell>
+                                            </TableCell>                                            
                                             <TableCell>
-                                                <Chip
-                                                    color={getStatusColor(consulta.status)}
-                                                    variant="flat"
-                                                >
-                                                    {consulta.status}
-                                                </Chip>
+                                                {getStatusChip(consulta.status)}
                                             </TableCell>
                                             <TableCell>
                                                 {consulta.procedimento || "Não informado"}
@@ -295,6 +247,17 @@ export default function PacienteDetail() {
                             )}
                         </>
                     )}
+                </CardBody>
+            </Card>
+
+            {/* Exames Table */}
+            {/* Placeholder for Exames table, if needed in the future */}
+            <Card>
+                <CardHeader>
+                    <h2 className="text-lg font-semibold">Exames</h2>
+                </CardHeader>
+                <Divider />
+                <CardBody>
                 </CardBody>
             </Card>
         </div>

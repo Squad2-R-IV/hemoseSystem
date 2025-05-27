@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, CardHeader, CardBody } from "@heroui/react";
 import type { ReadCondutaDto } from "~/Dtos/Conduta/ReadCondutaDto";
+import { formatDate } from "~/utils/formatting";
 
 interface CondutaCardProps {
   conduta: ReadCondutaDto;
@@ -35,10 +36,9 @@ export default function CondutaCard({
   };
 
   return (
-    <Card className="h-full min-h-[200px]">
-      <CardHeader>
+    <Card className="h-full min-h-[200px]">      <CardHeader>
         <h4 className="font-bold">
-          {new Date(conduta.dt_conduta).toLocaleDateString()}
+          {formatDate(conduta.dt_conduta)}
         </h4>
       </CardHeader>
       <CardBody className="flex flex-col justify-between">
@@ -55,7 +55,7 @@ export default function CondutaCard({
               <br />
             </>
           )}
-          {new Date(conduta.dt_conduta).toLocaleDateString()}
+          {formatDate(conduta.dt_conduta)}
         </p>
       </CardBody>
     </Card>

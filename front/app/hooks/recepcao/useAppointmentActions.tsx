@@ -12,6 +12,7 @@ import type { CreateConsultaDto } from "~/Dtos/Consulta/CreateConsultaDto";
 import { useApiErrorHandler } from '~/hooks/useApiErrorHandler';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import type { SerializedError } from '@reduxjs/toolkit';
+import { formatDate, formatHour } from "~/utils/formatting";
 
 interface UseAppointmentActionsProps {
   onAppointmentUpdated?: () => void;
@@ -97,7 +98,7 @@ export function useAppointmentActions({
         dt_hora_agendamento: Number(formData.dt_hora_agendamento),
         tipo_agendamento: selectedAppointment.tipo_agendamento,
         status_agendamento: StatusAgendamentoEnum.Agendado,
-        observacoes: `Reagendado de ${new Date(selectedAppointment.dt_agendamento).toLocaleDateString()} ${selectedAppointment.dt_hora_agendamento}:00`
+        observacoes: `Reagendado de ${formatDate(selectedAppointment.dt_agendamento)} ${formatHour(selectedAppointment.dt_hora_agendamento)}`
       };
 
 

@@ -14,7 +14,7 @@ const FuncionariosPage: React.FC = () => {
         <h2 className="text-xl font-semibold mb-4">Selecione uma categoria de funcionários</h2>
         <Button color="primary" size="sm" className="mr-2"
             startContent={<PlusIcon className="h-5 w-5 " />}
-            onPress={() => navigate('/cadastro')}>
+            onPress={() => navigate('/cadastro', { viewTransition: true })}>
             Adicionar Funcionário
         </Button>
         </div>

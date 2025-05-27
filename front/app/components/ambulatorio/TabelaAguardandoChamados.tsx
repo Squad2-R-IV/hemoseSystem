@@ -1,11 +1,13 @@
-import { Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Chip, Card, CardBody, CardHeader, Link } from "@heroui/react";
+import { Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Chip, Card, CardBody, CardHeader } from "@heroui/react";
 import { ArrowRightEndOnRectangleIcon, PlayIcon, EyeIcon } from "@heroicons/react/24/outline";
 import { useUpdateConsultaMutation } from "~/services/siahme-api.service";
 import type { ReadAgendamentoDto } from "~/Dtos/Agendamento/ReadAgendamentoDto";
 import type { SortDescriptor } from "@heroui/react";
 import type { Key } from "@react-types/shared";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { GenericFilter } from "~/components/GenericFilter";
+import { getStatusChip } from "~/utils/status";
+import { formatDateTimeShort } from "~/utils/formatting";
 import React from 'react';
 
 interface TabelaAguardandoChamadosProps {
@@ -81,37 +83,20 @@ export function TabelaAguardandoChamados({
       case "Paciente.nome_paciente":
         return (
           <Link 
-            href={`/prontuarios/${item.id_paciente}`}
-            color="primary"
-            underline="hover"
+            to={`/prontuarios/${item.id_paciente}`}
+            className="text-blue-600 hover:underline"
+            viewTransition
           >
             {item.Paciente?.nome_paciente || "N/A"}
           </Link>
         );
       case "Usuario.nome_usuario":
-        return item.Usuario?.name || "N/A";
-      case "dt_chegada":
-        try {
-          return item.dt_chegada
-            ? new Date(item.dt_chegada).toLocaleString()
-            : "Data não definida";
-        } catch (e) {
-          return item.dt_chegada?.toString() || "Data inválida";
-        }
+        return item.Usuario?.name || "N/A";      case "dt_chegada":
+        return formatDateTimeShort(item.dt_chegada);
       case "tipo_agendamento":
-        return item.tipo_agendamento;
-      case "status_agendamento":
+        return item.tipo_agendamento;      case "status_agendamento":
         const status = item.Consulta?.status || item.status_agendamento;
-        let color: "default" | "primary" | "secondary" | "success" | "warning" | "danger" = "default";
-        switch (status) {
-          case 'AGUARDANDO': color = "warning"; break;
-          case 'EM_ATENDIMENTO': color = "primary"; break;
-          case 'CHAMADO': color = "secondary"; break;
-          case 'FINALIZADO': color = "success"; break;
-          case 'CANCELADO': color = "danger"; break;
-          default: color = "default";
-        }
-        return <Chip variant="flat" color={color}>{status}</Chip>;
+        return getStatusChip(status);
       default: return "";
     }
   };
@@ -183,7 +168,7 @@ export function TabelaAguardandoChamados({
                             id: item.Consulta.id,
                             body: { status: 'EM_ATENDIMENTO' }
                           });
-                          navigate(`/consulta/${item.Consulta.id}`);
+                          navigate(`/consulta/${item.Consulta.id}`, { viewTransition: true });
                         }
                       }}
                     >

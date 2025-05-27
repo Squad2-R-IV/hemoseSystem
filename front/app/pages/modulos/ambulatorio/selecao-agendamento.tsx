@@ -17,6 +17,8 @@ import { useGetAgendamentosComConsultasAtivasQuery } from "~/services/siahme-api
 import type { ReadConsultaDto } from "~/Dtos/Consulta/ReadConsultaDto";
 import type { ReadAgendamentoDto } from "~/Dtos/Agendamento/ReadAgendamentoDto";
 import type { Key } from "@react-types/shared";
+import { getStatusChip } from "~/utils/status";
+import { formatDateTimeShort } from "~/utils/formatting";
 
 var StatusAgendamentoEnum = {
   Agendado: "Agendado",
@@ -94,40 +96,12 @@ export function SelecaoAgendamento() {
       case "Paciente.nome_paciente":
         return item.Paciente?.nome_paciente || "N/A";
       case "Usuario.nome_usuario":
-        return item.Usuario?.name || "N/A";
-      case "data_hora_agendamento":
-        try {
-          return item.dt_chegada 
-            ? new Date(item.dt_chegada).toLocaleString() 
-            : "Data não definida";
-        } catch (e) {
-          return item.dt_chegada?.toString() || "Data inválida";
-        }
+        return item.Usuario?.name || "N/A";      case "data_hora_agendamento":
+        return formatDateTimeShort(item.dt_chegada);
       case "tipo_agendamento":
-        return item.tipo_agendamento;
-  case "status_agendamento":
+        return item.tipo_agendamento;      case "status_agendamento":
         const status = item.Consulta?.status || item.status_agendamento;
-        let color: "default" | "primary" | "secondary" | "success" | "warning" | "danger" = "default";
-        switch (status) {
-          case 'AGUARDANDO':
-            color = "warning";
-            break;
-          case 'EM_ATENDIMENTO':
-            color = "primary";
-            break;
-          case 'CHAMADO':
-            color = "secondary";
-            break;
-          case 'FINALIZADO':
-            color = "success";
-            break;
-          case 'CANCELADO':
-            color = "danger";
-            break;
-          default:
-            color = "default";
-        }
-        return <Chip variant="flat" color={color}>{status}</Chip>;
+        return getStatusChip(status);
       default:
         return "";
     }

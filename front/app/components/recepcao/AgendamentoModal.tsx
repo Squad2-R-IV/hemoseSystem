@@ -20,6 +20,7 @@ import {
   useCreateAgendamentoMutation 
 } from "~/services/siahme-api.service";
 import { SearchModal } from "../SearchModal";
+import { formatDateForInput, formatHour } from "~/utils/recepcao/utils";
 
 interface AgendamentoModalProps {
   onClose: () => void;
@@ -97,7 +98,6 @@ export function AgendamentoModal({ onClose, onAppointmentCreated }: AgendamentoM
       });
     }
   };
-
   const handlePacienteSelect = (paciente: { id: number; nome_paciente: string }) => {
     if (paciente && paciente.id && paciente.nome_paciente) {
       setFormData((prev) => ({ ...prev, id_paciente: paciente.id }));
@@ -107,20 +107,11 @@ export function AgendamentoModal({ onClose, onAppointmentCreated }: AgendamentoM
     }
     setPacienteSearchModalOpen(false);
   };
-
-  const formatHour = (hour: number) => `${hour.toString().padStart(2, '0')}:00`;
   
   const handleMedicoSelect = (medico: { id: string; name: string }) => {
     setFormData((prev) => ({ ...prev, id_funcionario: medico.id }));
     setSelectedMedico(medico.name);
     setMedicoSearchModalOpen(false);
-  };
-
-  // Format date for input field
-  const formatDateForInput = (date: Date | undefined) => {
-    if (!date) return "";
-    const d = new Date(date);
-    return d.toISOString().split('T')[0];
   };
 
   return (

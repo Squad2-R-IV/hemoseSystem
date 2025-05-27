@@ -1,5 +1,7 @@
 import { Card, CardHeader, CardBody, Button, Input, Textarea } from "@heroui/react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router";
+import { formatDateTime } from "~/utils/formatting";
 
 export default function ConsultaDetails({ consulta, agendamento, navigate, getStatusChip }: any) {
   return (
@@ -19,11 +21,16 @@ export default function ConsultaDetails({ consulta, agendamento, navigate, getSt
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Paciente</label>
+                <Link
+                  viewTransition
+                  to={`/prontuarios/${agendamento.Paciente?.id}`}
+                  className="block text-sm text-blue-600 hover:underline"
+                >
                 <Input
                   value={agendamento.Paciente?.nome_paciente || ""}
                   isReadOnly
-                  className="mt-1 block w-full text-sm"
-                />
+                  className="mt-1 block w-full text-sm cursor-pointer"
+                /></Link>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Médico</label>
@@ -46,11 +53,10 @@ export default function ConsultaDetails({ consulta, agendamento, navigate, getSt
                   isReadOnly
                   className="mt-1 block w-full text-sm"
                 />
-              </div>
-              <div>
+              </div>              <div>
                 <label className="block text-sm font-medium text-gray-700">Data de Entrada</label>
                 <Input
-                  value={new Date(consulta.dt_entrada).toLocaleString()}
+                  value={formatDateTime(consulta.dt_entrada)}
                   isReadOnly
                   className="mt-1 block w-full text-sm"
                 />
@@ -58,7 +64,7 @@ export default function ConsultaDetails({ consulta, agendamento, navigate, getSt
               <div>
                 <label className="block text-sm font-medium text-gray-700">Data de Saída</label>
                 <Input
-                  value={consulta.dt_saida ? new Date(consulta.dt_saida).toLocaleString() : "N/A"}
+                  value={consulta.dt_saida ? formatDateTime(consulta.dt_saida) : "N/A"}
                   isReadOnly
                   className="mt-1 block w-full text-sm"
                 />

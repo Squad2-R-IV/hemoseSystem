@@ -9,6 +9,7 @@ import {
   Spinner,
 } from "@heroui/react";
 import type { ReadAgendamentoDto } from "~/Dtos/Agendamento/ReadAgendamentoDto";
+import { formatTime } from "~/utils/formatting";
 
 interface CheckinModalProps {
   isOpen: boolean;
@@ -46,10 +47,9 @@ export function CheckinModal({
                 Deseja realmente fazer o check-in do Paciente:
                 <strong> {appointment.Paciente?.nome_paciente}</strong>,
                 portador de CPF: <strong>{appointment.Paciente?.cpf}</strong>?
-              </p>
-              <p className="text-center mt-2">
+              </p>              <p className="text-center mt-2">
                 Horário atual:{" "}
-                <strong>{new Date().toLocaleTimeString()}</strong>
+                <strong>{formatTime(new Date())}</strong>
               </p>
             </div>
           )}

@@ -37,7 +37,7 @@ export function Login() {
           description: "Login realizado com sucesso",
           color: "success",
         });
-        navigate("/home"); // Redirect to /home after successful login
+        navigate("/home", { viewTransition: true }); // Redirect to /home after successful login
       }
     } catch (error) {
       const err = error as { status?: number };

@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Textarea } from "@heroui/react";
 import type { ReadEvolucaoMedicaDto } from "~/Dtos/EvolucaoMedica/ReadEvolucaoMedicaDto";
+import { formatDate } from "~/utils/formatting";
 
 interface EvolucaoMedicaDetailModalProps {
   isOpen: boolean;
@@ -18,11 +19,9 @@ export default function EvolucaoMedicaDetailModal({
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg flex flex-col gap-4 shadow-lg w-[90%] max-w-2xl max-h-[90vh] overflow-y-auto">
-        <h3 className="text-lg font-bold mb-2">Detalhes da Evolução Médica</h3>
-
-        <div className="mb-4">
+        <h3 className="text-lg font-bold mb-2">Detalhes da Evolução Médica</h3>        <div className="mb-4">
           <h4 className="text-sm font-semibold mb-1">Data</h4>
-          <p>{new Date(evolucaoMedica.dt_evolucao).toLocaleDateString()}</p>
+          <p>{formatDate(evolucaoMedica.dt_evolucao)}</p>
         </div>
 
         {evolucaoMedica.queixas && (

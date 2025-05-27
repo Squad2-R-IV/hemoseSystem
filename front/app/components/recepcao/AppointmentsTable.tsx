@@ -17,13 +17,15 @@ import {
 import { FunnelIcon, CheckCircleIcon, ClockIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import type { DateValue } from "@internationalized/date";
 import type { ReadAgendamentoDto } from "~/Dtos/Agendamento/ReadAgendamentoDto";
-import { formatDate, formatDateForApi } from "../../utils/recepcao/utils";
+import { formatDate, formatDateForApi, formatHour } from "../../utils/recepcao/utils";
+import { formatDateTime } from "~/utils/formatting";
 import { RescheduleModal } from "./modals/RescheduleModal";
 import { CheckinModal } from "./modals/CheckinModal";
 import { CancelModal } from "./modals/CancelModal";
 import { StatusAgendamentoEnum } from "~/utils/enums/enums";
 import { useGetAgendamentosByDateQuery } from "~/services/siahme-api.service";
 import { useAppointmentActions } from "~/hooks/recepcao/useAppointmentActions";
+import { getAppointmentStatusChip } from "~/utils/status";
 
 interface AppointmentsTableProps {
   selectedDate: DateValue;
@@ -31,28 +33,28 @@ interface AppointmentsTableProps {
   onAppointmentUpdated?: () => void;
 }
 
-export function AppointmentsTable({ 
-  selectedDate, 
+export function AppointmentsTable({
+  selectedDate,
   appointments,
-  onAppointmentUpdated 
+  onAppointmentUpdated
 }: AppointmentsTableProps) {
   // Modal visibility states
   const [isRescheduleModalOpen, setIsRescheduleModalOpen] = useState(false);
   const [isCheckinModalOpen, setIsCheckinModalOpen] = useState(false);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
-  
+
   // Search functionality
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   // Format date for the query
   const formattedDate = formatDateForApi(selectedDate);
 
   // Check if we should manage our own data
   const shouldFetchDirectly = !onAppointmentUpdated;
-  
+
   // Only manage our own data if not provided by parent
-  const { refetch } = useGetAgendamentosByDateQuery({ 
-    date: formattedDate 
+  const { refetch } = useGetAgendamentosByDateQuery({
+    date: formattedDate
   }, {
     skip: !shouldFetchDirectly,
     refetchOnMountOrArgChange: true
@@ -111,11 +113,11 @@ export function AppointmentsTable({
   // Filter appointments based on search query
   const filteredAppointments = appointments.filter(appointment => {
     if (!searchQuery) return true;
-    
+
     const patientName = appointment.Paciente?.nome_paciente?.toLowerCase() || '';
     const appointmentType = appointment.tipo_agendamento?.toLowerCase() || '';
     const query = searchQuery.toLowerCase();
-    
+
     return patientName.includes(query) || appointmentType.includes(query);
   });
 
@@ -154,26 +156,16 @@ export function AppointmentsTable({
               {filteredAppointments.map((appointment: ReadAgendamentoDto) => (
                 <TableRow key={appointment.id}>
                   <TableCell>
-                    {`${appointment.dt_hora_agendamento.toString()}:00`}
+                    {formatHour(appointment.dt_hora_agendamento)}
                   </TableCell>
                   <TableCell>
-                    {appointment.dt_chegada ? new Date(appointment.dt_chegada).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "-"}
+                    {appointment.dt_chegada ? formatDateTime(appointment.dt_chegada) : "-"}
                   </TableCell>
 
                   <TableCell>{appointment.Paciente?.nome_paciente}</TableCell>
                   <TableCell>{appointment.tipo_agendamento}</TableCell>
                   <TableCell>
-                    <Badge
-                      color={
-                        appointment.status_agendamento === StatusAgendamentoEnum.Agendado ? "warning" :
-                          appointment.status_agendamento === StatusAgendamentoEnum.Confirmado ? "success" :
-                            appointment.status_agendamento === StatusAgendamentoEnum.Cancelado ? "danger" :
-                              appointment.status_agendamento === StatusAgendamentoEnum.Reagendado ? "primary" : "default"
-                      }
-                      variant="flat"
-                    >
-                      {appointment.status_agendamento}
-                    </Badge>
+                    {getAppointmentStatusChip(appointment.status_agendamento)}
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">

@@ -25,10 +25,9 @@ export const GenericFilter: React.FC<GenericFilterProps> = ({
   placeholder = "Digite para filtrar..."
 }) => {
   return (
-    <div className="flex gap-4 items-end mb-4">
+    <div className="grid grid-cols-3 gap-4 items-center">
       <Select
         label="Filtrar por"
-        
         size='sm'
         selectedKeys={selectedColumn ? [selectedColumn] : []}
         onSelectionChange={(keys) => {
@@ -47,8 +46,8 @@ export const GenericFilter: React.FC<GenericFilterProps> = ({
         value={filterValue}
         onValueChange={onFilterChange}
         placeholder={placeholder}
+        className='col-span-2'
         startContent={<MagnifyingGlassIcon className="w-4 h-4 text-gray-400" />}
-        fullWidth
         size="lg"
         disabled={!selectedColumn}
       />

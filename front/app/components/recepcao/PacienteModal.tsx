@@ -14,6 +14,7 @@ import {
 import { CreatePacienteDto } from "~/Dtos/Paciente/CreatePacienteDto";
 import { Sexo, EstadoCivil } from "~/utils/enums/enums";
 import { useCreatePacienteMutation } from "~/services/siahme-api.service";
+import { formatDateForInput } from "~/utils/recepcao/utils";
 
 interface PacienteModalProps {
   onClose: () => void;
@@ -84,15 +85,7 @@ export function PacienteModal({ onClose }: PacienteModalProps) {
         title: "Erro",
         description: "Erro ao cadastrar paciente. Tente novamente.",
         color: "danger",
-      });
-    }
-  };
-
-  // Format date for input field
-  const formatDateForInput = (date: Date | undefined) => {
-    if (!date) return "";
-    const d = new Date(date);
-    return d.toISOString().split('T')[0];
+      });    }
   };
 
   return (
