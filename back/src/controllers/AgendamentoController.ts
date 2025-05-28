@@ -31,6 +31,10 @@ export class AgendamentoController extends GenericController<Agendamento, Create
     const agendamentos = await this.agendamentoService.getAgendamentosComConsultasAtivas();
     return res.json(agendamentos);
   }
+    async getAgendamentosNaEnfermaria(req: Request, res: Response): Promise<Response> {
+    const agendamentos = await this.agendamentoService.getAgendamentosNaEnfermaria();
+    return res.json(agendamentos);
+  }
 
   async getAgendamentosByDate(req: Request, res: Response): Promise<Response> {
     const { date } = req.params;

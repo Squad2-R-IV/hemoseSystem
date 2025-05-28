@@ -141,6 +141,27 @@ router.get("/", authMiddleware, checkPermission("agendamento_read"), asyncHandle
  *       - bearerAuth: []
  */
 router.get("/consultas-ativas", authMiddleware, checkPermission("agendamento_read"), asyncHandler(agendamentoController.getAgendamentosComConsultasAtivas.bind(agendamentoController)));
+/**
+ * @swagger
+ * /agendamento/consultas-enfermaria:
+ *   get:
+ *     summary: Retorna agendamentos com consultas ativas (aguardando ou em atendimento)
+ *     tags: [Agendamento]
+ *     responses:
+ *       200:
+ *         description: Lista de agendamentos com consultas ativas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Agendamento'
+ *       500:
+ *         description: Erro no servidor
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get("/consultas-enfermaria", authMiddleware, checkPermission("agendamento_read"), asyncHandler(agendamentoController.getAgendamentosNaEnfermaria.bind(agendamentoController)));
 
 /**
  * @swagger
