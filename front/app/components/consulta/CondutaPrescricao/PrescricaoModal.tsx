@@ -195,14 +195,17 @@ export default function PrescricaoModal({
                                                             </span>
                                                         </div>
                                                             <div className="flex flex-wrap gap-2">
-                                                                <Button
-                                                                    size="sm"
-                                                                    color="primary"
-                                                                    variant="light"
-                                                                    onPress={() => alert("Função de administração ainda não implementada")}
-                                                                >
-                                                                    Administrar
-                                                                </Button>
+                                                                {conduta.Consulta?.status === "ENFERMARIA" && (
+                                                                    <Button
+                                                                        size="sm"
+                                                                        color="primary"
+                                                                        variant="light"
+                                                                        onPress={() => alert("Função de administração ainda não implementada")}
+                                                                    >
+                                                                        Administrar
+                                                                    </Button>)
+                                                                }
+
                                                             </div>
                                                         </div>
                                                         <div className="bg-gray-50 rounded p-3 mt-1 mb-2">
