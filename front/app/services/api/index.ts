@@ -6,6 +6,7 @@ import { consultaEndpoints } from "./consulta-api.service";
 import { anamneseEndpoints } from "./anamnese-api.service";
 import { condutaEndpoints } from "./conduta-api.service";
 import { evolucaoMedicaEndpoints } from "./evolucao-medica-api.service";
+import { altaMedicaEndpoints } from "./alta-medica-api.service";
 import { pacienteEndpoints } from "./paciente-api.service";
 import { exameEndpoints } from "./exame-api.service";
 import { arquivoExameEndpoints } from "./arquivo-exame-api.service";
@@ -28,9 +29,11 @@ export const siahmeApi = createApi({
     
     // Conduta endpoints
     ...condutaEndpoints(builder),
-    
-    // Evolução Médica endpoints
+      // Evolução Médica endpoints
     ...evolucaoMedicaEndpoints(builder),
+    
+    // Alta Médica endpoints
+    ...altaMedicaEndpoints(builder),
     
     // Paciente endpoints
     ...pacienteEndpoints(builder),
@@ -94,14 +97,20 @@ export const {
   useUpdateCondutaMutation,
   useDeleteCondutaMutation,
   useGetCondutasByConsultaIdQuery,
-  
-  // Evolução Médica hooks
+    // Evolução Médica hooks
   useGetEvolucoesMedicasQuery,
   useGetEvolucaoMedicaByIdQuery,
   useCreateEvolucaoMedicaMutation,
   useUpdateEvolucaoMedicaMutation,
   useDeleteEvolucaoMedicaMutation,
   useGetEvolucoesMedicasByConsultaIdQuery,
+    // Alta Médica hooks
+  useGetAltasMedicasQuery,
+  useGetAltaMedicaByIdQuery,
+  useCreateAltaMedicaMutation,
+  useUpdateAltaMedicaMutation,
+  useDeleteAltaMedicaMutation,
+  useGetAltaMedicaByConsultaIdQuery,
     // Paciente hooks
   useGetPacientesQuery,
   useGetPacienteByIdQuery,

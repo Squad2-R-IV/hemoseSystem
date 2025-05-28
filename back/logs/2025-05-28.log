@@ -1,3 +1,73 @@
 2025-05-27 22:47:21 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
 2025-05-27 22:56:49 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_paciente":3,"tipo_do_exame":"SANGUE","dt_exame":"2025-05-28T01:55:40.439Z","crm_profissional_responsavel":"545461SE","profissional_responsavel":"medico","status":"PENDENTE","resultado":""}
 2025-05-27 23:30:09 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_consulta":3,"id_funcionario":"2967b6b1-5ac0-4297-b2df-46f0816e5324","cid":"552","queixa_principal":"djsaodjoasjdoa","historia_doenca_atual":"djsakldjlaksdj","antecedentes_pessoais":"kdsjaldjall","antecedentes_familiares":"dsaldalkjdlksa","habitos_vida":"kdsajldjasldjlsa","medicamentos_em_uso":"djsakjdlajdla","alergias":"dlsajdaslkdl","cirurgias_previas":"ldksajdlkas","observacoes":""}
+2025-05-28 15:30:47 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-28 15:30:55 [ERROR]: Database error: 
+Invalid `this.model.findMany()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:78:40
+
+  75 async findManyByQuery(query: any, includeRelations: boolean = true): Promise<T[]> {
+  76   try {
+  77     const include = includeRelations ? this.generateInclude() : undefined;
+→ 78     const results = await this.model.findMany({
+           where: {
+             Consulta: {
+               status: {
+                 in: [
+                   "AGUARDANDO",
+                   "EM_ATENDIMENTO",
+                   "CHAMADO",
+                   "ENFERMARIA",
+                   "AGUARDANDO_ACOLHIMENTO"
+                 ]
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+               }
+             }
+           },
+           include: {
+             Paciente: true,
+             Usuario: true,
+             Consulta: true
+           }
+         })
+
+Invalid value for argument `in`. Expected status_consulta_enum.
+2025-05-28 15:30:55 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-28 15:31:31 [ERROR]: Database error: 
+Invalid `this.model.findMany()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:78:40
+
+  75 async findManyByQuery(query: any, includeRelations: boolean = true): Promise<T[]> {
+  76   try {
+  77     const include = includeRelations ? this.generateInclude() : undefined;
+→ 78     const results = await this.model.findMany({
+           where: {
+             Consulta: {
+               status: {
+                 in: [
+                   "AGUARDANDO",
+                   "EM_ATENDIMENTO",
+                   "CHAMADO",
+                   "ENFERMARIA",
+                   "AGUARDANDO_ACOLHIMENTO"
+                 ]
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+               }
+             }
+           },
+           include: {
+             Paciente: true,
+             Usuario: true,
+             Consulta: true
+           }
+         })
+
+Invalid value for argument `in`. Expected status_consulta_enum.
+2025-05-28 15:31:31 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-05-28 15:35:07 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-28 15:36:03 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_consulta":3,"id_medico":"2967b6b1-5ac0-4297-b2df-46f0816e5324","dt_alta":"2025-05-28T18:36:03.004Z","tipo_alta":"CURA","relatorio":"Paciente ta de boa"}
+2025-05-28 15:46:25 [INFO]: Na tabela o id 5 foi atualizado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"status":"CHAMADO"}
+2025-05-28 15:46:30 [INFO]: Na tabela o id 5 foi atualizado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"status":"EM_ATENDIMENTO"}
+2025-05-28 15:46:43 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_consulta":5,"id_medico":"2967b6b1-5ac0-4297-b2df-46f0816e5324","dt_alta":"2025-05-28T18:46:43.452Z","tipo_alta":"TRANSFERENCIA","relatorio":"Transferencia feita "}
+2025-05-28 15:46:43 [INFO]: Na tabela o id 5 foi atualizado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"status":"REALIZADA"}
+2025-05-28 16:17:44 [INFO]: Prisma info: Starting a mysql pool with 13 connections.

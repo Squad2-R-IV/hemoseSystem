@@ -37,6 +37,7 @@ export const API_TAGS = [
   "Anamnese", 
   "Conduta", 
   "EvolucaoMedica",
+  "AltaMedica",
   "Prescricao",
   "Paciente",
   "Exame",

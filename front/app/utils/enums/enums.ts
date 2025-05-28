@@ -76,3 +76,13 @@ export type tipo_exame_enum = (typeof tipo_exame_enum)[keyof typeof tipo_exame_e
 
 
 
+export const tipo_alta_enum = {
+  OBITO: 'OBITO',
+  CURA: 'CURA',
+  TRANSFERENCIA: 'TRANSFERENCIA',
+  ALTA: 'ALTA',
+  EVASAO: 'EVASAO',
+  OUTRO: 'OUTRO'
+};
+
+export type tipo_alta_enum = (typeof tipo_alta_enum)[keyof typeof tipo_alta_enum]
