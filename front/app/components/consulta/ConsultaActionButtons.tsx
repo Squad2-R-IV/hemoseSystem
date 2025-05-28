@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, useDisclosure } from "@heroui/react";
+import { Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@heroui/react";
 import {
   ClipboardDocumentListIcon,
   DocumentTextIcon,
@@ -41,30 +41,35 @@ export default function ConsultaActionButtons({
   onRefetch,
 }: ConsultaActionButtonsProps) {
   const userId = getUserIdFromLocalStorage();
-  
+
   // Disclosure hooks for modals
   const {
     isOpen: isPrescricaoModalOpen,
     onOpen: onPrescricaoModalOpen,
     onClose: onPrescricaoModalClose,
   } = useDisclosure();
-  
+
   const {
     isOpen: isAltaMedicaModalOpen,
     onOpen: onAltaMedicaModalOpen,
     onClose: onAltaMedicaModalClose,
   } = useDisclosure();
-  
+
   const {
     isOpen: isExameModalOpen,
     onOpen: onExameModalOpen,
     onClose: onExameModalClose,
   } = useDisclosure();
-  
   const {
     isOpen: isExamesListModalOpen,
     onOpen: onExamesListModalOpen,
     onClose: onExamesListModalClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isEnfermariaModalOpen,
+    onOpen: onEnfermariaModalOpen,
+    onClose: onEnfermariaModalClose,
   } = useDisclosure();
 
   // Mutations
@@ -80,11 +85,10 @@ export default function ConsultaActionButtons({
       console.error("Error creating conduta:", error);
     }
   };
-
   const handleCreateAltaMedica = async (altaMedicaData: CreateAltaMedicaDto) => {
     try {
       await createAltaMedica(altaMedicaData).unwrap();
-      
+
       // Update consultation status to "REALIZADA" after successful alta médica creation
       await updateConsulta({
         id: consultaId,
@@ -92,11 +96,27 @@ export default function ConsultaActionButtons({
           status: status_consulta_enum.REALIZADA,
         },
       }).unwrap();
-      
+
       onRefetch();
       onAltaMedicaModalClose();
     } catch (error) {
       console.error("Error creating alta médica:", error);
+    }
+  };
+
+  const handleEncaminharEnfermaria = async () => {
+    try {
+      await updateConsulta({
+        id: consultaId,
+        body: {
+          status: status_consulta_enum.AGUARDANDO_ACOLHIMENTO,
+        },
+      }).unwrap();
+
+      onRefetch();
+      onEnfermariaModalClose();
+    } catch (error) {
+      console.error("Error encaminhando para enfermaria:", error);
     }
   };
 
@@ -111,7 +131,7 @@ export default function ConsultaActionButtons({
         >
           Prescrição
         </Button>
-        
+
         <Button
           color="secondary"
           onPress={onExamesListModalOpen}
@@ -120,32 +140,48 @@ export default function ConsultaActionButtons({
           isDisabled={!pacienteId}
         >
           Exames do Paciente
-        </Button>
-        
-        <Button
-          color="warning"
-          onPress={onExameModalOpen}
-          className="grow sm:grow-0"
-          startContent={<BeakerIcon className="w-5 h-5" />}
-        >
-          Criar Exame
-        </Button>
+        </Button>        {/* Criar Exame - disponível para todos os status exceto REALIZADA, AGUARDANDO_ACOLHIMENTO e ENFERMARIA */}
+        {consulta.status !== status_consulta_enum.REALIZADA &&
+          consulta.status !== status_consulta_enum.AGUARDANDO_ACOLHIMENTO &&
+          consulta.status !== status_consulta_enum.ENFERMARIA && (
+            <Button
+              color="warning"
+              onPress={onExameModalOpen}
+              className="grow sm:grow-0"
+              startContent={<BeakerIcon className="w-5 h-5" />}
+            >
+              Criar Exame
+            </Button>
+          )}
 
-        <Button
-          color="default"
-          className="grow sm:grow-0"
-          startContent={<ArrowRightOnRectangleIcon className="w-5 h-5" />}
-        >
-          Encaminhar Para Enfermaria
-        </Button>       
-         <Button
-          color="success"
-          onPress={onAltaMedicaModalOpen}
-          className="grow sm:grow-0"
-          startContent={<CheckCircleIcon className="w-5 h-5" />}
-        >
-          {consulta.status === status_consulta_enum.REALIZADA ? "Ver Alta Médica" : "Alta Médica"}
-        </Button>
+        {/* Encaminhar Para Enfermaria - disponível apenas para status em atendimento, não para finalizados */}
+        {consulta.status !== status_consulta_enum.REALIZADA &&
+          consulta.status !== status_consulta_enum.AGUARDANDO_ACOLHIMENTO &&
+          consulta.status !== status_consulta_enum.ENFERMARIA && (
+            <Button
+              color="default"
+              onPress={onEnfermariaModalOpen}
+              className="grow sm:grow-0"
+              startContent={<ArrowRightOnRectangleIcon className="w-5 h-5" />}
+            >
+              Encaminhar Para Enfermaria
+            </Button>
+          )}
+
+        {consulta.status !== status_consulta_enum.REALIZADA && (
+          <Button
+            color="success"
+            onPress={onAltaMedicaModalOpen}
+            className="grow sm:grow-0"
+            startContent={<CheckCircleIcon className="w-5 h-5" />}
+          >
+            {consulta.status === status_consulta_enum.REALIZADA ? "Ver Alta Médica" : "Alta Médica"}
+          </Button>
+        )
+        }
+
+
+
       </div>
 
       {/* Modals */}
@@ -156,7 +192,7 @@ export default function ConsultaActionButtons({
         onAddConduta={handleCreateConduta}
         userId={userId}
         consultaId={consultaId}
-      />      
+      />
       <AltaMedicaModalWrapper
         isOpen={isAltaMedicaModalOpen}
         onClose={onAltaMedicaModalClose}
@@ -178,6 +214,31 @@ export default function ConsultaActionButtons({
           pacienteCpf={agendamento?.Paciente?.cpf}
         />
       )}
+
+      {/* Modal de Confirmação - Encaminhar para Enfermaria */}
+      <Modal isOpen={isEnfermariaModalOpen} onClose={onEnfermariaModalClose}>
+        <ModalContent>
+          <ModalHeader className="flex flex-col gap-1">
+            Confirmar Encaminhamento
+          </ModalHeader>
+          <ModalBody>
+            <p>
+              Deseja realmente encaminhar o paciente <strong>{agendamento?.Paciente?.nome_paciente}</strong> para a enfermaria?
+            </p>
+            <p className="text-sm text-gray-600">
+              O status da consulta será alterado para "Aguardando Acolhimento".
+            </p>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="danger" variant="light" onPress={onEnfermariaModalClose}>
+              Cancelar
+            </Button>
+            <Button color="primary" onPress={handleEncaminharEnfermaria}>
+              Confirmar Encaminhamento
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 }

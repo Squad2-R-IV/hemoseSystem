@@ -10,6 +10,7 @@ import {
     CalendarDaysIcon,
     DocumentTextIcon,
   } from "@heroicons/react/24/outline";
+  import {FirstAidKitIcon } from "@phosphor-icons/react";
 import { Link as RouteLink } from "react-router";
 
 interface SidebarMenuProps {
@@ -23,12 +24,14 @@ const menuItems = [
   { icon: CalendarDaysIcon, label: "Recepção", path: "/recepcao" },
   { icon: DocumentTextIcon, label: "Prontuarios", path: "/prontuarios" },
   { icon: UsersIcon, label: "Funcionários", path: "/funcionarios" },
+  {icon: FirstAidKitIcon, label: "Enfermaria", path: "/enfermaria" },
   { icon: QuestionMarkCircleIcon, label: "Help", path: "/help" },
   
 ];
 
 export default function SidebarMenu({ isOpen, onOpenChange }: SidebarMenuProps) {
   return (
+  
     <Drawer 
       isOpen={isOpen} 
       onOpenChange={onOpenChange}

@@ -28,8 +28,10 @@ export type tipo_procedimento_enum = (typeof tipo_procedimento_enum)[keyof typeo
 export const status_consulta_enum = {
   REALIZADA: 'REALIZADA',
   AGUARDANDO: 'AGUARDANDO',
-  EM_ATENDIMENTO: 'EM_ATENDIMENTO',
+  EM_ATENDIMENTO: 'EM_ATENDIMENTO', 
   CHAMADO: 'CHAMADO',
+  AGUARDANDO_ACOLHIMENTO: 'AGUARDANDO_ACOLHIMENTO',
+  ENFERMARIA: 'ENFERMARIA',
   CANCELADO: 'CANCELADO',
 };
 

@@ -21,6 +21,7 @@
     "@heroui/system": "^2.4.12",
     "@heroui/theme": "^2.4.12",
     "@heroui/toast": "^2.0.6",
+    "@phosphor-icons/react": "^2.1.10",
     "@react-router/node": "^7.2.0",
     "@react-router/serve": "^7.2.0",
     "@react-stately/data": "^3.12.2",

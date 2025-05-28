@@ -70,6 +70,7 @@ export const {
   useGetAgendamentosQuery,
   useGetAgendamentoByIdQuery,
   useGetAgendamentosComConsultasAtivasQuery,
+  useGetAgendamentosNaEnfermariaQuery,
   useGetAgendamentosByDateQuery,
   useCreateAgendamentoMutation,
   useUpdateAgendamentoMutation,

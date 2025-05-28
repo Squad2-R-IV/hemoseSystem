@@ -8,10 +8,6 @@ export default [
     route("cadastro", "./routes/auth/cadastro.tsx"),
     route("modulos", "./routes/selecaomodulos.tsx"),
     route("recepcao", "./routes/modulos/recepcao.tsx"),
-    /*route(
-      "atendimento-medico",
-      "./routes/modulos/atendimento-medico/selecao-paciente.tsx"
-    ),*/
     route(
       "atendimento-medico-paciente/:id",
       "./routes/modulos/atendimento-medico/paciente.tsx"
@@ -27,16 +23,20 @@ export default [
     route(
       "consulta/:id",
       "./routes/modulos/consulta.tsx"
-    ),    route(
+    ),
+    route(
       "prontuarios",
       "./routes/prontuarios.tsx"
-    ),    route(
+    ), route(
       "prontuarios/:pacienteId",
       "./pages/pacientes/pacienteDetail.tsx"
     ),
     route(
       "exame/:exameId",
       "./pages/pacientes/exameDetail.tsx"
+    ),    route(
+      "enfermaria",
+      "./routes/enfermaria.tsx"
     ),
     route(
       "funcionarios",

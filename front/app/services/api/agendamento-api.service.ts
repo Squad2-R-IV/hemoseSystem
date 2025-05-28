@@ -13,7 +13,7 @@ export const agendamentoEndpoints = (builder: EndpointBuilder<any, any, any>) =>
     }),
     providesTags: ["Agendamento"],
   }),
-  
+
   getAgendamentoById: builder.query<
     ReadAgendamentoDto,
     { id: number; includeRelations?: boolean }
@@ -23,7 +23,7 @@ export const agendamentoEndpoints = (builder: EndpointBuilder<any, any, any>) =>
     }),
     providesTags: ["Agendamento"],
   }),
-  
+
   createAgendamento: builder.mutation<
     ReadAgendamentoDto,
     CreateAgendamentoDto
@@ -35,7 +35,7 @@ export const agendamentoEndpoints = (builder: EndpointBuilder<any, any, any>) =>
     }),
     invalidatesTags: ["Agendamento"],
   }),
-  
+
   updateAgendamento: builder.mutation<
     ReadAgendamentoDto,
     { id: number; body: UpdateAgendamentoDto }
@@ -47,7 +47,7 @@ export const agendamentoEndpoints = (builder: EndpointBuilder<any, any, any>) =>
     }),
     invalidatesTags: ["Agendamento"],
   }),
-  
+
   deleteAgendamento: builder.mutation<{ success: boolean }, number>({
     query: (id) => ({
       url: `agendamento/${id}`,
@@ -55,7 +55,7 @@ export const agendamentoEndpoints = (builder: EndpointBuilder<any, any, any>) =>
     }),
     invalidatesTags: ["Agendamento"],
   }),
-  
+
   getAgendamentosComConsultasAtivas: builder.query<
     ReadAgendamentoDto[],
     void
@@ -63,7 +63,15 @@ export const agendamentoEndpoints = (builder: EndpointBuilder<any, any, any>) =>
     query: () => "agendamento/consultas-ativas",
     providesTags: ["Agendamento", "Consulta"],
   }),
-  
+  getAgendamentosNaEnfermaria: builder.query<
+    ReadAgendamentoDto[],
+    void
+  >({
+    query: () => "agendamento/consultas-enfermaria",
+    providesTags: ["Agendamento", "Consulta"],
+  }),
+
+
   getAgendamentosByDate: builder.query<
     ReadAgendamentoDto[],
     { date: string }

@@ -39,7 +39,8 @@ export default function ConsultaRoute() {
             agendamento={agendamento}
             navigate={navigate}
             getStatusChip={getStatusChip}
-          />            <ConsultaActionButtons
+          />            
+          <ConsultaActionButtons
             consultaId={consultaId}
             pacienteId={agendamento?.id_paciente}
             condutas={condutas}

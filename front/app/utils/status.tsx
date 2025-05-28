@@ -17,6 +17,10 @@ export function getStatusColor(status: string): "default" | "primary" | "seconda
       return 'primary';
     case 'CHAMADO':
       return 'secondary';
+    case 'AGUARDANDO_ACOLHIMENTO':
+      return 'warning';
+    case 'ENFERMARIA':
+      return 'primary';
     case 'FINALIZADO':
     case 'REALIZADO':
       return 'success';
