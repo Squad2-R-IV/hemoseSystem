@@ -16,6 +16,7 @@ model User {
   Anamneses     Anamnese[]
   Condutas      Conduta[]
   Evolucoes     EvolucaoMedica[]
+  AltaMedica    AltaMedica[]
 
   @@map("user")
 }

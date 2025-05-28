@@ -1,0 +1,25 @@
+
+
+model AltaMedica {
+  id           Int       @id @default(autoincrement())
+  id_consulta  Int       @unique
+  id_medico    String
+  dt_alta      DateTime  @default(now()) @db.DateTime(6)
+  tipo_alta    tipo_alta_enum
+  relatorio    String   @db.Text
+
+  Consulta     Consulta  @relation(fields: [id_consulta], references: [id])
+  Medico       User   @relation(fields: [id_medico], references: [id])
+
+  @@map("alta_medica")
+}
+
+
+enum tipo_alta_enum {
+    OBITO
+    CURA
+    TRANSFERENCIA
+    ALTA
+    EVASAO
+    OUTRO
+}

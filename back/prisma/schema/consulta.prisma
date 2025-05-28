@@ -16,7 +16,7 @@ model Consulta {
   Anamnese             Anamnese?              
   Condutas             Conduta[]
   Evolucoes            EvolucaoMedica[]
-
+  AltaMedica           AltaMedica?
   @@map("consulta")
 }
 
@@ -25,6 +25,8 @@ enum status_consulta_enum {
   AGUARDANDO
   EM_ATENDIMENTO
   CHAMADO
+  AGUARDANDO_ACOLHIMENTO
+  ENFERMARIA
   CANCELADO
 }
 

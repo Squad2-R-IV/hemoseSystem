@@ -24,7 +24,7 @@ export class AgendamentoService extends GenericService<AgendamentoWithRelations>
       where: {
         Consulta: {
           status: {
-            in: ['AGUARDANDO', 'EM_ATENDIMENTO', 'CHAMADO']
+            in: ['AGUARDANDO', 'EM_ATENDIMENTO', 'CHAMADO', 'ENFERMARIA', 'AGUARDANDO_ACOLHIMENTO']
           }
         }
       },
