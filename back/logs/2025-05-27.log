@@ -1,3 +1,5 @@
 2025-05-27 00:34:10 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
 2025-05-27 00:39:26 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
 2025-05-27 00:44:35 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-27 20:42:30 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-27 21:39:47 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_consulta":3,"id_funcionario":"2967b6b1-5ac0-4297-b2df-46f0816e5324","conduta":"Teste"}

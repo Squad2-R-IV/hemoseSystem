@@ -1,18 +1,21 @@
 import { Card, CardHeader, CardBody, Button, Input, Textarea } from "@heroui/react";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftIcon, ClipboardDocumentCheckIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router";
 import { formatDateTime } from "~/utils/formatting";
 
 export default function ConsultaDetails({ consulta, agendamento, navigate, getStatusChip }: any) {
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex items-center justify-between bg-blue-50 border-b">
         <div className="flex justify-between items-center gap-4">
-          <Button isIconOnly color="primary" onPress={() => navigate(-1)}>
+          <Button isIconOnly  onPress={() => navigate(-1)}>
             <ArrowLeftIcon className="h-5 w-5" />
           </Button>
-          <h2 className="text-xl font-bold">Consulta #{consulta.id}</h2>
-        </div>
+          <div className="flex items-center space-x-2">
+            <ClipboardDocumentCheckIcon className="h-5 w-5 text-blue-600" />
+            <h2 className="text-xl font-bold">Consulta #{consulta.id}</h2>
+          </div>
+        </div>  
       </CardHeader>
       <CardBody>
         <div className="space-y-4">
@@ -26,11 +29,11 @@ export default function ConsultaDetails({ consulta, agendamento, navigate, getSt
                   to={`/prontuarios/${agendamento.Paciente?.id}`}
                   className="block text-sm text-blue-600 hover:underline"
                 >
-                <Input
-                  value={agendamento.Paciente?.nome_paciente || ""}
-                  isReadOnly
-                  className="mt-1 block w-full text-sm cursor-pointer"
-                /></Link>
+                  <Input
+                    value={agendamento.Paciente?.nome_paciente || ""}
+                    isReadOnly
+                    className="mt-1 block w-full text-sm cursor-pointer"
+                  /></Link>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Médico</label>
