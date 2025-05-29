@@ -17,6 +17,7 @@ model Consulta {
   Condutas             Conduta[]
   Evolucoes            EvolucaoMedica[]
   AltaMedica           AltaMedica?
+  EvolucaoEnfermagem  EvolucaoEnfermagem[]
   @@map("consulta")
 }
 

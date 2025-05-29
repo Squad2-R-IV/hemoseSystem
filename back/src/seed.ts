@@ -102,11 +102,14 @@ async function main() {
     { name: "conduta_delete", description: "Permissão para deletar conduta" },    { name: "evolucao_medica_create", description: "Permissão para criar evolução médica" },
     { name: "evolucao_medica_read", description: "Permissão para ler evolução médica" },
     { name: "evolucao_medica_update", description: "Permissão para atualizar evolução médica" },
-    { name: "evolucao_medica_delete", description: "Permissão para deletar evolução médica" },
-    { name: "alta_medica_create", description: "Permissão para criar alta médica" },
+    { name: "evolucao_medica_delete", description: "Permissão para deletar evolução médica" },    { name: "alta_medica_create", description: "Permissão para criar alta médica" },
     { name: "alta_medica_read", description: "Permissão para ler alta médica" },
     { name: "alta_medica_update", description: "Permissão para atualizar alta médica" },
     { name: "alta_medica_delete", description: "Permissão para deletar alta médica" },
+    { name: "administracao_conduta_create", description: "Permissão para criar administração de conduta" },
+    { name: "administracao_conduta_read", description: "Permissão para ler administração de conduta" },
+    { name: "administracao_conduta_update", description: "Permissão para atualizar administração de conduta" },
+    { name: "administracao_conduta_delete", description: "Permissão para deletar administração de conduta" },
   ];
 
   // Upsert roles (only creates if not exists)
@@ -131,7 +134,7 @@ async function main() {
     )
   );
 
-  const roleNames = ["admin", "gestor", "recepcionista", "semRole", "medico"];
+  const roleNames = ["admin", "gestor", "recepcionista", "semRole", "medico", "enfermeiro"];
   const rolesMap: { [key: string]: Role } = await prisma.role
     .findMany({
       where: { name: { in: roleNames } },
@@ -179,11 +182,14 @@ async function main() {
     "conduta_delete",    "evolucao_medica_create",	
     "evolucao_medica_read",
     "evolucao_medica_update",
-    "evolucao_medica_delete",
-    "alta_medica_create",
+    "evolucao_medica_delete",    "alta_medica_create",
     "alta_medica_read",
     "alta_medica_update",
     "alta_medica_delete",
+    "administracao_conduta_create",
+    "administracao_conduta_read",
+    "administracao_conduta_update",
+    "administracao_conduta_delete",
   ];
   const permissionsMap: { [key: string]: Permission } = await prisma.permission
     .findMany({
@@ -236,11 +242,14 @@ async function main() {
         "evolucao_medica_create",
         "evolucao_medica_read",
         "evolucao_medica_update",
-        "evolucao_medica_delete",
-        "alta_medica_create",
+        "evolucao_medica_delete",        "alta_medica_create",
         "alta_medica_read",
         "alta_medica_update",
         "alta_medica_delete",
+        "administracao_conduta_create",
+        "administracao_conduta_read",
+        "administracao_conduta_update",
+        "administracao_conduta_delete",
 
       ],
     },
@@ -309,11 +318,25 @@ async function main() {
         "exame_read",
         "exame_update",
         "arquivo_exame_create",
-        "arquivo_exame_read",        "arquivo_exame_update",
-        "evolucao_medica_create",
+        "arquivo_exame_read",        "arquivo_exame_update",        "evolucao_medica_create",
         "evolucao_medica_read",
         "alta_medica_create",
         "alta_medica_read",
+        "administracao_conduta_create",
+        "administracao_conduta_read",
+      ],
+    },
+    {
+      role: "enfermeiro",
+      permissions: [
+        "consultas_read",
+        "agendamento_read",
+        "paciente_read",
+        "prescricao_read",
+        "conduta_read",
+        "administracao_conduta_create",
+        "administracao_conduta_read",
+        "administracao_conduta_update",
       ],
     },
   ];

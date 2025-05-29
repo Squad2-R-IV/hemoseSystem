@@ -18,6 +18,7 @@ model User {
   Evolucoes     EvolucaoMedica[]
   AltaMedica    AltaMedica[]
   AdministracaoCondutas AdministracaoConduta[]
+  EvolucaoEnfermagem EvolucaoEnfermagem[]
 
   @@map("user")
 }

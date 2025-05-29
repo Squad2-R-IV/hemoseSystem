@@ -1,0 +1,19 @@
+2025-05-28 22:36:32 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-05-28 22:41:19 [ERROR]: Database error: 
+Invalid `this.model.create()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:33:39
+
+  30 if (!this.model) {
+  31   throw new Error("Model is not initialized. Ensure the model is correctly set in the repository.");
+  32 }
+→ 33 const result = await this.model.create(
+The table `administracao_conduta` does not exist in the current database.
+2025-05-28 22:41:19 [ERROR]: Error: Ocorreu um erro interno no banco de dados
+2025-05-28 22:42:21 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_conduta":1,"id_funcionario":"2967b6b1-5ac0-4297-b2df-46f0816e5324"}
+2025-05-28 23:01:06 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_consulta":6,"id_funcionario":"2967b6b1-5ac0-4297-b2df-46f0816e5324","conduta":"Controle dos sinais vitais 6/6 horas. "}
+2025-05-28 23:03:53 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_conduta":9,"id_funcionario":"2967b6b1-5ac0-4297-b2df-46f0816e5324","observacoes":"100bpm"}
+2025-05-28 23:04:04 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_conduta":9,"id_funcionario":"2967b6b1-5ac0-4297-b2df-46f0816e5324","observacoes":"200bpm"}
+2025-05-28 23:04:11 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_conduta":9,"id_funcionario":"2967b6b1-5ac0-4297-b2df-46f0816e5324","observacoes":"morreu"}
+2025-05-28 23:06:09 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_consulta":6,"id_funcionario":"2967b6b1-5ac0-4297-b2df-46f0816e5324","conduta":"Dipirona 1g- comprimido - a cada 6h"}
+2025-05-28 23:06:14 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_conduta":10,"id_funcionario":"2967b6b1-5ac0-4297-b2df-46f0816e5324"}
+2025-05-28 23:24:04 [INFO]: Na tabela foi criado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"id_conduta":9,"id_funcionario":"2967b6b1-5ac0-4297-b2df-46f0816e5324"}

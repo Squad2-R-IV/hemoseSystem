@@ -1,0 +1,14 @@
+model EvolucaoEnfermagem {
+  id Int      @id @default(autoincrement())
+  id_consulta               Int
+  id_funcionario            String
+  dt_evolucao               DateTime @default(now()) @db.DateTime(6)
+  sinais_vitais             String?  @db.VarChar(5000)
+  conduta_enfermagem        String?  @db.VarChar(5000)
+  observacoes               String?  @db.VarChar(5000)
+
+  Consulta                  Consulta @relation(fields: [id_consulta], references: [id])
+  Funcionario               User     @relation(fields: [id_funcionario], references: [id])
+
+  @@map("evolucao_enfermagem")
+}
