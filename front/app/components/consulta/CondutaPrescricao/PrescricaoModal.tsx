@@ -1,9 +1,13 @@
 import React, { useState } from "react";
-import { Modal, ModalContent, ModalHeader, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Textarea } from "@heroui/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Textarea, Tooltip } from "@heroui/react";
 import { GenericFilter } from "~/components/GenericFilter";
 import { GenericPagination } from "~/components/GenericPagination";
 import type { ReadCondutaDto } from "~/Dtos/Conduta/ReadCondutaDto";
 import type { CreateCondutaDto } from "~/Dtos/Conduta/CreateCondutaDto";
+import { useCreateAdministracaoCondutaMutation, useGetAdministracaoCondutasByCondutaIdQuery } from "~/services/api";
+import { CreateAdministracaoCondutaDto } from "~/Dtos/AdministracaoConduta/CreateAdministracaoCondutaDto";
+import getUserIdFromLocalStorage from "~/utils/helper/getUserIdFromLocalStorage";
+import { CheckCircleIcon, CheckIcon } from "@phosphor-icons/react";
 
 interface PrescricaoModalProps {
     isOpen: boolean;
@@ -26,9 +30,7 @@ export default function PrescricaoModal({
     const [filterColumn, setFilterColumn] = useState("conduta");
     const [filterValue, setFilterValue] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    const rowsPerPage = 5;
-
-    // Modals for adding/viewing condutas
+    const rowsPerPage = 5;    // Modals for adding/viewing condutas
     const [isCondutaFormOpen, setIsCondutaFormOpen] = useState(false);
     const [selectedConduta, setSelectedConduta] = useState<string>("");
     const [condutaFormData, setCondutaFormData] = useState<CreateCondutaDto>({
@@ -36,6 +38,12 @@ export default function PrescricaoModal({
         id_funcionario: userId,
         conduta: "",
     });
+
+    // Administration modal state
+    const [isAdministrationModalOpen, setIsAdministrationModalOpen] = useState(false);
+    const [selectedCondutaForAdmin, setSelectedCondutaForAdmin] = useState<ReadCondutaDto | null>(null);
+    const [administrationObservations, setAdministrationObservations] = useState("");
+    const [createAdministracaoConduta, { isLoading: isCreatingAdministration }] = useCreateAdministracaoCondutaMutation();
 
     // Filter columns configuration
     const filterColumns = [
@@ -110,7 +118,7 @@ export default function PrescricaoModal({
     ) => {
         const { name, value } = e.target;
         setCondutaFormData((prev) => ({ ...prev, [name]: value }));
-    }; const handleCreateConduta = async () => {
+    };    const handleCreateConduta = async () => {
         try {
             await onAddConduta(condutaFormData);
             resetFormData();
@@ -118,6 +126,88 @@ export default function PrescricaoModal({
         } catch (error) {
             console.error("Error creating conduta:", error);
         }
+    };
+
+    // Administration functions
+    const handleOpenAdministrationModal = (conduta: ReadCondutaDto) => {
+        setSelectedCondutaForAdmin(conduta);
+        setAdministrationObservations("");
+        setIsAdministrationModalOpen(true);
+    };
+
+    const handleCloseAdministrationModal = () => {
+        setIsAdministrationModalOpen(false);
+        setSelectedCondutaForAdmin(null);
+        setAdministrationObservations("");
+    };    const handleConfirmAdministration = async () => {
+        if (!selectedCondutaForAdmin) return;
+
+        try {
+            const currentUserId = getUserIdFromLocalStorage();
+            if (!currentUserId) {
+                console.error("User ID not found");
+                return;
+            }            const administrationData: CreateAdministracaoCondutaDto = {
+                id_conduta: selectedCondutaForAdmin.id,
+                id_funcionario: currentUserId,
+                observacoes: administrationObservations.trim() || undefined,
+            };
+
+            await createAdministracaoConduta(administrationData).unwrap();
+            handleCloseAdministrationModal();
+            // You might want to show a success toast here
+        } catch (error) {
+            console.error("Error creating administration record:", error);
+            // You might want to show an error toast here
+        }
+    };    // Component to render administration icons with tooltips
+    const AdministrationIcons = ({ conduta }: { conduta: ReadCondutaDto }) => {
+        const { data: administracoes } = useGetAdministracaoCondutasByCondutaIdQuery(
+            { condutaId: conduta.id },
+            { skip: !conduta.id }
+        );        if (!administracoes || administracoes.length === 0) {
+            return null;
+        }
+
+        return (
+            <div className="flex items-center gap-1 ml-2">
+                {administracoes.map((admin, index) => (
+                    <Tooltip
+                        key={admin.id}
+                        content={
+                            <div className="p-2 max-w-xs">
+                                <div className="font-semibold text-sm mb-1">
+                                    Administrado por: {admin.Funcionario?.name || "Funcionário não identificado"}
+                                </div>
+                                <div className="text-xs text-gray-600 mb-1">
+                                    {new Date(admin.dt_administracao).toLocaleString('pt-BR')}
+                                </div>
+                                {admin.observacoes && (
+                                    <div className="text-xs">
+                                        <span className="font-medium">Observações:</span>
+                                        <div className="mt-1">{admin.observacoes}</div>
+                                    </div>
+                                )}
+                            </div>
+                        }
+                        placement="top"                        className="bg-white border shadow-lg"
+                    >
+                        <div className={`w-6 h-6 rounded-full flex items-center justify-center cursor-help ${
+                            admin.observacoes 
+                                ? 'bg-yellow-100 text-yellow-700' 
+                                : 'bg-green-100 text-green-700'
+                        }`}>
+                            <CheckCircleIcon className="w-4 h-4" />
+                        </div>
+                    </Tooltip>
+                ))}
+                {administracoes.length > 1 && (
+                    <span className="text-xs text-green-600 font-medium ml-1">
+                        {administracoes.length}x
+                    </span>
+                )}
+            </div>
+        );
     };
     return (
         <>
@@ -187,25 +277,24 @@ export default function PrescricaoModal({
                                                 Prescrição {date}
                                             </h3>
                                             <div className="space-y-4 pl-2">
-                                                {groupedCondutas[date].map((conduta, index) => (
-                                                    <div key={conduta.id} className="relative border-b border-gray-200 pb-3 last:border-0">
+                                                {groupedCondutas[date].map((conduta, index) => (                                                    <div key={conduta.id} className="relative border-b border-gray-200 pb-3 last:border-0">
                                                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-2">                                                            <div className="font-semibold text-sm text-gray-700 flex items-center">
-                                                            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-800 text-xs font-bold flex items-center justify-center mr-2">
-                                                                {index + 1}
-                                                            </span>
-                                                        </div>
+                                                                <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-800 text-xs font-bold flex items-center justify-center mr-2">
+                                                                    {index + 1}
+                                                                </span>
+                                                                <AdministrationIcons conduta={conduta} />
+                                                            </div>
                                                             <div className="flex flex-wrap gap-2">
                                                                 {conduta.Consulta?.status === "ENFERMARIA" && (
                                                                     <Button
                                                                         size="sm"
                                                                         color="primary"
                                                                         variant="light"
-                                                                        onPress={() => alert("Função de administração ainda não implementada")}
+                                                                        onPress={() => handleOpenAdministrationModal(conduta)}
                                                                     >
                                                                         Administrar
-                                                                    </Button>)
-                                                                }
-
+                                                                    </Button>
+                                                                )}
                                                             </div>
                                                         </div>
                                                         <div className="bg-gray-50 rounded p-3 mt-1 mb-2">
@@ -214,7 +303,7 @@ export default function PrescricaoModal({
                                                             </div>
                                                         </div>
                                                         <div className="mt-1 text-xs text-gray-500 italic">
-                                                            Prescrição #{conduta.id}
+                                                            Prescrição #{conduta.id} - Prescrito por: {conduta.User?.name || "Funcionário não identificado"}, {conduta.User?.conselho}: {conduta.User?.registro} em {new Date(conduta.dt_conduta).toLocaleString('pt-BR')}
                                                         </div>
                                                     </div>
                                                 ))}
@@ -234,7 +323,66 @@ export default function PrescricaoModal({
                         />
                     </div>
                 </ModalContent>
-            </Modal>            {/* We've moved the form directly into the main modal */}
+            </Modal>
+            
+            {/* Administration Confirmation Modal */}
+            <Modal isOpen={isAdministrationModalOpen} onClose={handleCloseAdministrationModal} size="md">
+                <ModalContent>
+                    <ModalHeader className="flex flex-col gap-1 bg-green-50 border-b">
+                        <h2 className="text-lg font-bold text-center">Confirmar Administração</h2>
+                    </ModalHeader>
+                    <ModalBody className="py-6">
+                        <div className="space-y-4">
+                            <div className="bg-blue-50 p-4 rounded-lg">
+                                <h4 className="font-semibold text-sm mb-2">Prescrição a ser administrada:</h4>
+                                <div className="bg-white p-3 rounded border-l-4 border-blue-400 max-h-32 overflow-y-auto">
+                                    <p className="text-sm whitespace-pre-wrap">
+                                        {selectedCondutaForAdmin?.conduta}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <p className="text-sm font-medium mb-2">
+                                    Deseja registrar alguma observação sobre a administração?
+                                </p>
+                                <Textarea
+                                    placeholder="Observações (opcional)..."
+                                    value={administrationObservations}
+                                    onChange={(e) => setAdministrationObservations(e.target.value)}
+                                    minRows={3}
+                                    maxRows={5}
+                                />
+                            </div>
+                            
+                            <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+                                <p className="text-sm text-yellow-800">
+                                    <strong>Atenção:</strong> Ao confirmar, será registrado que esta prescrição foi administrada no sistema.
+                                </p>
+                            </div>
+                        </div>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button 
+                            color="secondary" 
+                            variant="light" 
+                            onPress={handleCloseAdministrationModal}
+                            disabled={isCreatingAdministration}
+                        >
+                            Cancelar
+                        </Button>
+                        <Button 
+                            color="success" 
+                            onPress={handleConfirmAdministration}
+                            isLoading={isCreatingAdministration}
+                        >
+                            Confirmar Administração
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+            
+            {/* We've moved the form directly into the main modal */}
         </>
     );
 }

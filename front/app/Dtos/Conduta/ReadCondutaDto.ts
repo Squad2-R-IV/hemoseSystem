@@ -1,6 +1,7 @@
 import type { ReadConsultaDto } from "../Consulta/ReadConsultaDto";
 import { ReadPrescricaoDto } from "../Prescricao/ReadPrescricaoDto";
 import { ReadUserDto } from "../User/ReadUser.dto";
+import { ReadAdministracaoCondutaDto } from "../AdministracaoConduta/ReadAdministracaoCondutaDto";
 
 export class ReadCondutaDto {
   id!: number;
@@ -11,4 +12,5 @@ export class ReadCondutaDto {
   Prescricao?: ReadPrescricaoDto;
   User?: ReadUserDto;
   Consulta?: ReadConsultaDto;
+  AdministracaoCondutas?: ReadAdministracaoCondutaDto[];
 }
