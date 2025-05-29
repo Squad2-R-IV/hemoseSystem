@@ -74,3 +74,4 @@ Invalid value for argument `in`. Expected status_consulta_enum.
 2025-05-28 17:15:47 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
 2025-05-28 17:30:38 [INFO]: Na tabela o id 6 foi atualizado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"status":"AGUARDANDO_ACOLHIMENTO"}
 2025-05-28 17:39:59 [INFO]: Na tabela o id 6 foi atualizado por 2967b6b1-5ac0-4297-b2df-46f0816e5324, com os dados: {"status":"ENFERMARIA"}
+2025-05-28 20:19:50 [INFO]: Prisma info: Starting a mysql pool with 13 connections.

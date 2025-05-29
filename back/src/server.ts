@@ -13,6 +13,7 @@ import evolucaoMedicaRoutes from "./routes/evolucao-medica.routes";
 import altaMedicaRoutes from "./routes/altamedica.routes";
 import exameRoutes from "./routes/exame.routes";
 import arquivoExameRoutes from "./routes/arquivo-exame.routes";
+import administracaoCondutaRoutes from "./routes/administracao-conduta.routes";
 import path from 'path';
 import { errorHandler } from "./middlewares/errorHandler";
 
@@ -31,6 +32,7 @@ app.use("/evolucao-medica", evolucaoMedicaRoutes);
 app.use("/alta-medica", altaMedicaRoutes);
 app.use("/exame", exameRoutes);
 app.use("/arquivo-exame", arquivoExameRoutes);
+app.use("/administracao-conduta", administracaoCondutaRoutes);
 
 // Configurar Swagger
 setupSwagger(app);
