@@ -26,7 +26,7 @@ export default function AnamneseDetails({ anamnese, onOpen }: AnamneseDetailsPro
           <h3 className="text-lg font-bold">Anamnese</h3>
         </div>
       </CardHeader>
-      <CardBody className="max-h-[400px] overflow-y-auto">
+      <CardBody className="overflow-y-auto">
         {anamnese ? (
           <div className="space-y-4">
             <div className="bg-blue-50 p-2 rounded-lg">
