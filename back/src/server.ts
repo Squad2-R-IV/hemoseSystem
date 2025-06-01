@@ -15,6 +15,10 @@ import altaMedicaRoutes from "./routes/altamedica.routes";
 import exameRoutes from "./routes/exame.routes";
 import arquivoExameRoutes from "./routes/arquivo-exame.routes";
 import administracaoCondutaRoutes from "./routes/administracao-conduta.routes";
+import roleRoutes from "./routes/role.routes";
+import permissionRoutes from "./routes/permission.routes";
+import roleToPermissionRoutes from "./routes/role-to-permission.routes";
+import userToRoleRoutes from "./routes/user-to-role.routes";
 import path from 'path';
 import { errorHandler } from "./middlewares/errorHandler";
 
@@ -35,6 +39,10 @@ app.use("/alta-medica", altaMedicaRoutes);
 app.use("/exame", exameRoutes);
 app.use("/arquivo-exame", arquivoExameRoutes);
 app.use("/administracao-conduta", administracaoCondutaRoutes);
+app.use("/role", roleRoutes);
+app.use("/permission", permissionRoutes);
+app.use("/role-to-permission", roleToPermissionRoutes);
+app.use("/user-to-role", userToRoleRoutes);
 
 // Configurar Swagger
 setupSwagger(app);
