@@ -41,10 +41,25 @@ export default [
     route(
       "funcionarios",
       "./routes/funcionarios.tsx"
-    ),
-    route(
+    ),    route(
       "funcionarios/:role",
       "./routes/funcionarios/funcionarios-role.tsx"
+    ),
+    route(
+      "admin/permissions",
+      "./routes/admin/permissions.tsx"
+    ),
+    route(
+      "admin/roles",
+      "./routes/admin/roles.tsx"
+    ),
+    route(
+      "admin/role-permissions/:roleId",
+      "./routes/admin/role-permissions.tsx"
+    ),
+    route(
+      "admin/user-roles/:userId",
+      "./routes/admin/user-roles.tsx"
     ),
   ]),
 ] satisfies RouteConfig;

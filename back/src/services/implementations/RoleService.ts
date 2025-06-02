@@ -13,10 +13,21 @@ import { RoleWithRelations } from "../../utils/includeTypes";
   },
 ])
 export class RoleService extends GenericService<RoleWithRelations> implements IRoleService {
+  private roleRepository: RoleRepository;
+
   constructor(
     @inject("RoleRepository") roleRepository: RoleRepository,
   ) {
     super(roleRepository);
+    this.roleRepository = roleRepository;
+  }
+
+  async getById(id: string, includeRelations?: boolean): Promise<RoleWithRelations | null> {
+    return await this.roleRepository.findById(id, includeRelations);
+  }
+
+  async getAll(includeRelations?: boolean): Promise<RoleWithRelations[]> {
+    return await this.roleRepository.findAll(includeRelations);
   }
 
   async getRolesByUserId(userId: string): Promise<RoleWithRelations[]> {

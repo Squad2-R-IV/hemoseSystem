@@ -9,6 +9,7 @@ import {
     ClipboardDocumentListIcon,
     CalendarDaysIcon,
     DocumentTextIcon,
+    ShieldCheckIcon,
   } from "@heroicons/react/24/outline";
   import {FirstAidKitIcon } from "@phosphor-icons/react";
 import { Link as RouteLink } from "react-router";
@@ -25,6 +26,7 @@ const menuItems = [
   { icon: DocumentTextIcon, label: "Prontuarios", path: "/prontuarios" },
   { icon: UsersIcon, label: "Funcionários", path: "/funcionarios" },
   {icon: FirstAidKitIcon, label: "Enfermaria", path: "/enfermaria" },
+  { icon: ShieldCheckIcon, label: "Gerenciar Permissões", path: "/admin/permissions" },
   { icon: QuestionMarkCircleIcon, label: "Help", path: "/help" },
   
 ];

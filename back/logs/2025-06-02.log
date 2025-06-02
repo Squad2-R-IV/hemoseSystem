@@ -1,0 +1,30 @@
+2025-06-02 15:33:25 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-06-02 15:42:46 [INFO]: Prisma info: Starting a mysql pool with 13 connections.
+2025-06-02 15:44:49 [ERROR]: Database error: 
+Invalid `this.model.findUnique()` invocation in
+C:\Users\zearq\OneDrive\Documentos\projetos\Porto Digital\hemoseSystem\back\src\repositories\implementations\GenericRepository.ts:56:39
+
+  53 async findById(id: string | number, includeRelations: boolean = true): Promise<T | null> {
+  54   try {
+  55     const include = includeRelations ? this.generateInclude() : undefined;
+→ 56     const result = await this.model.findUnique({
+           where: {
+             id: undefined,
+         ?   roleId_permissionId?: RoleToPermissionRoleIdPermissionIdCompoundUniqueInput,
+         ?   AND?: RoleToPermissionWhereInput | RoleToPermissionWhereInput[],
+         ?   OR?: RoleToPermissionWhereInput[],
+         ?   NOT?: RoleToPermissionWhereInput | RoleToPermissionWhereInput[],
+         ?   roleId?: StringFilter | String,
+         ?   permissionId?: StringFilter | String,
+         ?   role?: RoleScalarRelationFilter | RoleWhereInput,
+         ?   permission?: PermissionScalarRelationFilter | PermissionWhereInput
+           },
+           include: {
+             role: true,
+             permission: true
+           }
+         })
+
+Argument `where` of type RoleToPermissionWhereUniqueInput needs at least one of `roleId_permissionId` arguments. Available options are marked with ?.
+2025-06-02 15:44:49 [ERROR]: Error: Erro de validação nos dados fornecidos. Verifique se todos os campos obrigatórios foram preenchidos corretamente.
+2025-06-02 16:14:28 [INFO]: Prisma info: Starting a mysql pool with 13 connections.

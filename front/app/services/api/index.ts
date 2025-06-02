@@ -12,6 +12,10 @@ import { altaMedicaEndpoints } from "./alta-medica-api.service";
 import { pacienteEndpoints } from "./paciente-api.service";
 import { exameEndpoints } from "./exame-api.service";
 import { arquivoExameEndpoints } from "./arquivo-exame-api.service";
+import { roleEndpoints } from "./role-api.service";
+import { permissionEndpoints } from "./permission-api.service";
+import { roleToPermissionEndpoints } from "./role-to-permission-api.service";
+import { userToRoleEndpoints } from "./user-to-role-api.service";
 
 export const siahmeApi = createApi({
   reducerPath: "siahmeApi",
@@ -50,6 +54,18 @@ export const siahmeApi = createApi({
     
     // Arquivo Exame endpoints
     ...arquivoExameEndpoints(builder),
+    
+    // Role endpoints
+    ...roleEndpoints(builder),
+    
+    // Permission endpoints
+    ...permissionEndpoints(builder),
+    
+    // RoleToPermission endpoints
+    ...roleToPermissionEndpoints(builder),
+    
+    // UserToRole endpoints
+    ...userToRoleEndpoints(builder),
   }),
 });
 
@@ -151,8 +167,7 @@ export const {
   useUpdateExameMutation,
   useDeleteExameMutation,  useGetExamesByPacienteQuery,
   useGetExamesByStatusQuery,
-    // Arquivo Exame hooks
-  useGetArquivosExameQuery,
+    // Arquivo Exame hooks  useGetArquivosExameQuery,
   useGetArquivoExameByIdQuery,
   useCreateArquivoExameMutation,
   useUpdateArquivoExameMutation,
@@ -162,4 +177,32 @@ export const {
   useDownloadArquivoQuery,
   useGetArquivosByExameIdQuery,
   useGetArquivosByTipoQuery,
+  
+  // Role hooks
+  useGetRolesQuery,
+  useGetRoleByIdQuery,
+  useCreateRoleMutation,
+  useUpdateRoleMutation,
+  useDeleteRoleMutation,
+  
+  // Permission hooks
+  useGetPermissionsQuery,
+  useGetPermissionByIdQuery,
+  useCreatePermissionMutation,
+  useUpdatePermissionMutation,
+  useDeletePermissionMutation,
+  
+  // RoleToPermission hooks
+  useGetRoleToPermissionsQuery,
+  useGetRoleToPermissionByIdQuery,
+  useCreateRoleToPermissionMutation,
+  useUpdateRoleToPermissionMutation,
+  useDeleteRoleToPermissionMutation,
+  
+  // UserToRole hooks
+  useGetUserToRolesQuery,
+  useGetUserToRoleByIdQuery,
+  useCreateUserToRoleMutation,
+  useUpdateUserToRoleMutation,
+  useDeleteUserToRoleMutation,
 } = siahmeApi;
