@@ -34,14 +34,16 @@ export default [
     route(
       "exame/:exameId",
       "./pages/pacientes/exameDetail.tsx"
-    ),    route(
+    ), 
+    route(
       "enfermaria",
       "./routes/enfermaria.tsx"
     ),
     route(
       "funcionarios",
       "./routes/funcionarios.tsx"
-    ),    route(
+    ),   
+    route(
       "funcionarios/:role",
       "./routes/funcionarios/funcionarios-role.tsx"
     ),

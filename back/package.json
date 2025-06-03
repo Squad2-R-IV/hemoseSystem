@@ -10,6 +10,9 @@
     "migrate:deploy": "prisma migrate deploy",
     "generate": "prisma generate",
     "seed": "ts-node src/seed.ts",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "lint:check": "eslint . --ext .ts,.tsx,.js,.jsx --max-warnings 0",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -18,8 +21,6 @@
   "type": "commonjs",
   "description": "",
   "dependencies": {
-    "@automapper/classes": "^8.8.1",
-    "@automapper/core": "^8.8.1",
     "@prisma/client": "^6.4.0",
     "@types/multer": "^1.4.12",
     "bcrypt": "^5.1.1",
@@ -48,6 +49,10 @@
     "@types/node": "^22.13.4",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.7",
+    "@typescript-eslint/eslint-plugin": "^8.33.1",
+    "@typescript-eslint/parser": "^8.33.1",
+    "eslint": "^9.28.0",
+    "eslint-plugin-unused-imports": "^4.1.4",
     "prisma": "^6.4.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"

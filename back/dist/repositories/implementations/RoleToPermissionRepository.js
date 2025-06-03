@@ -16,10 +16,9 @@ exports.RoleToPermissionRepository = void 0;
 const tsyringe_1 = require("tsyringe");
 const GenericRepository_1 = require("./GenericRepository");
 const prisma_1 = __importDefault(require("../../config/prisma"));
-const roleToPermission_entity_1 = require("../../models/roleToPermission.entity");
 let RoleToPermissionRepository = class RoleToPermissionRepository extends GenericRepository_1.GenericRepository {
     constructor() {
-        super(prisma_1.default, prisma_1.default.roleToPermission, roleToPermission_entity_1.RoleToPermissionEntity, ['role', 'permission']);
+        super(prisma_1.default, prisma_1.default.roleToPermission, ['role', 'permission']);
     }
 };
 exports.RoleToPermissionRepository = RoleToPermissionRepository;
@@ -33,3 +32,4 @@ exports.RoleToPermissionRepository = RoleToPermissionRepository = __decorate([
     ]),
     __metadata("design:paramtypes", [])
 ], RoleToPermissionRepository);
+//# sourceMappingURL=RoleToPermissionRepository.js.map

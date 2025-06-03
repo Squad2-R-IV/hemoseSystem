@@ -290,3 +290,4 @@ router.put("/:id", auth_1.authMiddleware, (0, auth_1.checkPermission)("anamnese_
  */
 router.delete("/:id", auth_1.authMiddleware, (0, auth_1.checkPermission)("anamnese_delete"), (0, asyncHandler_1.asyncHandler)(anamneseController.delete.bind(anamneseController)));
 exports.default = router;
+//# sourceMappingURL=anamnese.routes.js.map

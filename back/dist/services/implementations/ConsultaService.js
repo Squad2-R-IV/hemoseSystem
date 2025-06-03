@@ -20,6 +20,26 @@ let ConsultaService = class ConsultaService extends GenericService_1.GenericServ
     constructor(consultaRepository) {
         super(consultaRepository);
     }
+    async getConsultasByPacientId(pacienteId) {
+        return await this.repository.findManyByQuery({
+            where: {
+                Agendamento: {
+                    id_paciente: pacienteId
+                }
+            },
+            include: {
+                Anamnese: true,
+                Agendamento: {
+                    include: {
+                        Paciente: true,
+                        Usuario: true
+                    }
+                },
+                Condutas: true,
+                Evolucoes: true,
+            }
+        }, true);
+    }
 };
 exports.ConsultaService = ConsultaService;
 exports.ConsultaService = ConsultaService = __decorate([
@@ -33,3 +53,4 @@ exports.ConsultaService = ConsultaService = __decorate([
     __param(0, (0, tsyringe_1.inject)("ConsultaRepository")),
     __metadata("design:paramtypes", [ConsultaRepository_1.ConsultaRepository])
 ], ConsultaService);
+//# sourceMappingURL=ConsultaService.js.map

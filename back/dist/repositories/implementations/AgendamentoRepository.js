@@ -16,10 +16,9 @@ exports.AgendamentoRepository = void 0;
 const tsyringe_1 = require("tsyringe");
 const prisma_1 = __importDefault(require("../../config/prisma"));
 const GenericRepository_1 = require("./GenericRepository");
-const agendamento_entity_1 = require("../../models/agendamento.entity");
 let AgendamentoRepository = class AgendamentoRepository extends GenericRepository_1.GenericRepository {
     constructor() {
-        super(prisma_1.default, prisma_1.default.agendamento, agendamento_entity_1.AgendamentoEntity, ["Paciente", "Usuario", "Consulta"]);
+        super(prisma_1.default, prisma_1.default.agendamento, ["Paciente", "Usuario", "Consulta"]);
     }
 };
 exports.AgendamentoRepository = AgendamentoRepository;
@@ -33,3 +32,4 @@ exports.AgendamentoRepository = AgendamentoRepository = __decorate([
     (0, tsyringe_1.injectable)(),
     __metadata("design:paramtypes", [])
 ], AgendamentoRepository);
+//# sourceMappingURL=AgendamentoRepository.js.map

@@ -1,5 +1,5 @@
-import { injectable, inject, registry } from "tsyringe";
-import { PrismaClient, Permission } from "@prisma/client";
+import { injectable, registry } from "tsyringe";
+import { Permission } from "@prisma/client";
 import { GenericRepository } from "./GenericRepository";
 import { IPermissionRepository } from "../interfaces/IPermissionRepository";
 import prisma from "../../config/prisma";

@@ -60,3 +60,4 @@ const logger = (0, winston_1.createLogger)({
     ],
 });
 exports.default = logger;
+//# sourceMappingURL=winston_logger.js.map

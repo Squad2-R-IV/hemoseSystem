@@ -125,7 +125,7 @@ export class GenericRepository<T> implements IGenericRepository<T> {
   async update(id: string | number, data: Partial<T>): Promise<T | null> {
     try {
       const entity = await this.findById(id);
-      if (!entity) return null;
+      if (!entity) {return null;}
       const result = await this.model.update({ where: { id: id }, data });
       return result as T;
     } catch (error) {

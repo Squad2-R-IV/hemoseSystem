@@ -37,3 +37,4 @@ const swaggerSpec = (0, swagger_jsdoc_1.default)(options);
 function setupSwagger(app) {
     app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerSpec));
 }
+//# sourceMappingURL=swagger.js.map

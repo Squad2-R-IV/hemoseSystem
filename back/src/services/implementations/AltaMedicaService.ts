@@ -1,5 +1,4 @@
 import { inject, injectable, registry } from "tsyringe";
-import { AltaMedica } from "@prisma/client";
 import { GenericService } from "./GenericService";
 import { IAltaMedicaService } from "../interfaces/IAltaMedicaService";
 import { AltaMedicaRepository } from "../../repositories/implementations/AltaMedicaRepository";

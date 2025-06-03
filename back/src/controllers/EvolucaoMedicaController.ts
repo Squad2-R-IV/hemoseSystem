@@ -1,7 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { Request, Response } from "express";
 import { GenericController } from "./GenericController";
-import { IGenericService } from "../services/interfaces/IGenericService";
 import { CreateEvolucaoMedicaDto } from "../Dtos/EvolucaoMedica/CreateEvolucaoMedicaDto";
 import { UpdateEvolucaoMedicaDto } from "../Dtos/EvolucaoMedica/UpdateEvolucaoMedicaDto";
 import { ReadEvolucaoMedicaDto } from "../Dtos/EvolucaoMedica/ReadEvolucaoMedicaDto";

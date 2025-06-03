@@ -1,6 +1,6 @@
 
 import { IGenericService } from "./IGenericService";
-import { Role, User, UserToRole } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 
 export interface IUserService extends IGenericService<User> {
 

@@ -10,7 +10,7 @@ export const errorHandler: ErrorRequestHandler = (
   err: any,
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): void => {
   // Log the error for debugging purposes
   logger.error(`Error: ${err.message}`, {
@@ -35,7 +35,7 @@ export const errorHandler: ErrorRequestHandler = (
   // Handle other errors that might have been formatted with status codes
   if (err.statusCode) {
     // Vamos filtrar metaData conforme o ambiente - em produção, não enviamos detalhes técnicos
-    const metaData = process.env.NODE_ENV === 'production' 
+    const metaData = process.env.NODE_ENV === 'production'
       ? (err.metaData?.fields ? { campos: err.metaData.fields } : undefined)
       : err.metaData;
 
@@ -52,7 +52,7 @@ export const errorHandler: ErrorRequestHandler = (
     res.status(400).json({
       titulo: 'Erro de Validação',
       mensagem: 'Há problemas com os dados enviados',
-      dados: { 
+      dados: {
         erros: Array.isArray(err.errors) ? err.errors : (err.details || [])
       }
     });
@@ -88,7 +88,7 @@ export const errorHandler: ErrorRequestHandler = (
   // Default error response
   res.status(500).json({
     titulo: 'Erro Interno do Servidor',
-    mensagem: process.env.NODE_ENV === 'production' 
+    mensagem: process.env.NODE_ENV === 'production'
       ? 'Ocorreu um erro interno. Por favor, tente novamente mais tarde.'
       : err.message || 'Erro Interno do Servidor',
   });

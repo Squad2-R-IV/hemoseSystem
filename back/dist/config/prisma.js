@@ -58,3 +58,4 @@ tsyringe_1.container.register("PrismaClient", {
     useValue: prisma
 });
 exports.default = prisma;
+//# sourceMappingURL=prisma.js.map

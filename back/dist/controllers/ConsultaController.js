@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConsultaController = void 0;
 const tsyringe_1 = require("tsyringe");
 const GenericController_1 = require("./GenericController");
-const consulta_entity_1 = require("../models/consulta.entity");
 const CreateConsultaDto_1 = require("../Dtos/Consulta/CreateConsultaDto");
 const UpdateConsultaDto_1 = require("../Dtos/Consulta/UpdateConsultaDto");
 const ReadConsultaDto_1 = require("../Dtos/Consulta/ReadConsultaDto");
@@ -23,8 +22,18 @@ const ConsultaService_1 = require("../services/implementations/ConsultaService")
 const AuditoriaService_1 = require("../services/implementations/AuditoriaService");
 let ConsultaController = class ConsultaController extends GenericController_1.GenericController {
     constructor(consultaService, auditoriaService) {
-        super(consultaService, consulta_entity_1.ConsultaEntity, CreateConsultaDto_1.CreateConsultaDto, UpdateConsultaDto_1.UpdateConsultaDto, ReadConsultaDto_1.ReadConsultaDto, auditoriaService);
+        super(consultaService, CreateConsultaDto_1.CreateConsultaDto, UpdateConsultaDto_1.UpdateConsultaDto, ReadConsultaDto_1.ReadConsultaDto, auditoriaService, "Consulta" // Pass the table name explicitly
+        );
         this.consultaService = consultaService;
+    }
+    async getConsultasByPacientId(req, res) {
+        // PacienteId : number
+        const pacienteId = parseInt(req.query.pacienteId);
+        if (isNaN(pacienteId)) {
+            return res.status(400).json({ message: "Id o paciente deve ser um número válido" });
+        }
+        const consultas = await this.consultaService.getConsultasByPacientId(Number(pacienteId));
+        return res.json(consultas);
     }
 };
 exports.ConsultaController = ConsultaController;
@@ -34,3 +43,4 @@ exports.ConsultaController = ConsultaController = __decorate([
     __param(1, (0, tsyringe_1.inject)(AuditoriaService_1.AuditoriaService)),
     __metadata("design:paramtypes", [Object, Object])
 ], ConsultaController);
+//# sourceMappingURL=ConsultaController.js.map

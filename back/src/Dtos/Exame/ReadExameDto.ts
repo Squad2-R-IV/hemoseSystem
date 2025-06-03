@@ -1,4 +1,3 @@
-import { ReadArquivoExameDto } from "../ArquivoExame/ReadArquivoExameDto"
 import { ReadPacienteDto } from "../Paciente/ReadPacienteDto";
 
 

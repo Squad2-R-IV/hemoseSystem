@@ -275,3 +275,4 @@ router.put("/:id", auth_1.authMiddleware, (0, auth_1.checkPermission)("conduta_u
  */
 router.delete("/:id", auth_1.authMiddleware, (0, auth_1.checkPermission)("conduta_delete"), (0, asyncHandler_1.asyncHandler)(condutaController.delete.bind(condutaController)));
 exports.default = router;
+//# sourceMappingURL=conduta.routes.js.map

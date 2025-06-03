@@ -16,10 +16,9 @@ exports.CondutaRepository = void 0;
 const tsyringe_1 = require("tsyringe");
 const prisma_1 = __importDefault(require("../../config/prisma"));
 const GenericRepository_1 = require("./GenericRepository");
-const conduta_entity_1 = require("../../models/conduta.entity");
 let CondutaRepository = class CondutaRepository extends GenericRepository_1.GenericRepository {
     constructor() {
-        super(prisma_1.default, prisma_1.default.conduta, conduta_entity_1.CondutaEntity, ['User', 'Consulta']);
+        super(prisma_1.default, prisma_1.default.conduta, ['User', 'Consulta', 'AdministracaoCondutas']);
     }
 };
 exports.CondutaRepository = CondutaRepository;
@@ -33,3 +32,4 @@ exports.CondutaRepository = CondutaRepository = __decorate([
     (0, tsyringe_1.injectable)(),
     __metadata("design:paramtypes", [])
 ], CondutaRepository);
+//# sourceMappingURL=CondutaRepository.js.map

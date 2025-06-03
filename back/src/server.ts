@@ -19,7 +19,6 @@ import roleRoutes from "./routes/role.routes";
 import permissionRoutes from "./routes/permission.routes";
 import roleToPermissionRoutes from "./routes/role-to-permission.routes";
 import userToRoleRoutes from "./routes/user-to-role.routes";
-import path from 'path';
 import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();

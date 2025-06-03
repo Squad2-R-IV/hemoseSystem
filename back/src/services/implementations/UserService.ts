@@ -1,14 +1,10 @@
 import { container, inject, injectable, registry } from "tsyringe";
-import { IGenericService } from "../interfaces/IGenericService";
-import { Role, User, UserToRole } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 import { GenericService } from "./GenericService";
 import prisma from "../../config/prisma"; // Importa a instância do Prisma configurada
 
 import { IUserService } from "../interfaces/IUserService";
-import { IUserRepository } from "../../repositories/interfaces/IUserRepository";
 import { UserRepository } from "../../repositories/implementations/UserRepository";
-import { IUserToRoleRepository } from "../../repositories/interfaces/IUserToRoleRepository";
-import { IRoleRepository } from "../../repositories/interfaces/IRoleRepository";
 import { UserToRoleRepository } from "../../repositories/implementations/UserToRoleRepository";
 import { RoleRepository } from "../../repositories/implementations/RoleRepository";
 import { UserWithRelations } from "../../utils/includeTypes";
@@ -39,7 +35,7 @@ export class UserService extends GenericService<UserWithRelations> implements IU
     const userToRoleRepository = container.resolve(UserToRoleRepository);
     const roleRepository = container.resolve(RoleRepository);
     const userToRoles = await userToRoleRepository.findManyByFields([{ field: 'userId', value: userId }]);
-    let userRoles : Role[] = [];
+    const userRoles : Role[] = [];
     for (const userToRole of userToRoles) {
       const role = await roleRepository.findById(userToRole.roleId);
       if (role) {

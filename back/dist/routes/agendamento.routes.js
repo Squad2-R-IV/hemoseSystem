@@ -140,6 +140,27 @@ router.get("/", auth_1.authMiddleware, (0, auth_1.checkPermission)("agendamento_
 router.get("/consultas-ativas", auth_1.authMiddleware, (0, auth_1.checkPermission)("agendamento_read"), (0, asyncHandler_1.asyncHandler)(agendamentoController.getAgendamentosComConsultasAtivas.bind(agendamentoController)));
 /**
  * @swagger
+ * /agendamento/consultas-enfermaria:
+ *   get:
+ *     summary: Retorna agendamentos com consultas ativas (aguardando ou em atendimento)
+ *     tags: [Agendamento]
+ *     responses:
+ *       200:
+ *         description: Lista de agendamentos com consultas ativas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Agendamento'
+ *       500:
+ *         description: Erro no servidor
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get("/consultas-enfermaria", auth_1.authMiddleware, (0, auth_1.checkPermission)("agendamento_read"), (0, asyncHandler_1.asyncHandler)(agendamentoController.getAgendamentosNaEnfermaria.bind(agendamentoController)));
+/**
+ * @swagger
  * /agendamento/{id}:
  *   get:
  *     summary: Retorna um agendamento pelo ID
@@ -311,3 +332,4 @@ router.put("/:id", auth_1.authMiddleware, (0, auth_1.checkPermission)("agendamen
  */
 router.delete("/:id", auth_1.authMiddleware, (0, auth_1.checkPermission)("agendamento_delete"), (0, asyncHandler_1.asyncHandler)(agendamentoController.delete.bind(agendamentoController)));
 exports.default = router;
+//# sourceMappingURL=agendamento.routes.js.map

@@ -285,9 +285,9 @@ router.delete("/:id", authMiddleware, checkPermission("arquivo_exame_delete"), a
  *     security:
  *       - bearerAuth: []
  */
-router.post("/upload", 
-    authMiddleware, 
-    checkPermission("arquivo_exame_create"), 
+router.post("/upload",
+    authMiddleware,
+    checkPermission("arquivo_exame_create"),
     uploadSingle,
     asyncHandler(arquivoExameController.uploadArquivo)
 );
@@ -334,9 +334,9 @@ router.post("/upload",
  *     security:
  *       - bearerAuth: []
  */
-router.post("/upload-multiplos", 
-    authMiddleware, 
-    checkPermission("arquivo_exame_create"), 
+router.post("/upload-multiplos",
+    authMiddleware,
+    checkPermission("arquivo_exame_create"),
     uploadMultiple,
     asyncHandler(arquivoExameController.uploadMultiplosArquivos)
 );
@@ -370,9 +370,9 @@ router.post("/upload-multiplos",
  *     security:
  *       - bearerAuth: []
  */
-router.get("/exame/:exameId", 
-    authMiddleware, 
-    checkPermission("arquivo_exame_read"), 
+router.get("/exame/:exameId",
+    authMiddleware,
+    checkPermission("arquivo_exame_read"),
     asyncHandler(arquivoExameController.findArquivosByExameId)
 );
 
@@ -404,9 +404,9 @@ router.get("/exame/:exameId",
  *     security:
  *       - bearerAuth: []
  */
-router.get("/tipo/:tipoArquivo", 
-    authMiddleware, 
-    checkPermission("arquivo_exame_read"), 
+router.get("/tipo/:tipoArquivo",
+    authMiddleware,
+    checkPermission("arquivo_exame_read"),
     asyncHandler(arquivoExameController.findArquivosByTipo)
 );
 
@@ -438,14 +438,14 @@ router.get("/tipo/:tipoArquivo",
  *     security:
  *       - bearerAuth: []
  */
-router.get("/download/:id", 
-    authMiddleware, 
-    checkPermission("arquivo_exame_read"), 
+router.get("/download/:id",
+    authMiddleware,
+    checkPermission("arquivo_exame_read"),
     asyncHandler(arquivoExameController.downloadArquivo)
 );
 
 // Middleware para tratar erros do multer
-const handleMulterError = (err: any, req: any, res: any, next: any) => {
+const _handleMulterError = (err: any, req: any, res: any, next: any) => {
     if (err) {
         if (err.code === 'LIMIT_FILE_SIZE') {
             return res.status(400).json({

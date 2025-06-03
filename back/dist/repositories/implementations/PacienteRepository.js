@@ -16,10 +16,9 @@ exports.PacienteRepository = void 0;
 const tsyringe_1 = require("tsyringe");
 const prisma_1 = __importDefault(require("../../config/prisma"));
 const GenericRepository_1 = require("./GenericRepository");
-const paciente_entity_1 = require("../../models/paciente.entity");
 let PacienteRepository = class PacienteRepository extends GenericRepository_1.GenericRepository {
     constructor() {
-        super(prisma_1.default, prisma_1.default.paciente, paciente_entity_1.PacienteEntity, ['agendamentos']);
+        super(prisma_1.default, prisma_1.default.paciente, ['agendamentos', 'exames']);
     }
 };
 exports.PacienteRepository = PacienteRepository;
@@ -33,3 +32,4 @@ exports.PacienteRepository = PacienteRepository = __decorate([
     (0, tsyringe_1.injectable)(),
     __metadata("design:paramtypes", [])
 ], PacienteRepository);
+//# sourceMappingURL=PacienteRepository.js.map

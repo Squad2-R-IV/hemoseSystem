@@ -1,5 +1,4 @@
 import { inject, injectable, registry } from "tsyringe";
-import { Conduta } from "@prisma/client";
 import { GenericService } from "./GenericService";
 import { ICondutaService } from "../interfaces/ICondutaService";
 import { CondutaRepository } from "../../repositories/implementations/CondutaRepository";

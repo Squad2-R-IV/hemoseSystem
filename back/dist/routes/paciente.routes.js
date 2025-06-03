@@ -309,3 +309,4 @@ router.put("/:id", auth_1.authMiddleware, (0, auth_1.checkPermission)("paciente_
  */
 router.delete("/:id", auth_1.authMiddleware, (0, auth_1.checkPermission)("paciente_delete"), (0, asyncHandler_1.asyncHandler)(pacienteController.delete.bind(pacienteController)));
 exports.default = router;
+//# sourceMappingURL=paciente.routes.js.map

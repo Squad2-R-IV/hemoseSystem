@@ -89,6 +89,36 @@ const consultaController = tsyringe_1.container.resolve(ConsultaController_1.Con
 router.get("/", auth_1.authMiddleware, (0, auth_1.checkPermission)("consultas_read"), (0, asyncHandler_1.asyncHandler)(consultaController.getAll.bind(consultaController)));
 /**
  * @swagger
+ * /consulta/paciente:
+ *   get:
+ *     summary: Retorna todas as consultas relacionadas a um paciente específico
+ *     tags: [Consulta]
+ *     parameters:
+ *       - in: query
+ *         name: pacienteId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do paciente
+ *     responses:
+ *       200:
+ *         description: Lista de consultas retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Consulta'
+ *       404:
+ *         description: Nenhuma consulta encontrada para o paciente
+ *       500:
+ *         description: Erro no servidor
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get("/paciente", auth_1.authMiddleware, (0, auth_1.checkPermission)("consultas_read"), (0, asyncHandler_1.asyncHandler)(consultaController.getConsultasByPacientId.bind(consultaController)));
+/**
+ * @swagger
  * /consulta/{id}:
  *   get:
  *     summary: Retorna um histórico pelo ID
@@ -255,3 +285,4 @@ router.put("/:id", auth_1.authMiddleware, (0, auth_1.checkPermission)("consultas
  */
 router.delete("/:id", auth_1.authMiddleware, (0, auth_1.checkPermission)("consultas_delete"), (0, asyncHandler_1.asyncHandler)(consultaController.delete.bind(consultaController)));
 exports.default = router;
+//# sourceMappingURL=consulta.routes.js.map

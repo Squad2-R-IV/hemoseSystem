@@ -1,5 +1,4 @@
 import { inject, injectable, registry } from "tsyringe";
-import { EvolucaoEnfermagem } from "@prisma/client";
 import { GenericService } from "./GenericService";
 import { IEvolucaoEnfermagemService } from "../interfaces/IEvolucaoEnfermagemService";
 import { EvolucaoEnfermagemRepository } from "../../repositories/implementations/EvolucaoEnfermagemRepository";

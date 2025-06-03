@@ -16,10 +16,9 @@ exports.UserRepository = void 0;
 const tsyringe_1 = require("tsyringe");
 const prisma_1 = __importDefault(require("../../config/prisma"));
 const GenericRepository_1 = require("./GenericRepository");
-const user_entity_1 = require("../../models/user.entity");
 let UserRepository = class UserRepository extends GenericRepository_1.GenericRepository {
     constructor() {
-        super(prisma_1.default, prisma_1.default.user, user_entity_1.UserEntity, ['roles', 'agendamentos', 'auditorias', 'Anamneses']);
+        super(prisma_1.default, prisma_1.default.user, ['roles', 'agendamentos', 'auditorias', 'Anamneses']);
     }
 };
 exports.UserRepository = UserRepository;
@@ -33,3 +32,4 @@ exports.UserRepository = UserRepository = __decorate([
     (0, tsyringe_1.injectable)(),
     __metadata("design:paramtypes", [])
 ], UserRepository);
+//# sourceMappingURL=UserRepository.js.map

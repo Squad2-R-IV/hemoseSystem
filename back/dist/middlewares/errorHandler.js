@@ -9,8 +9,7 @@ const winston_logger_1 = __importDefault(require("../config/winston_logger"));
 /**
  * Global error handling middleware for Express
  */
-const errorHandler = (err, req, res, next) => {
-    var _a;
+const errorHandler = (err, req, res, _next) => {
     // Log the error for debugging purposes
     winston_logger_1.default.error(`Error: ${err.message}`, {
         error: err,
@@ -33,9 +32,13 @@ const errorHandler = (err, req, res, next) => {
     if (err.statusCode) {
         // Vamos filtrar metaData conforme o ambiente - em produção, não enviamos detalhes técnicos
         const metaData = process.env.NODE_ENV === 'production'
-            ? (((_a = err.metaData) === null || _a === void 0 ? void 0 : _a.fields) ? { campos: err.metaData.fields } : undefined)
+            ? (err.metaData?.fields ? { campos: err.metaData.fields } : undefined)
             : err.metaData;
-        res.status(err.statusCode).json(Object.assign({ titulo: err.title || 'Erro da Aplicação', mensagem: err.message }, (metaData && { dados: metaData })));
+        res.status(err.statusCode).json({
+            titulo: err.title || 'Erro da Aplicação',
+            mensagem: err.message,
+            ...(metaData && { dados: metaData }),
+        });
         return;
     }
     // Erros de validação (possíveis erros de express-validator, joi, etc)
@@ -81,3 +84,4 @@ const errorHandler = (err, req, res, next) => {
     });
 };
 exports.errorHandler = errorHandler;
+//# sourceMappingURL=errorHandler.js.map

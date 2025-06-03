@@ -1,5 +1,5 @@
-import { injectable, inject, registry } from "tsyringe";
-import { PrismaClient, UserToRole } from "@prisma/client";
+import { injectable, registry } from "tsyringe";
+import { UserToRole } from "@prisma/client";
 import { GenericRepository } from "./GenericRepository";
 import { IUserToRoleRepository } from "../interfaces/IUserToRoleRepository";
 import prisma from "../../config/prisma";

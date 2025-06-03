@@ -5,7 +5,6 @@ import { plainToInstance } from "class-transformer";
 import logger from "../config/winston_logger";
 import { IAuditoriaService } from "../services/interfaces/IAuditoriaService";
 import { Auditoria } from "@prisma/client";
-import { nameof } from "ts-simple-nameof";
 
 export class GenericController<TEntity, TCreateDto, TUpdateDto, TReadDto> {
   protected readonly auditoriaService: IAuditoriaService;
@@ -35,7 +34,7 @@ export class GenericController<TEntity, TCreateDto, TUpdateDto, TReadDto> {
     // Removido o try/catch para permitir que erros sejam tratados pelo middleware global
     const itemId = isNaN(Number(req.params.id)) ? req.params.id : Number(req.params.id);
     const item = await this.service.getById(itemId, req.query.includeRelations === 'true');
-    if (!item) return res.status(404).json({ message: "Item não encontrado" });
+    if (!item) {return res.status(404).json({ message: "Item não encontrado" });}
     const readDto = plainToInstance(this.readDtoClass, item);
     return res.json(readDto);
   }
@@ -70,14 +69,14 @@ export class GenericController<TEntity, TCreateDto, TUpdateDto, TReadDto> {
 
   async update(req: Request, res: Response): Promise<Response> {
     // Removido o try/catch para permitir que erros sejam tratados pelo middleware global
-    let { id } = req.params;
+    const { id } = req.params;
     const itemId = isNaN(Number(id)) ? id : Number(id);
     const userId = req.user?.id;
     if (!userId) {
       return res.status(403).json({ message: "Você não tem permissão para atualizar um item" });
     }
     const previousItemData = await this.service.getById(itemId);
-    if (!previousItemData) return res.status(404).json({ message: "Item não encontrado" });
+    if (!previousItemData) {return res.status(404).json({ message: "Item não encontrado" });}
     const updateDto = req.body as TEntity;
     const updatedItem = await this.service.update(itemId, updateDto);
     const readDto = plainToInstance(this.readDtoClass, updatedItem);
@@ -100,7 +99,7 @@ export class GenericController<TEntity, TCreateDto, TUpdateDto, TReadDto> {
 
   async delete(req: Request, res: Response): Promise<Response> {
     // Removido o try/catch para permitir que erros sejam tratados pelo middleware global
-    let { id } = req.params;
+    const { id } = req.params;
     const itemId = isNaN(Number(id)) ? id : Number(id);
     const userId = req.user?.id;
     if (!userId) {
@@ -110,7 +109,7 @@ export class GenericController<TEntity, TCreateDto, TUpdateDto, TReadDto> {
       return res.status(403).json({ message: "Você não pode excluir a si mesmo" });
     }
     const item = await this.service.getById(itemId);
-    if (!item) return res.status(404).json({ message: "Item não encontrado" });
+    if (!item) {return res.status(404).json({ message: "Item não encontrado" });}
     await this.service.delete(itemId);
     if (req.user?.id) {
       await logger.info(

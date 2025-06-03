@@ -1,5 +1,4 @@
 import { inject, injectable, registry } from "tsyringe";
-import { AdministracaoConduta } from "@prisma/client";
 import { GenericService } from "./GenericService";
 import { IAdministracaoCondutaService } from "../interfaces/IAdministracaoCondutaService";
 import { AdministracaoCondutaRepository } from "../../repositories/implementations/AdministracaoCondutaRepository";

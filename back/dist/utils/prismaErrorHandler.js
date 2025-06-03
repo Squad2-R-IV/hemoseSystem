@@ -9,14 +9,13 @@ const prisma_better_errors_1 = require("prisma-better-errors");
  * @returns The properly formatted error with descriptive messages and HTTP status codes
  */
 const handlePrismaError = (error) => {
-    var _a, _b;
     if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
         // Tratamento específico para erros conhecidos do Prisma
         switch (error.code) {
             case 'P2002': { // Violação de restrição única
                 let fieldName = 'desconhecido';
                 // Verifica se target existe
-                if ((_a = error.meta) === null || _a === void 0 ? void 0 : _a.target) {
+                if (error.meta?.target) {
                     const target = error.meta.target;
                     if (Array.isArray(target)) {
                         // Se for array, usa join
@@ -51,7 +50,7 @@ const handlePrismaError = (error) => {
                 return newError;
             }
             case 'P2003': { // Violação de restrição de chave estrangeira
-                const field = ((_b = error.meta) === null || _b === void 0 ? void 0 : _b.field_name) || 'desconhecido';
+                const field = error.meta?.field_name || 'desconhecido';
                 const newError = new Error(`Referência inválida para o campo: ${field}`);
                 newError.statusCode = 400;
                 newError.title = 'Erro de Referência';
@@ -115,3 +114,4 @@ const handlePrismaError = (error) => {
     return error;
 };
 exports.handlePrismaError = handlePrismaError;
+//# sourceMappingURL=prismaErrorHandler.js.map

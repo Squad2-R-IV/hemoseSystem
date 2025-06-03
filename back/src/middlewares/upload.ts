@@ -1,6 +1,5 @@
 import multer from 'multer';
 import { Request } from 'express';
-import path from 'path';
 
 // Configuração de storage em memória para salvar no banco
 const storage = multer.memoryStorage();

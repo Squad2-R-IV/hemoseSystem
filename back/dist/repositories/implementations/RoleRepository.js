@@ -16,10 +16,50 @@ exports.RoleRepository = void 0;
 const tsyringe_1 = require("tsyringe");
 const GenericRepository_1 = require("./GenericRepository");
 const prisma_1 = __importDefault(require("../../config/prisma"));
-const role_entity_1 = require("../../models/role.entity");
 let RoleRepository = class RoleRepository extends GenericRepository_1.GenericRepository {
     constructor() {
-        super(prisma_1.default, prisma_1.default.role, role_entity_1.RoleEntity, ['users', 'permissions']);
+        super(prisma_1.default, prisma_1.default.role, ['users', 'permissions']);
+    }
+    async findById(id, includeRelations = false) {
+        if (includeRelations) {
+            return await prisma_1.default.role.findUnique({
+                where: { id },
+                include: {
+                    users: {
+                        include: {
+                            user: true
+                        }
+                    },
+                    permissions: {
+                        include: {
+                            permission: true
+                        }
+                    }
+                }
+            });
+        }
+        return await prisma_1.default.role.findUnique({
+            where: { id }
+        });
+    }
+    async findAll(includeRelations = false) {
+        if (includeRelations) {
+            return await prisma_1.default.role.findMany({
+                include: {
+                    users: {
+                        include: {
+                            user: true
+                        }
+                    },
+                    permissions: {
+                        include: {
+                            permission: true
+                        }
+                    }
+                }
+            });
+        }
+        return await prisma_1.default.role.findMany();
     }
 };
 exports.RoleRepository = RoleRepository;
@@ -33,3 +73,4 @@ exports.RoleRepository = RoleRepository = __decorate([
     ]),
     __metadata("design:paramtypes", [])
 ], RoleRepository);
+//# sourceMappingURL=RoleRepository.js.map

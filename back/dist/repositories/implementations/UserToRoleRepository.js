@@ -16,10 +16,9 @@ exports.UserToRoleRepository = void 0;
 const tsyringe_1 = require("tsyringe");
 const GenericRepository_1 = require("./GenericRepository");
 const prisma_1 = __importDefault(require("../../config/prisma"));
-const userToRole_entity_1 = require("../../models/userToRole.entity");
 let UserToRoleRepository = class UserToRoleRepository extends GenericRepository_1.GenericRepository {
     constructor() {
-        super(prisma_1.default, prisma_1.default.userToRole, userToRole_entity_1.UserToRoleEntity, ['user', 'role']);
+        super(prisma_1.default, prisma_1.default.userToRole, ['user', 'role']);
     }
 };
 exports.UserToRoleRepository = UserToRoleRepository;
@@ -33,3 +32,4 @@ exports.UserToRoleRepository = UserToRoleRepository = __decorate([
     ]),
     __metadata("design:paramtypes", [])
 ], UserToRoleRepository);
+//# sourceMappingURL=UserToRoleRepository.js.map

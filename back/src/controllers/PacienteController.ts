@@ -1,6 +1,5 @@
 import { inject, injectable } from "tsyringe";
 import { GenericController } from "./GenericController";
-import { IGenericService } from "../services/interfaces/IGenericService";
 import { CreatePacienteDto } from "../Dtos/Paciente/CreatePacienteDto";
 import { UpdatePacienteDto } from "../Dtos/Paciente/UpdatePacienteDto";
 import { ReadPacienteDto } from "../Dtos/Paciente/ReadPacienteDto";

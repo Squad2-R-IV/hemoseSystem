@@ -3,7 +3,6 @@ import { container } from "tsyringe";
 import { ConsultaController } from "../controllers/ConsultaController";
 import { asyncHandler } from "../middlewares/asyncHandler";
 import { authMiddleware, checkPermission } from "../middlewares/auth";
-import { tipo_procedimento_enum } from "@prisma/client";
 
 const router = Router();
 const consultaController = container.resolve(ConsultaController);

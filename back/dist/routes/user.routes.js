@@ -500,3 +500,4 @@ router.post("/logout", auth_1.authMiddleware, (0, asyncHandler_1.asyncHandler)(u
  */
 router.post("/changeUserRoles", auth_1.authMiddleware, auth_1.adminOnlyMiddleware, (0, asyncHandler_1.asyncHandler)(userController.changeUserRoles.bind(userController)));
 exports.default = router;
+//# sourceMappingURL=user.routes.js.map

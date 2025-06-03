@@ -1,5 +1,4 @@
 import { inject, injectable, registry } from "tsyringe";
-import { Exame } from "@prisma/client";
 import { GenericService } from "./GenericService";
 import { IExameService } from "../interfaces/IExameService";
 import { ExameRepository } from "../../repositories/implementations/ExameRepository";

@@ -1,5 +1,4 @@
 import { inject, injectable, registry } from "tsyringe";
-import { UserToRole } from "@prisma/client";
 import { GenericService } from "./GenericService";
 import { IUserToRoleService } from "../interfaces/IUserToRoleService";
 import { UserToRoleRepository } from "../../repositories/implementations/UserToRoleRepository";

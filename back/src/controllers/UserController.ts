@@ -37,10 +37,10 @@ export class UserController extends GenericController<User, CreateUserDto, Updat
   async login(req: Request, res: Response): Promise<Response> {
     const { email, password } = req.body;
     const user = await this.userService.findByEmail(email);
-    if (!user) return res.status(404).json({ message: "Usuário não encontrado" });
+    if (!user) {return res.status(404).json({ message: "Usuário não encontrado" });}
 
     const matchPassword = await bcrypt.compare(password, user.password);
-    if (!matchPassword) return res.status(401).json({ message: "Senha inválida" });
+    if (!matchPassword) {return res.status(401).json({ message: "Senha inválida" });}
 
     const userRoles = await this.userService.getUserRoles(user.id);
     const token = jwt.sign(
@@ -63,10 +63,10 @@ export class UserController extends GenericController<User, CreateUserDto, Updat
 
   async handleRefreshToken(req: Request, res: Response): Promise<Response> {
     const cookies = req.cookies;
-    if (!cookies?.refreshToken) return res.status(401).json({ message: "Nenhum refresh token encontrado" });
+    if (!cookies?.refreshToken) {return res.status(401).json({ message: "Nenhum refresh token encontrado" });}
 
     const user = await this.userService.findByRefreshToken(cookies.refreshToken);
-    if (!user) return res.status(403).json({ message: "Proibido." });
+    if (!user) {return res.status(403).json({ message: "Proibido." });}
 
     let decodedUser: any;
     let errorJwt: any;
@@ -74,12 +74,12 @@ export class UserController extends GenericController<User, CreateUserDto, Updat
       cookies.refreshToken,
       process.env.REFRESH_TOKEN_SECRET as string,
       (err: any, decoded: any) => {
-        if (err) errorJwt = err;
+        if (err) {errorJwt = err;}
         decodedUser = decoded;
       }
     );
 
-    if (errorJwt || user.id !== decodedUser.id) return res.status(403).json({ message: "Proibido." });
+    if (errorJwt || user.id !== decodedUser.id) {return res.status(403).json({ message: "Proibido." });}
 
     const userRoles = await this.userService.getUserRoles(user.id);
     const token = jwt.sign(

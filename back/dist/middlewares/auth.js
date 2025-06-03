@@ -32,15 +32,6 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -53,7 +44,7 @@ const UserService_1 = require("../services/implementations/UserService");
 const prisma_1 = __importDefault(require("../config/prisma"));
 const prismaErrorHandler_1 = require("../utils/prismaErrorHandler");
 dotenv.config();
-const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const authMiddleware = async (req, res, next) => {
     const authHeader = req.headers.authorization;
     console.log("Auth Header:", authHeader);
     if (!authHeader) {
@@ -71,12 +62,12 @@ const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         req.user = decoded;
         console.log("Decoded Token:", decoded);
         const userService = tsyringe_1.container.resolve(UserService_1.UserService);
-        const user = yield userService.getById(decoded.id);
+        const user = await userService.getById(decoded.id);
         if (!user) {
             res.status(403).json({ message: "Usuário não encontrado" });
             return;
         }
-        const userRoles = yield userService.getUserRoles(user.id);
+        const userRoles = await userService.getUserRoles(user.id);
         req.user.roles = userRoles.map((role) => role.name);
         console.log("User Roles:", req.user.roles);
         next();
@@ -85,18 +76,18 @@ const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         console.error("Token verification error:", error);
         res.status(403).json({ message: "Token inválido ou expirado" });
     }
-});
+};
 exports.authMiddleware = authMiddleware;
-const adminOnlyMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const adminOnlyMiddleware = async (req, res, next) => {
     if (!req.user || !req.user.roles.includes("admin")) {
         res.status(403).json({ message: "Acesso negado" });
         return;
     }
     next();
-});
+};
 exports.adminOnlyMiddleware = adminOnlyMiddleware;
 const checkPermission = (permission) => {
-    return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    return async (req, res, next) => {
         try {
             const authHeader = req.headers.authorization;
             console.log("Auth Header:", authHeader);
@@ -121,15 +112,15 @@ const checkPermission = (permission) => {
                 return;
             }
             const userService = tsyringe_1.container.resolve(UserService_1.UserService);
-            const user = yield userService.getById(req.user.id);
+            const user = await userService.getById(req.user.id);
             if (!user) {
                 res.status(403).json({ message: "Usuário não encontrado" });
                 return;
             }
-            const userRoles = yield userService.getUserRoles(user.id);
+            const userRoles = await userService.getUserRoles(user.id);
             const roleIds = userRoles.map(role => role.id);
             try {
-                const permissions = yield prisma_1.default.roleToPermission.findMany({
+                const permissions = await prisma_1.default.roleToPermission.findMany({
                     where: {
                         roleId: { in: roleIds },
                         permission: { name: permission }
@@ -154,6 +145,7 @@ const checkPermission = (permission) => {
             console.error("Error in checkPermission middleware:", error);
             res.status(500).json({ message: "Erro interno do servidor" });
         }
-    });
+    };
 };
 exports.checkPermission = checkPermission;
+//# sourceMappingURL=auth.js.map

@@ -33,3 +33,4 @@ exports.AuditoriaService = AuditoriaService = __decorate([
     __param(0, (0, tsyringe_1.inject)("AuditoriaRepository")),
     __metadata("design:paramtypes", [AuditoriaRepository_1.AuditoriaRepository])
 ], AuditoriaService);
+//# sourceMappingURL=AuditoriaService.js.map

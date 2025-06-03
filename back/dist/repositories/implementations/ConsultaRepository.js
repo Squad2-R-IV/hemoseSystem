@@ -16,10 +16,9 @@ exports.ConsultaRepository = void 0;
 const tsyringe_1 = require("tsyringe");
 const prisma_1 = __importDefault(require("../../config/prisma"));
 const GenericRepository_1 = require("./GenericRepository");
-const consulta_entity_1 = require("../../models/consulta.entity");
 let ConsultaRepository = class ConsultaRepository extends GenericRepository_1.GenericRepository {
     constructor() {
-        super(prisma_1.default, prisma_1.default.consulta, consulta_entity_1.ConsultaEntity, ['Agendamento', 'Anamnese', 'Condutas']);
+        super(prisma_1.default, prisma_1.default.consulta, ['Agendamento', 'Anamnese', 'Condutas']);
     }
 };
 exports.ConsultaRepository = ConsultaRepository;
@@ -33,3 +32,4 @@ exports.ConsultaRepository = ConsultaRepository = __decorate([
     (0, tsyringe_1.injectable)(),
     __metadata("design:paramtypes", [])
 ], ConsultaRepository);
+//# sourceMappingURL=ConsultaRepository.js.map

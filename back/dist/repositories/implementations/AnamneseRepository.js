@@ -16,10 +16,9 @@ exports.AnamneseRepository = void 0;
 const tsyringe_1 = require("tsyringe");
 const prisma_1 = __importDefault(require("../../config/prisma"));
 const GenericRepository_1 = require("./GenericRepository");
-const anamnese_entity_1 = require("../../models/anamnese.entity");
 let AnamneseRepository = class AnamneseRepository extends GenericRepository_1.GenericRepository {
     constructor() {
-        super(prisma_1.default, prisma_1.default.anamnese, anamnese_entity_1.AnamneseEntity, ['Consulta', 'User']);
+        super(prisma_1.default, prisma_1.default.anamnese, ['Consulta', 'User']);
     }
 };
 exports.AnamneseRepository = AnamneseRepository;
@@ -33,3 +32,4 @@ exports.AnamneseRepository = AnamneseRepository = __decorate([
     (0, tsyringe_1.injectable)(),
     __metadata("design:paramtypes", [])
 ], AnamneseRepository);
+//# sourceMappingURL=AnamneseRepository.js.map

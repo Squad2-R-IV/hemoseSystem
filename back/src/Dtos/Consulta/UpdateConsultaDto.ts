@@ -1,5 +1,5 @@
 
-import { status_consulta_enum, tipo_procedimento_enum } from "@prisma/client";
+import { status_consulta_enum } from "@prisma/client";
 
 
 export class UpdateConsultaDto {

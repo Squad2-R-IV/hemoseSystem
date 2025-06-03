@@ -1,5 +1,5 @@
-import { injectable, inject, registry } from "tsyringe";
-import { PrismaClient, Role, RoleToPermission } from "@prisma/client";
+import { injectable, registry } from "tsyringe";
+import { Role } from "@prisma/client";
 import { GenericRepository } from "./GenericRepository";
 import { IRoleRepository } from "../interfaces/IRoleRepository";
 import prisma from "../../config/prisma";

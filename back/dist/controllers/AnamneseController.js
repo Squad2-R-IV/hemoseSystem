@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnamneseController = void 0;
 const tsyringe_1 = require("tsyringe");
 const GenericController_1 = require("./GenericController");
-const anamnese_entity_1 = require("../models/anamnese.entity");
 const CreateAnamneseDto_1 = require("../Dtos/Anamnese/CreateAnamneseDto");
 const UpdateAnamneseDto_1 = require("../Dtos/Anamnese/UpdateAnamneseDto");
 const ReadAnamneseDto_1 = require("../Dtos/Anamnese/ReadAnamneseDto");
@@ -23,7 +22,8 @@ const AnamneseService_1 = require("../services/implementations/AnamneseService")
 const AuditoriaService_1 = require("../services/implementations/AuditoriaService");
 let AnamneseController = class AnamneseController extends GenericController_1.GenericController {
     constructor(anamneseService, auditoriaService) {
-        super(anamneseService, anamnese_entity_1.AnamneseEntity, CreateAnamneseDto_1.CreateAnamneseDto, UpdateAnamneseDto_1.UpdateAnamneseDto, ReadAnamneseDto_1.ReadAnamneseDto, auditoriaService);
+        super(anamneseService, CreateAnamneseDto_1.CreateAnamneseDto, UpdateAnamneseDto_1.UpdateAnamneseDto, ReadAnamneseDto_1.ReadAnamneseDto, auditoriaService, "Anamnese" // Pass the table name explicitly
+        );
         this.anamneseService = anamneseService;
     }
 };
@@ -34,3 +34,4 @@ exports.AnamneseController = AnamneseController = __decorate([
     __param(1, (0, tsyringe_1.inject)(AuditoriaService_1.AuditoriaService)),
     __metadata("design:paramtypes", [Object, Object])
 ], AnamneseController);
+//# sourceMappingURL=AnamneseController.js.map

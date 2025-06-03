@@ -16,10 +16,9 @@ exports.AuditoriaRepository = void 0;
 const tsyringe_1 = require("tsyringe");
 const prisma_1 = __importDefault(require("../../config/prisma"));
 const GenericRepository_1 = require("./GenericRepository");
-const auditoria_entity_1 = require("../../models/auditoria.entity");
 let AuditoriaRepository = class AuditoriaRepository extends GenericRepository_1.GenericRepository {
     constructor() {
-        super(prisma_1.default, prisma_1.default.auditoria, auditoria_entity_1.AuditoriaEntity);
+        super(prisma_1.default, prisma_1.default.auditoria, ['Usuario']);
     }
 };
 exports.AuditoriaRepository = AuditoriaRepository;
@@ -33,3 +32,4 @@ exports.AuditoriaRepository = AuditoriaRepository = __decorate([
     (0, tsyringe_1.injectable)(),
     __metadata("design:paramtypes", [])
 ], AuditoriaRepository);
+//# sourceMappingURL=AuditoriaRepository.js.map

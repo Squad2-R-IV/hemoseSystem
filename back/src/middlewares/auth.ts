@@ -3,7 +3,6 @@ import * as dotenv from "dotenv";
 import { Request, Response, NextFunction } from "express";
 import { container } from "tsyringe";
 import { UserService } from "../services/implementations/UserService";
-import { User } from "@prisma/client";
 import prisma from "../config/prisma";
 import { handlePrismaError } from "../utils/prismaErrorHandler";
 

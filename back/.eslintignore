@@ -1,0 +1,30 @@
+# Dependências
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Logs
+logs/
+*.log
+
+# Prisma
+prisma/migrations/
+
+# Cache
+.cache/
+.eslintcache
+
+# Configurações
+*.config.js
+*.config.ts
+
+# Ambiente
+.env
+.env.local
+.env.production
+
+# Outros
+coverage/
+.nyc_output/

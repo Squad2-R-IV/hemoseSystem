@@ -1,6 +1,5 @@
 import { inject, injectable } from "tsyringe";
 import { GenericController } from "./GenericController";
-import { IGenericService } from "../services/interfaces/IGenericService";
 import { CreateAgendamentoDto } from "../Dtos/Agendamento/CreateAgendamentoDto";
 import { UpdateAgendamentoDto } from "../Dtos/Agendamento/UpdateAgendamentoDto";
 import { ReadAgendamentoDto } from "../Dtos/Agendamento/ReadAgendamentoDto";

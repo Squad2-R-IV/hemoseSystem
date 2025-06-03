@@ -11,15 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -35,74 +26,64 @@ let UserService = class UserService extends GenericService_1.GenericService {
     constructor(userRepository) {
         super(userRepository);
     }
-    findByRefreshToken(refreshToken) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const user = yield this.repository.findByFields([{ field: 'refreshToken', value: refreshToken }]);
-            return user;
-        });
+    async findByRefreshToken(refreshToken) {
+        const user = await this.repository.findByFields([{ field: 'refreshToken', value: refreshToken }]);
+        return user;
     }
-    findByEmail(email) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const user = yield this.repository.findByFields([{ field: 'email', value: email }]);
-            return user;
-        });
+    async findByEmail(email) {
+        const user = await this.repository.findByFields([{ field: 'email', value: email }]);
+        return user;
     }
-    getUserRoles(userId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const userToRoleRepository = tsyringe_1.container.resolve(UserToRoleRepository_1.UserToRoleRepository);
-            const roleRepository = tsyringe_1.container.resolve(RoleRepository_1.RoleRepository);
-            const userToRoles = yield userToRoleRepository.findManyByFields([{ field: 'userId', value: userId }]);
-            let userRoles = [];
-            for (const userToRole of userToRoles) {
-                const role = yield roleRepository.findById(userToRole.roleId);
-                if (role) {
-                    userRoles.push(role);
-                }
+    async getUserRoles(userId) {
+        const userToRoleRepository = tsyringe_1.container.resolve(UserToRoleRepository_1.UserToRoleRepository);
+        const roleRepository = tsyringe_1.container.resolve(RoleRepository_1.RoleRepository);
+        const userToRoles = await userToRoleRepository.findManyByFields([{ field: 'userId', value: userId }]);
+        const userRoles = [];
+        for (const userToRole of userToRoles) {
+            const role = await roleRepository.findById(userToRole.roleId);
+            if (role) {
+                userRoles.push(role);
             }
-            return userRoles;
-        });
+        }
+        return userRoles;
     }
-    updateUserRoles(userId, roles) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const roleRepository = tsyringe_1.container.resolve(RoleRepository_1.RoleRepository);
-            // Verificar se todas as roles existem
-            const reqRoles = roles.map((role) => __awaiter(this, void 0, void 0, function* () {
-                const roleRecord = yield roleRepository.findByField("name", role);
-                if (!roleRecord) {
-                    throw new Error(`Role ${role} não encontrada`);
-                }
-                return roleRecord;
-            }));
-            const rolesRecords = yield Promise.all(reqRoles);
-            // Deletar as roles atuais do usuário
-            yield prisma_1.default.userToRole.deleteMany({
-                where: { userId }
-            });
-            // Inserir as novas roles
-            const userToRoleData = rolesRecords.map(role => ({
-                userId,
-                roleId: role.id
-            }));
-            yield prisma_1.default.userToRole.createMany({
-                data: userToRoleData
-            });
-        });
-    }
-    getUsersByRole(roleName) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const roleRepository = tsyringe_1.container.resolve(RoleRepository_1.RoleRepository);
-            const userToRoleRepository = tsyringe_1.container.resolve(UserToRoleRepository_1.UserToRoleRepository);
-            const role = yield roleRepository.findByField("name", roleName);
-            if (!role) {
-                throw new Error(`Role ${roleName} não encontrada`);
+    async updateUserRoles(userId, roles) {
+        const roleRepository = tsyringe_1.container.resolve(RoleRepository_1.RoleRepository);
+        // Verificar se todas as roles existem
+        const reqRoles = roles.map(async (role) => {
+            const roleRecord = await roleRepository.findByField("name", role);
+            if (!roleRecord) {
+                throw new Error(`Role ${role} não encontrada`);
             }
-            const userToRoles = yield userToRoleRepository.findManyByFields([{ field: "roleId", value: role.id }]);
-            const userIds = userToRoles.map(userToRole => userToRole.userId);
-            const users = yield prisma_1.default.user.findMany({
-                where: { id: { in: userIds } },
-            });
-            return users;
+            return roleRecord;
         });
+        const rolesRecords = await Promise.all(reqRoles);
+        // Deletar as roles atuais do usuário
+        await prisma_1.default.userToRole.deleteMany({
+            where: { userId }
+        });
+        // Inserir as novas roles
+        const userToRoleData = rolesRecords.map(role => ({
+            userId,
+            roleId: role.id
+        }));
+        await prisma_1.default.userToRole.createMany({
+            data: userToRoleData
+        });
+    }
+    async getUsersByRole(roleName) {
+        const roleRepository = tsyringe_1.container.resolve(RoleRepository_1.RoleRepository);
+        const userToRoleRepository = tsyringe_1.container.resolve(UserToRoleRepository_1.UserToRoleRepository);
+        const role = await roleRepository.findByField("name", roleName);
+        if (!role) {
+            throw new Error(`Role ${roleName} não encontrada`);
+        }
+        const userToRoles = await userToRoleRepository.findManyByFields([{ field: "roleId", value: role.id }]);
+        const userIds = userToRoles.map(userToRole => userToRole.userId);
+        const users = await prisma_1.default.user.findMany({
+            where: { id: { in: userIds } },
+        });
+        return users;
     }
 };
 exports.UserService = UserService;
@@ -117,3 +98,4 @@ exports.UserService = UserService = __decorate([
     __param(0, (0, tsyringe_1.inject)("UserRepository")),
     __metadata("design:paramtypes", [UserRepository_1.UserRepository])
 ], UserService);
+//# sourceMappingURL=UserService.js.map
