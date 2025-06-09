@@ -6,7 +6,6 @@ export default [
   layout("./components/main-layout/main-layout.tsx", [
     route("home", "./routes/home.tsx"),
     route("cadastro", "./routes/auth/cadastro.tsx"),
-    route("modulos", "./routes/selecaomodulos.tsx"),
     route("recepcao", "./routes/recepcao.tsx"),
     // TODO: Create these files when implementing the atendimento modules
     // route(
