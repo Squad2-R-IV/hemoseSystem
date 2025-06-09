@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@heroui/react";
+import { Button, Tooltip } from "@heroui/react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 interface PageHeaderProps {
@@ -10,13 +10,15 @@ interface PageHeaderProps {
 export function PageHeader({ title, onBackClick }: PageHeaderProps) {
     return (
         <div className="flex items-center gap-4">
-            <Button
-                isIconOnly
-                variant="light"
-                onClick={onBackClick}
-            >
-                <ArrowLeftIcon className="h-5 w-5" />
-            </Button>
+            <Tooltip content="Voltar">
+                <Button
+                    isIconOnly
+                    variant="light"
+                    onClick={onBackClick}
+                >
+                    <ArrowLeftIcon className="h-5 w-5" />
+                </Button>
+            </Tooltip>
             <h1 className="text-2xl font-bold">{title}</h1>
         </div>
     );

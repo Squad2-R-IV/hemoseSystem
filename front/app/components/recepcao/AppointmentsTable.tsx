@@ -13,6 +13,7 @@ import {
   Badge,
   Divider,
   Button,
+  Tooltip,
 } from "@heroui/react";
 import { FunnelIcon, CheckCircleIcon, ClockIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import type { DateValue } from "@internationalized/date";
@@ -136,9 +137,11 @@ export function AppointmentsTable({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <Button isIconOnly variant="light" size="sm">
-              <FunnelIcon className="h-[18px] w-[18px]" />
-            </Button>
+            <Tooltip content="Filtrar">
+              <Button isIconOnly variant="light" size="sm">
+                <FunnelIcon className="h-[18px] w-[18px]" />
+              </Button>
+            </Tooltip>
           </div>
         </CardHeader>
         <Divider />
@@ -171,39 +174,42 @@ export function AppointmentsTable({
                     <div className="flex items-center gap-2">
                       {canPerformActions(appointment.status_agendamento) ? (
                         <>
-                          <Button
-                            isIconOnly
-                            size="sm"
-                            variant="light"
-                            color="primary"
-                            onClick={() => handleOpenCheckinModal(appointment)}
-                            isDisabled={isRescheduling || isCheckingIn || isCanceling}
-                            aria-label="Check-in"
-                          >
-                            <CheckCircleIcon className="h-[18px] w-[18px]" />
-                          </Button>
-                          <Button
-                            isIconOnly
-                            size="sm"
-                            variant="light"
-                            color="default"
-                            onClick={() => handleOpenRescheduleModal(appointment)}
-                            isDisabled={isRescheduling || isCheckingIn || isCanceling}
-                            aria-label="Reagendar"
-                          >
-                            <ClockIcon className="h-[18px] w-[18px]" />
-                          </Button>
-                          <Button
-                            isIconOnly
-                            size="sm"
-                            variant="light"
-                            color="danger"
-                            onClick={() => handleOpenCancelModal(appointment)}
-                            isDisabled={isRescheduling || isCheckingIn || isCanceling}
-                            aria-label="Cancelar"
-                          >
-                            <XMarkIcon className="h-[18px] w-[18px]" />
-                          </Button>
+                          <Tooltip content="Check-in" color="primary">
+                            <Button
+                              isIconOnly
+                              size="sm"
+                              variant="light"
+                              color="primary"
+                              onClick={() => handleOpenCheckinModal(appointment)}
+                              isDisabled={isRescheduling || isCheckingIn || isCanceling}
+                            >
+                              <CheckCircleIcon className="h-[18px] w-[18px]" />
+                            </Button>
+                          </Tooltip>
+                          <Tooltip content="Reagendar">
+                            <Button
+                              isIconOnly
+                              size="sm"
+                              variant="light"
+                              color="default"
+                              onClick={() => handleOpenRescheduleModal(appointment)}
+                              isDisabled={isRescheduling || isCheckingIn || isCanceling}
+                            >
+                              <ClockIcon className="h-[18px] w-[18px]" />
+                            </Button>
+                          </Tooltip>
+                          <Tooltip content="Cancelar" color="danger">
+                            <Button
+                              isIconOnly
+                              size="sm"
+                              variant="light"
+                              color="danger"
+                              onClick={() => handleOpenCancelModal(appointment)}
+                              isDisabled={isRescheduling || isCheckingIn || isCanceling}
+                            >
+                              <XMarkIcon className="h-[18px] w-[18px]" />
+                            </Button>
+                          </Tooltip>
                         </>
                       ) : (
                         <span className="text-gray-400 text-sm">Não disponível</span>

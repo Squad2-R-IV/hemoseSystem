@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, Button, Input, Textarea } from "@heroui/react";
+import { Card, CardHeader, CardBody, Button, Input, Textarea, Tooltip } from "@heroui/react";
 import { ArrowLeftIcon, ClipboardDocumentCheckIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router";
 import { formatDateTime } from "~/utils/formatting";
@@ -8,9 +8,11 @@ export default function ConsultaDetails({ consulta, agendamento, navigate, getSt
     <Card>
       <CardHeader className="flex items-center justify-between bg-blue-50 border-b">
         <div className="flex justify-between items-center gap-4">
-          <Button isIconOnly  onPress={() => navigate(-1)}>
-            <ArrowLeftIcon className="h-5 w-5" />
-          </Button>
+          <Tooltip content="Voltar">
+            <Button isIconOnly onPress={() => navigate(-1)}>
+              <ArrowLeftIcon className="h-5 w-5" />
+            </Button>
+          </Tooltip>
           <div className="flex items-center space-x-2">
             <ClipboardDocumentCheckIcon className="h-5 w-5 text-blue-600" />
             <h2 className="text-xl font-bold">Consulta #{consulta.id}</h2>

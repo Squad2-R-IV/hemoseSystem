@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   Button,
+  Tooltip,
   Input,
   Modal,
   ModalContent,
@@ -130,13 +131,14 @@ export function AgendamentoModal({ onClose, onAppointmentCreated }: AgendamentoM
                 isInvalid={!!errors.id_paciente}
                 errorMessage={errors.id_paciente}
                 endContent={
-                  <Button
-                    isIconOnly
-                    aria-label="Buscar Paciente"
-                    onPress={() => setPacienteSearchModalOpen(true)}
-                  >
-                    <MagnifyingGlassIcon className="h-5 w-5" />
-                  </Button>
+                  <Tooltip content="Buscar Paciente">
+                    <Button
+                      isIconOnly
+                      onPress={() => setPacienteSearchModalOpen(true)}
+                    >
+                      <MagnifyingGlassIcon className="h-5 w-5" />
+                    </Button>
+                  </Tooltip>
                 }
                 className="mb-4"
               />
@@ -149,13 +151,14 @@ export function AgendamentoModal({ onClose, onAppointmentCreated }: AgendamentoM
                 isInvalid={!!errors.id_funcionario}
                 errorMessage={errors.id_funcionario}
                 endContent={
-                  <Button
-                    isIconOnly
-                    aria-label="Buscar Médico"
-                    onPress={() => setMedicoSearchModalOpen(true)}
-                  >
-                    <MagnifyingGlassIcon className="h-5 w-5" />
-                  </Button>
+                  <Tooltip content="Buscar Médico">
+                    <Button
+                      isIconOnly
+                      onPress={() => setMedicoSearchModalOpen(true)}
+                    >
+                      <MagnifyingGlassIcon className="h-5 w-5" />
+                    </Button>
+                  </Tooltip>
                 }
                 className="mb-4"
               />
