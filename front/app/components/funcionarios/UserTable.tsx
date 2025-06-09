@@ -13,6 +13,7 @@ import {
     TableColumn,
     Divider,
     Button,
+    Tooltip,
     addToast,
 } from '@heroui/react';
 import { FunnelIcon, EyeIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
@@ -153,9 +154,11 @@ const UserTable: React.FC<UserTableProps> = ({
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
-                        <Button isIconOnly variant="light" size="sm">
+                        <Tooltip content="Filtrar">
+                            <Button isIconOnly variant="light" size="sm">
                                 <FunnelIcon className="h-[18px] w-[18px]" />
-                        </Button>
+                            </Button>
+                        </Tooltip>
                     </div>
                 </CardHeader>
                 <Divider />
@@ -182,9 +185,11 @@ const UserTable: React.FC<UserTableProps> = ({
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
-                        <Button isIconOnly variant="light" size="sm">
-                        <FunnelIcon className="h-[18px] w-[18px]" />
-                        </Button>
+                        <Tooltip content="Filtrar">
+                            <Button isIconOnly variant="light" size="sm">
+                                <FunnelIcon className="h-[18px] w-[18px]" />
+                            </Button>
+                        </Tooltip>
                     </div>
                 </CardHeader>
                 <Divider />
@@ -217,33 +222,39 @@ const UserTable: React.FC<UserTableProps> = ({
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex items-center gap-2">
-                                            <Button
-                                                isIconOnly
-                                                size="sm"
-                                                variant="light"
-                                                color="primary"
-                                                onPress={() => onUserSelected?.(user)}
-                                            >
-                                                <EyeIcon className="h-[18px] w-[18px]" />
-                                            </Button>
-                                            <Button
-                                                isIconOnly
-                                                size="sm"
-                                                variant="light"
-                                                color="default"
-                                                onPress={() => handleOpenUpdateModal(user)}
-                                            >
-                                                <PencilIcon className="h-[18px] w-[18px]" />
-                                            </Button>
-                                            <Button
-                                                isIconOnly
-                                                size="sm"
-                                                variant="light"
-                                                color="danger"
-                                                onPress={() => handleOpenDeleteModal(user)}
-                                            >
-                                                <TrashIcon className="h-[18px] w-[18px]" />
-                                            </Button>
+                                            <Tooltip content="Ver detalhes">
+                                                <Button
+                                                    isIconOnly
+                                                    size="sm"
+                                                    variant="light"
+                                                    color="primary"
+                                                    onPress={() => onUserSelected?.(user)}
+                                                >
+                                                    <EyeIcon className="h-[18px] w-[18px]" />
+                                                </Button>
+                                            </Tooltip>
+                                            <Tooltip content="Editar">
+                                                <Button
+                                                    isIconOnly
+                                                    size="sm"
+                                                    variant="light"
+                                                    color="default"
+                                                    onPress={() => handleOpenUpdateModal(user)}
+                                                >
+                                                    <PencilIcon className="h-[18px] w-[18px]" />
+                                                </Button>
+                                            </Tooltip>
+                                            <Tooltip content="Excluir" color="danger">
+                                                <Button
+                                                    isIconOnly
+                                                    size="sm"
+                                                    variant="light"
+                                                    color="danger"
+                                                    onPress={() => handleOpenDeleteModal(user)}
+                                                >
+                                                    <TrashIcon className="h-[18px] w-[18px]" />
+                                                </Button>
+                                            </Tooltip>
                                         </div>
                                     </TableCell>
                                 </TableRow>

@@ -11,7 +11,8 @@ import {
     TableColumn, 
     TableBody, 
     TableRow, 
-    TableCell 
+    TableCell,
+    Tooltip
 } from "@heroui/react";
 import { EyeIcon } from "@heroicons/react/24/outline";
 import { GenericFilter } from "~/components/GenericFilter";
@@ -108,16 +109,17 @@ export function ConsultationsTable({ isLoading, consultas }: ConsultationsTableP
                                             {consulta.observacoes || "Sem observações"}
                                         </TableCell>
                                         <TableCell>
-                                            <Button
-                                                isIconOnly
-                                                size="sm"
-                                                variant="light"
-                                                color="primary"
-                                                onClick={() => handleViewConsulta(consulta.id)}
-                                                aria-label="Ver detalhes"
-                                            >
-                                                <EyeIcon className="h-[18px] w-[18px]" />
-                                            </Button>
+                                            <Tooltip content="Ver detalhes">
+                                                <Button
+                                                    isIconOnly
+                                                    size="sm"
+                                                    variant="light"
+                                                    color="primary"
+                                                    onClick={() => handleViewConsulta(consulta.id)}
+                                                >
+                                                    <EyeIcon className="h-[18px] w-[18px]" />
+                                                </Button>
+                                            </Tooltip>
                                         </TableCell>
                                     </TableRow>
                                 ))}

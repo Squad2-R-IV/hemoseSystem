@@ -7,6 +7,7 @@ import {
   Button,
   Chip,
   Spinner,
+  Tooltip,
   Modal,
   ModalContent,
   ModalHeader,
@@ -119,14 +120,16 @@ export default function UserRolesPage() {
     <div className="container mx-auto p-6 max-w-7xl">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <Button
-          as={RouteLink}
-          to="/admin/permissions"
-          isIconOnly
-          variant="flat"
-        >
-          <ArrowLeftIcon className="h-4 w-4" />
-        </Button>
+        <Tooltip content="Voltar">
+          <Button
+            as={RouteLink}
+            to="/admin/permissions"
+            isIconOnly
+            variant="flat"
+          >
+            <ArrowLeftIcon className="h-4 w-4" />
+          </Button>
+        </Tooltip>
         <UsersIcon className="h-8 w-8 text-success" />        <div className="flex items-center gap-4">
           <Avatar
             size="lg"
@@ -186,15 +189,17 @@ export default function UserRolesPage() {
                       <p className="font-medium">{userRole.role?.name}</p>
                       <p className="text-sm text-default-600">{userRole.role?.description}</p>
                     </div>
-                    <Button
-                      size="sm"
-                      color="danger"
-                      variant="flat"
-                      isIconOnly
-                      onPress={() => handleDeleteClick(userRole)}
-                    >
-                      <TrashIcon className="h-4 w-4" />
-                    </Button>
+                    <Tooltip content="Remover" color="danger">
+                      <Button
+                        size="sm"
+                        color="danger"
+                        variant="flat"
+                        isIconOnly
+                        onPress={() => handleDeleteClick(userRole)}
+                      >
+                        <TrashIcon className="h-4 w-4" />
+                      </Button>
+                    </Tooltip>
                   </div>
                 ))}
               </div>
