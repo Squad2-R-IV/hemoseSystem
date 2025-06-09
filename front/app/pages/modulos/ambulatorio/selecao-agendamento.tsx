@@ -70,7 +70,7 @@ export function SelecaoAgendamento() {
 
   const rowsPerPage = 4;
 
-  const { data: agendamentos = [], isLoading: isAgendamentosLoading } = useGetAgendamentosComConsultasAtivasQuery(undefined, {
+  const { data: agendamentos = [], isLoading: isAgendamentosLoading, refetch } = useGetAgendamentosComConsultasAtivasQuery(undefined, {
     refetchOnMountOrArgChange: true
   });
 
@@ -122,6 +122,7 @@ export function SelecaoAgendamento() {
           setSortDescriptor={setSortDescriptor}
           isUpdating={isUpdating}
           updateConsulta={updateConsulta}
+          refetch={refetch}
           columns={columns}
           rowsPerPage={rowsPerPage}
         />
