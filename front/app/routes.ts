@@ -7,34 +7,35 @@ export default [
     route("home", "./routes/home.tsx"),
     route("cadastro", "./routes/auth/cadastro.tsx"),
     route("modulos", "./routes/selecaomodulos.tsx"),
-    route("recepcao", "./routes/modulos/recepcao.tsx"),
-    route(
-      "atendimento-medico-paciente/:id",
-      "./routes/modulos/atendimento-medico/paciente.tsx"
-    ),
-    route(
-      "atendimento-geral",
-      "./routes/modulos/atendimento-geral/atendimento-geral.tsx"
-    ),
+    route("recepcao", "./routes/recepcao.tsx"),
+    // TODO: Create these files when implementing the atendimento modules
+    // route(
+    //   "atendimento-medico-paciente/:id",
+    //   "./pages/modulos/atendimento-medico/paciente.tsx"
+    // ),
+    // route(
+    //   "atendimento-geral",
+    //   "./pages/modulos/atendimento-geral/atendimento-geral.tsx"
+    // ),
     route(
       "selecao-agendamento",
-      "./routes/modulos/ambulatorio/selecao-agendamento.tsx"
+      "./routes/selecao-agendamento.tsx"
     ),
     route(
       "consulta/:id",
-      "./routes/modulos/consulta.tsx"
-    ),
-    route(
+      "./routes/consulta.tsx"
+    ),    route(
       "prontuarios",
       "./routes/prontuarios.tsx"
-    ), route(
+    ),
+    route(
       "prontuarios/:pacienteId",
       "./pages/pacientes/pacienteDetail.tsx"
     ),
     route(
       "exame/:exameId",
       "./pages/pacientes/exameDetail.tsx"
-    ), 
+    ),
     route(
       "enfermaria",
       "./routes/enfermaria.tsx"

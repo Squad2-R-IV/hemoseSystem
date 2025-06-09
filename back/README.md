@@ -538,6 +538,76 @@ export type CondutaWithRelations = Conduta & {
 - `GET /recurso?includeRelations=false` - Retorna apenas dados básicos
 - Por padrão, `includeRelations=true` em métodos `findAll` e `findById`
 
+## 🚀 CI/CD e Deploy
+
+O backend utiliza **GitHub Actions** para automatizar o processo de deploy em um VPS.
+
+### Workflow de Deploy
+
+O deploy é acionado automaticamente a cada push na branch `main`:
+
+```yaml
+# .github/workflows/deploy-backend-vps.yml
+name: Deploy Backend to VPS
+on:
+  push:
+    branches: [main]
+```
+
+### Processo de Deploy
+
+1. **Conexão VPS**: Utiliza SSH Action para conectar ao servidor
+2. **Pull do código**: Atualiza o código no servidor via Git
+3. **Instalação**: Executa `yarn install` para dependências
+4. **Prisma**: Executa migrações, gera cliente e seed
+   ```bash
+   npx prisma migrate deploy
+   npx prisma generate
+   npm run seed
+   ```
+5. **Build**: Compila TypeScript com `yarn build`
+6. **Restart**: Reinicia aplicação via PM2 (`pm2 restart api_siahme`)
+
+### Ambiente de Produção
+
+- **Servidor**: VPS com Ubuntu
+- **Node.js**: Versão 22.15.0 (gerenciado via NVM)
+- **Process Manager**: PM2 para gerenciamento de processos
+- **URL**: `api-siahme.application-well.com.br`
+- **Banco**: MySQL em produção
+
+### Secrets Necessários
+
+Para o funcionamento do CI/CD, são necessários os seguintes secrets no GitHub:
+
+- `VPS_URL`: URL do servidor VPS
+- `BACKEND_UBUNTU_USER`: Usuário do Ubuntu no VPS
+- `VPS_SSH`: Chave SSH privada para acesso ao servidor
+
+### Comandos PM2
+
+```bash
+# Verificar status da aplicação
+pm2 status
+
+# Ver logs da aplicação
+pm2 logs api_siahme
+
+# Reiniciar aplicação
+pm2 restart api_siahme
+
+# Parar aplicação
+pm2 stop api_siahme
+```
+
+### Monitoramento
+
+- ✅ Deploy automático na branch main
+- ✅ Migrações de banco automáticas
+- ✅ Seed de dados em produção
+- ✅ Restart automático via PM2
+- ✅ Logs centralizados
+
 ---
 
 Este sistema foi desenvolvido para ser robusto, escalável e de fácil manutenção. Para dúvidas específicas, consulte o código-fonte ou a documentação Swagger da API.

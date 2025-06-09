@@ -1,5 +1,5 @@
-import type { Route } from "../+types/home";
-import Recepcao from "../../pages/modulos/recepcao";
+import type { Route } from "./+types/home";
+import Recepcao from "../pages/modulos/recepcao";
 
 export function meta({}: Route.MetaArgs) {
   return [
