@@ -34,8 +34,8 @@ const menuItems = [
 export default function SidebarMenu({ isOpen, onOpenChange }: SidebarMenuProps) {
   return (
   
-    <Drawer 
-      isOpen={isOpen} 
+    <Drawer
+      isOpen={isOpen}
       onOpenChange={onOpenChange}
       backdrop="transparent"
       placement="left"
@@ -43,7 +43,7 @@ export default function SidebarMenu({ isOpen, onOpenChange }: SidebarMenuProps) 
       defaultOpen={true}
       classNames={{
         backdrop: "bg-opacity-0",
-        base: "bg-content1"
+        base: "bg-primary text-white",
       }}
     >
       <DrawerContent>
@@ -57,8 +57,8 @@ export default function SidebarMenu({ isOpen, onOpenChange }: SidebarMenuProps) 
                 key={item.path}
                 as={RouteLink}
                 to={item.path}
-                variant="flat"
-                className="justify-start"
+                variant="light"
+                className="justify-start text-white hover:bg-white/10"
                 startContent={<item.icon className="h-5 w-5" />}
                 onPress={() => onOpenChange(false)}
               >

@@ -12,7 +12,7 @@ export default function MainLayout() {
 
   return (
     
-    <div className="min-h-screen bg-[#F0F4F7]">
+    <div className="min-h-screen bg-background">
       <Header onMenuToggle={handleMenuToggle} />
       <SidebarMenu isOpen={isOpen} onOpenChange={setIsOpen} />
       <main className="flex-1 p-6">

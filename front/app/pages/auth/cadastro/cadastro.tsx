@@ -1,4 +1,5 @@
 import React from "react";
+import type { Selection } from "@react-types/shared";
 import { 
   Button, 
   Input, 
@@ -37,11 +38,11 @@ const councilMap: Record<string, string> = {
 
 export function Cadastro() {
   // Remova o useState do isHealthProfessional
-  const [selectedRole, setSelectedRole] = React.useState<Set<string>>(new Set([]));
+  const [selectedRole, setSelectedRole] = React.useState<Selection>(new Set([]));
   const [council, setCouncil] = React.useState("");
   const [createUser, { isLoading }] = useCreateUserMutation();
 
-  const handleRoleChange = (keys: "all" | Set<string>) => {
+  const handleRoleChange = (keys: Selection) => {
     if (keys === "all" || !(keys instanceof Set)) {
       return;
     }
@@ -51,7 +52,7 @@ export function Cadastro() {
     setCouncil(councilMap[roleKey] || "");
   };
 
-  const selectedRoleKey = Array.from(selectedRole)[0];
+  const selectedRoleKey = selectedRole && selectedRole !== 'all' ? Array.from(selectedRole as Set<string>)[0] : '';
   const isHealthProfessional = healthRoles.includes(selectedRoleKey);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -66,7 +67,7 @@ export function Cadastro() {
       especialidade: formData.get("especialidade") as string || undefined,
       conselho: council || undefined,
       registro: formData.get("registro") as string || undefined,
-      roles: selectedRole ? Array.from(selectedRole): undefined,
+      roles: selectedRole && selectedRole !== 'all' ? Array.from(selectedRole as Set<string>) : undefined,
     };
 
     try {

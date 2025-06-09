@@ -29,6 +29,7 @@ export const GenericFilter: React.FC<GenericFilterProps> = ({
       <Select
         label="Filtrar por"
         size='sm'
+        className='rounded-md'
         selectedKeys={selectedColumn ? [selectedColumn] : []}
         onSelectionChange={(keys) => {
           const selected = Array.from(keys)[0] as string;
@@ -46,7 +47,7 @@ export const GenericFilter: React.FC<GenericFilterProps> = ({
         value={filterValue}
         onValueChange={onFilterChange}
         placeholder={placeholder}
-        className='col-span-2'
+        className='col-span-2 rounded-md'
         startContent={<MagnifyingGlassIcon className="w-4 h-4 text-gray-400" />}
         size="lg"
         disabled={!selectedColumn}
