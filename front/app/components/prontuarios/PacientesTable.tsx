@@ -13,6 +13,7 @@ import {
   Badge,
   Divider,
   Button,
+  Tooltip,
   addToast,
 } from "@heroui/react";
 import { FunnelIcon, EyeIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
@@ -188,9 +189,11 @@ export function PacientesTable({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <Button isIconOnly variant="light" size="sm">
-              <FunnelIcon className="h-[18px] w-[18px]" />
-            </Button>
+            <Tooltip content="Filtrar">
+              <Button isIconOnly variant="light" size="sm">
+                <FunnelIcon className="h-[18px] w-[18px]" />
+              </Button>
+            </Tooltip>
           </div>
         </CardHeader>
         <Divider />
@@ -214,36 +217,39 @@ export function PacientesTable({
                   <TableCell>{formatEstadoCivil(paciente.estado_civil)}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <Button
-                        isIconOnly
-                        size="sm"
-                        variant="light"
-                        color="primary"
-                        onClick={() => handleViewPaciente(paciente)}
-                        aria-label="Ver detalhes"
-                      >
-                        <EyeIcon className="h-[18px] w-[18px]" />
-                      </Button>
-                      <Button
-                        isIconOnly
-                        size="sm"
-                        variant="light"
-                        color="default"
-                        onClick={() => handleOpenUpdateModal(paciente)}
-                        aria-label="Editar"
-                      >
-                        <PencilIcon className="h-[18px] w-[18px]" />
-                      </Button>
-                      <Button
-                        isIconOnly
-                        size="sm"
-                        variant="light"
-                        color="danger"
-                        onClick={() => handleOpenDeleteModal(paciente)}
-                        aria-label="Excluir"
-                      >
-                        <TrashIcon className="h-[18px] w-[18px]" />
-                      </Button>
+                      <Tooltip content="Ver detalhes">
+                        <Button
+                          isIconOnly
+                          size="sm"
+                          variant="light"
+                          color="primary"
+                          onClick={() => handleViewPaciente(paciente)}
+                        >
+                          <EyeIcon className="h-[18px] w-[18px]" />
+                        </Button>
+                      </Tooltip>
+                      <Tooltip content="Editar">
+                        <Button
+                          isIconOnly
+                          size="sm"
+                          variant="light"
+                          color="default"
+                          onClick={() => handleOpenUpdateModal(paciente)}
+                        >
+                          <PencilIcon className="h-[18px] w-[18px]" />
+                        </Button>
+                      </Tooltip>
+                      <Tooltip content="Excluir" color="danger">
+                        <Button
+                          isIconOnly
+                          size="sm"
+                          variant="light"
+                          color="danger"
+                          onClick={() => handleOpenDeleteModal(paciente)}
+                        >
+                          <TrashIcon className="h-[18px] w-[18px]" />
+                        </Button>
+                      </Tooltip>
                     </div>
                   </TableCell>
                 </TableRow>

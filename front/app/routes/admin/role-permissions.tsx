@@ -5,6 +5,7 @@ import {
   CardBody,
   CardHeader,
   Button,
+  Tooltip,
   Chip,
   Spinner,
   Modal,
@@ -158,13 +159,15 @@ export default function RolePermissionsPage() {
     <div className="container mx-auto p-6 max-w-7xl">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <Button
-          onPress= {() => navigate(-1)}
-          isIconOnly
-          variant="flat"
-        >
-          <ArrowLeftIcon className="h-4 w-4" />
-        </Button>
+        <Tooltip content="Voltar">
+          <Button
+            onPress={() => navigate(-1)}
+            isIconOnly
+            variant="flat"
+          >
+            <ArrowLeftIcon className="h-4 w-4" />
+          </Button>
+        </Tooltip>
         <ShieldCheckIcon className="h-8 w-8 text-primary" />
         <div>
           <h1 className="text-3xl font-bold">Permissões da Role: {role.name}</h1>
