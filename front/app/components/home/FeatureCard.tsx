@@ -1,5 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router';
+import React from "react";
+import { Link } from "react-router";
+import { Card, CardHeader, CardBody, Badge } from "@heroui/react";
 
 interface Metric {
   label: string;
@@ -22,24 +23,26 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
   metrics,
 }) => {
   return (
-    <Link
-      viewTransition
-      to={path}
-      className="flex flex-col items-center bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 text-center"
-    >
-      <Icon className="h-10 w-10 text-primary mb-4" />
-      <h3 className="text-lg font-semibold mb-1">{title}</h3>
-      <p className="text-sm text-gray-500 mb-2">{description}</p>
-      {metrics && (
-        <div className="space-y-1 text-sm">
-          {metrics.map((m) => (
-            <div key={m.label} className="flex justify-between w-full">
-              <span className="text-gray-500">{m.label}</span>
-              <span className="font-semibold text-primary">{m.value}</span>
-            </div>
-          ))}
-        </div>
-      )}
+    <Link viewTransition to={path} className="block">
+      <Card className="h-full hover:shadow-lg transition-shadow">
+        <CardHeader className="flex flex-col items-center gap-1 text-center">
+          <Icon className="h-10 w-10 text-primary" />
+          <h3 className="text-lg font-semibold">{title}</h3>
+          <p className="text-sm text-gray-500">{description}</p>
+        </CardHeader>
+        {metrics && metrics.length > 0 && (
+          <CardBody className="space-y-2 text-sm">
+            {metrics.map((m) => (
+              <div key={m.label} className="flex justify-between items-center">
+                <span className="text-gray-500">{m.label}</span>
+                <Badge color="primary" variant="flat" size="sm">
+                  {m.value}
+                </Badge>
+              </div>
+            ))}
+          </CardBody>
+        )}
+      </Card>
     </Link>
   );
 };
