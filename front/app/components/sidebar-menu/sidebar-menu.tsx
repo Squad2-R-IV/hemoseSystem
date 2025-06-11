@@ -48,7 +48,7 @@ export default function SidebarMenu({ isOpen, onOpenChange }: SidebarMenuProps) 
     >
       <DrawerContent>
         <DrawerHeader className="border-b border-divider">
-          <h4 className="text-xl font-semibold">Navigation</h4>
+          <h4 className="text-xl font-semibold">Menu de navegação</h4>
         </DrawerHeader>
         <DrawerBody className="p-0">
           <div className="flex flex-col gap-1 p-2">
