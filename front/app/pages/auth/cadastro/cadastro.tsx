@@ -1,5 +1,5 @@
 import React from "react";
-import { 
+import {
   Button, 
   Input, 
   Link, 
@@ -14,6 +14,7 @@ import {
 } from "@heroui/react";
 import { useCreateUserMutation } from "~/services/siahme-api.service";
 import { CreateUserDto } from "~/Dtos/User/CreateUser.dto";
+import type { Selection } from "@react-types/shared";
 
 const roles = [
   { name: "gestor", description: "Gestor" },
@@ -41,13 +42,13 @@ export function Cadastro() {
   const [council, setCouncil] = React.useState("");
   const [createUser, { isLoading }] = useCreateUserMutation();
 
-  const handleRoleChange = (keys: "all" | Set<string>) => {
+  const handleRoleChange = (keys: Selection) => {
     if (keys === "all" || !(keys instanceof Set)) {
       return;
     }
 
-    setSelectedRole(keys);
-    const roleKey = Array.from(keys)[0];
+    setSelectedRole(keys as Set<string>);
+    const roleKey = Array.from(keys)[0] as string;
     setCouncil(councilMap[roleKey] || "");
   };
 
