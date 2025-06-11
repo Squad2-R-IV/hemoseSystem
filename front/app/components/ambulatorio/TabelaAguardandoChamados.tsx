@@ -12,6 +12,7 @@ import { getStatusChip } from "~/utils/status";
 import { formatDateTimeShort } from "~/utils/formatting";
 import { NoShowModal } from "./NoShowModal";
 import React from 'react';
+import { XIcon } from "@phosphor-icons/react";
 
 interface TabelaAguardandoChamadosProps {
   items: ReadAgendamentoDto[];
@@ -97,7 +98,6 @@ export function TabelaAguardandoChamados({
     setIsNoShowModalOpen(false);
     setSelectedAgendamento(null);
   };
-
   const handleNoShowConfirm = async (): Promise<boolean | undefined> => {
     if (!selectedAgendamento) return false;
 
@@ -106,12 +106,21 @@ export function TabelaAguardandoChamados({
       dt_hora_agendamento: selectedAgendamento.dt_hora_agendamento,
       tipo_agendamento: selectedAgendamento.tipo_agendamento,
       status_agendamento: StatusAgendamentoEnum.Cancelado,
-      observacoes: selectedAgendamento.observacoes,
+      observacoes: "Paciente não compareceu quando chamado pelo medico no ambulatorio.",
       dt_chegada: selectedAgendamento.dt_chegada,
     };
 
     try {
+      // Atualizar o agendamento para cancelado
       await updateAgendamento({ id: selectedAgendamento.id, body: updateDto }).unwrap();
+
+      // Se existe uma consulta associada, cancelar ela também
+      if (selectedAgendamento.Consulta) {
+        await updateConsulta({
+          id: selectedAgendamento.Consulta.id,
+          body: { status: 'CANCELADO' }
+        });
+      }
 
       addToast({
         title: "Sucesso!",
@@ -148,7 +157,11 @@ export function TabelaAguardandoChamados({
         return formatDateTimeShort(item.dt_chegada);
       case "tipo_agendamento":
         return item.tipo_agendamento;      case "status_agendamento":
-        const status = item.Consulta?.status || item.status_agendamento;
+        // Se o agendamento está cancelado, sempre mostrar "Cancelado"
+        // caso contrário, mostrar o status da consulta ou do agendamento
+        const status = item.status_agendamento === 'Cancelado' 
+          ? 'Cancelado' 
+          : (item.Consulta?.status || item.status_agendamento);
         return getStatusChip(status);
       default: return "";
     }
@@ -216,6 +229,7 @@ export function TabelaAguardandoChamados({
                           size="sm"
                           color="danger"
                           variant="ghost"
+                          startContent={<XIcon className="h-6 w-6" />}
                           isLoading={isUpdatingAgendamento}
                           onPress={() => handleOpenNoShowModal(item)}
                         >
