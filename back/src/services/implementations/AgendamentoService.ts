@@ -18,15 +18,24 @@ export class AgendamentoService extends GenericService<AgendamentoWithRelations>
   ) {
     super(agendamentoRepository);
   }
-
   async getAgendamentosNaEnfermaria(): Promise<Agendamento[]> {
     return await this.repository.findManyByQuery({
       where: {
-        Consulta: {
-          status: {
-            in: ['ENFERMARIA', 'AGUARDANDO_ACOLHIMENTO']
+        AND: [
+          {
+            // Filtrar agendamentos não cancelados
+            status_agendamento: {
+              not: 'Cancelado'
+            }
+          },
+          {
+            Consulta: {
+              status: {
+                in: ['ENFERMARIA', 'AGUARDANDO_ACOLHIMENTO']
+              }
+            }
           }
-        }
+        ]
       },
       include: {
         Consulta: true,
@@ -35,15 +44,24 @@ export class AgendamentoService extends GenericService<AgendamentoWithRelations>
       }
     }, true) as AgendamentoWithRelations[]; // Cast the result to AgendamentoWithRelations[]
   }
-
   async getAgendamentosComConsultasAtivas(): Promise<AgendamentoWithRelations[]> {
     return await this.repository.findManyByQuery({
       where: {
-        Consulta: {
-          status: {
-            in: ['AGUARDANDO', 'EM_ATENDIMENTO', 'CHAMADO', 'ENFERMARIA', 'AGUARDANDO_ACOLHIMENTO']
+        AND: [
+          {
+            // Filtrar agendamentos não cancelados
+            status_agendamento: {
+              not: 'Cancelado'
+            }
+          },
+          {
+            Consulta: {
+              status: {
+                in: ['AGUARDANDO', 'EM_ATENDIMENTO', 'CHAMADO', 'ENFERMARIA', 'AGUARDANDO_ACOLHIMENTO']
+              }
+            }
           }
-        }
+        ]
       },
       include: {
         Consulta: true,

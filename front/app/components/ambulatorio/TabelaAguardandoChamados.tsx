@@ -1,14 +1,18 @@
-import { Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Chip, Card, CardBody, CardHeader } from "@heroui/react";
+import { Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Chip, Card, CardBody, CardHeader, addToast } from "@heroui/react";
 import { ArrowRightEndOnRectangleIcon, PlayIcon, EyeIcon } from "@heroicons/react/24/outline";
-import { useUpdateConsultaMutation } from "~/services/siahme-api.service";
+import { useUpdateConsultaMutation, useUpdateAgendamentoMutation } from "~/services/siahme-api.service";
 import type { ReadAgendamentoDto } from "~/Dtos/Agendamento/ReadAgendamentoDto";
+import type { UpdateAgendamentoDto } from "~/Dtos/Agendamento/UpdateAgendamentoDto";
+import { StatusAgendamentoEnum } from "~/utils/enums/enums";
 import type { SortDescriptor } from "@heroui/react";
 import type { Key } from "@react-types/shared";
 import { Link, useNavigate } from "react-router";
 import { GenericFilter } from "~/components/GenericFilter";
 import { getStatusChip } from "~/utils/status";
 import { formatDateTimeShort } from "~/utils/formatting";
+import { NoShowModal } from "./NoShowModal";
 import React from 'react';
+import { XIcon } from "@phosphor-icons/react";
 
 interface TabelaAguardandoChamadosProps {
   items: ReadAgendamentoDto[];
@@ -18,6 +22,7 @@ interface TabelaAguardandoChamadosProps {
   setSortDescriptor: (sort: SortDescriptor) => void;
   isUpdating: boolean;
   updateConsulta: ReturnType<typeof useUpdateConsultaMutation>[0];
+  refetch: () => void;
   columns: {
     key: string;
     label: string;
@@ -34,11 +39,17 @@ export function TabelaAguardandoChamados({
   setSortDescriptor,
   isUpdating,
   updateConsulta,
+  refetch,
   columns,
   rowsPerPage
 }: TabelaAguardandoChamadosProps) {
   const [filterColumn, setFilterColumn] = React.useState("");
   const [filterValue, setFilterValue] = React.useState("");
+
+  const [selectedAgendamento, setSelectedAgendamento] = React.useState<ReadAgendamentoDto | null>(null);
+  const [isNoShowModalOpen, setIsNoShowModalOpen] = React.useState(false);
+
+  const [updateAgendamento, { isLoading: isUpdatingAgendamento }] = useUpdateAgendamentoMutation();
 
   const filterColumns = [
     { key: "Paciente.nome_paciente", label: "Nome do Paciente" },
@@ -78,6 +89,57 @@ export function TabelaAguardandoChamados({
   const paginatedItems = filteredItems.slice((page - 1) * rowsPerPage, page * rowsPerPage);
   const navigate = useNavigate();
 
+  const handleOpenNoShowModal = (agendamento: ReadAgendamentoDto) => {
+    setSelectedAgendamento(agendamento);
+    setIsNoShowModalOpen(true);
+  };
+
+  const handleCloseNoShowModal = () => {
+    setIsNoShowModalOpen(false);
+    setSelectedAgendamento(null);
+  };
+  const handleNoShowConfirm = async (): Promise<boolean | undefined> => {
+    if (!selectedAgendamento) return false;
+
+    const updateDto: UpdateAgendamentoDto = {
+      dt_agendamento: selectedAgendamento.dt_agendamento,
+      dt_hora_agendamento: selectedAgendamento.dt_hora_agendamento,
+      tipo_agendamento: selectedAgendamento.tipo_agendamento,
+      status_agendamento: StatusAgendamentoEnum.Cancelado,
+      observacoes: "Paciente não compareceu quando chamado pelo medico no ambulatorio.",
+      dt_chegada: selectedAgendamento.dt_chegada,
+    };
+
+    try {
+      // Atualizar o agendamento para cancelado
+      await updateAgendamento({ id: selectedAgendamento.id, body: updateDto }).unwrap();
+
+      // Se existe uma consulta associada, cancelar ela também
+      if (selectedAgendamento.Consulta) {
+        await updateConsulta({
+          id: selectedAgendamento.Consulta.id,
+          body: { status: 'CANCELADO' }
+        });
+      }
+
+      addToast({
+        title: "Sucesso!",
+        description: "Ausência registrada com sucesso.",
+        color: "success",
+      });
+
+      refetch();
+      return true;
+    } catch (error) {
+      addToast({
+        title: "Erro",
+        description: "Não foi possível registrar ausência.",
+        color: "danger",
+      });
+      return false;
+    }
+  };
+
   const getCustomKeyValue = (item: ReadAgendamentoDto, columnKey: Key) => {
     switch (columnKey) {
       case "Paciente.nome_paciente":
@@ -95,7 +157,11 @@ export function TabelaAguardandoChamados({
         return formatDateTimeShort(item.dt_chegada);
       case "tipo_agendamento":
         return item.tipo_agendamento;      case "status_agendamento":
-        const status = item.Consulta?.status || item.status_agendamento;
+        // Se o agendamento está cancelado, sempre mostrar "Cancelado"
+        // caso contrário, mostrar o status da consulta ou do agendamento
+        const status = item.status_agendamento === 'Cancelado' 
+          ? 'Cancelado' 
+          : (item.Consulta?.status || item.status_agendamento);
         return getStatusChip(status);
       default: return "";
     }
@@ -141,40 +207,54 @@ export function TabelaAguardandoChamados({
               {(columnKey) => (
                 <TableCell>
                   {columnKey === "actions" && item.Consulta ? (
-                    <Button
-                      size="sm"
-                      color={
-                        item.Consulta?.status === 'AGUARDANDO' ? 'primary' :
-                          item.Consulta?.status === 'CHAMADO' ? 'success' :
-                            'warning'
-                      }
-                      variant="ghost"
-                      startContent={
-                        item.Consulta?.status === 'AGUARDANDO' ?
-                          <ArrowRightEndOnRectangleIcon className="h-6 w-6" /> :
-                          item.Consulta?.status === 'CHAMADO' ?
-                            <PlayIcon className="h-6 w-6" /> :
-                            <PlayIcon className="h-6 w-6" />
-                      }
-                      isLoading={isUpdating}
-                      onPress={async () => {
-                        if (item.Consulta?.status === 'AGUARDANDO') {
-                          await updateConsulta({
-                            id: item.Consulta.id,
-                            body: { status: 'CHAMADO' }
-                          });
-                        } else if (item.Consulta?.status === 'CHAMADO') {
-                          await updateConsulta({
-                            id: item.Consulta.id,
-                            body: { status: 'EM_ATENDIMENTO' }
-                          });
-                          navigate(`/consulta/${item.Consulta.id}`, { viewTransition: true });
-                        }
-                      }}
-                    >
-                      {item.Consulta?.status === 'AGUARDANDO' ? 'Chamar' :
-                        item.Consulta?.status === 'CHAMADO' ? 'Iniciar' : ''}
-                    </Button>
+                    item.Consulta.status === 'CHAMADO' ? (
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          color="success"
+                          variant="ghost"
+                          startContent={<PlayIcon className="h-6 w-6" />}
+                          isLoading={isUpdating}
+                          onPress={async () => {
+                            await updateConsulta({
+                              id: item.Consulta!.id,
+                              body: { status: 'EM_ATENDIMENTO' }
+                            });
+                            navigate(`/consulta/${item.Consulta!.id}`, { viewTransition: true });
+                          }}
+                        >
+                          Iniciar
+                        </Button>
+                        <Button
+                          size="sm"
+                          color="danger"
+                          variant="ghost"
+                          startContent={<XIcon className="h-6 w-6" />}
+                          isLoading={isUpdatingAgendamento}
+                          onPress={() => handleOpenNoShowModal(item)}
+                        >
+                          Não Presente
+                        </Button>
+                      </div>
+                    ) : (
+                      <Button
+                        size="sm"
+                        color={item.Consulta.status === 'AGUARDANDO' ? 'primary' : 'warning'}
+                        variant="ghost"
+                        startContent={<ArrowRightEndOnRectangleIcon className="h-6 w-6" />}
+                        isLoading={isUpdating}
+                        onPress={async () => {
+                          if (item.Consulta?.status === 'AGUARDANDO') {
+                            await updateConsulta({
+                              id: item.Consulta.id,
+                              body: { status: 'CHAMADO' }
+                            });
+                          }
+                        }}
+                      >
+                        Chamar
+                      </Button>
+                    )
                   ) : (
                     getCustomKeyValue(item, columnKey) as React.ReactNode
                   )}
@@ -197,6 +277,14 @@ export function TabelaAguardandoChamados({
           />
         </div>
       )}
+      <NoShowModal
+        isOpen={isNoShowModalOpen}
+        onOpenChange={setIsNoShowModalOpen}
+        onClose={handleCloseNoShowModal}
+        agendamento={selectedAgendamento}
+        onConfirm={handleNoShowConfirm}
+        isLoading={isUpdatingAgendamento}
+      />
     </div>
   );
 }

@@ -90,7 +90,11 @@ export function TabelaEmAtendimento({
         return formatDateTimeShort(item.dt_chegada);
       case "tipo_agendamento":
         return item.tipo_agendamento;      case "status_agendamento":
-        const status = item.Consulta?.status || item.status_agendamento;
+        // Se o agendamento está cancelado, sempre mostrar "Cancelado"
+        // caso contrário, mostrar o status da consulta ou do agendamento
+        const status = item.status_agendamento === 'Cancelado' 
+          ? 'Cancelado' 
+          : (item.Consulta?.status || item.status_agendamento);
         return getStatusChip(status);
       default: return "";
     }

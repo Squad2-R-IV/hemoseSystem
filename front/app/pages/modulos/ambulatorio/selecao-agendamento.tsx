@@ -70,7 +70,7 @@ export function SelecaoAgendamento() {
 
   const rowsPerPage = 4;
 
-  const { data: agendamentos = [], isLoading: isAgendamentosLoading } = useGetAgendamentosComConsultasAtivasQuery(undefined, {
+  const { data: agendamentos = [], isLoading: isAgendamentosLoading, refetch } = useGetAgendamentosComConsultasAtivasQuery(undefined, {
     refetchOnMountOrArgChange: true
   });
 
@@ -100,7 +100,11 @@ export function SelecaoAgendamento() {
         return formatDateTimeShort(item.dt_chegada);
       case "tipo_agendamento":
         return item.tipo_agendamento;      case "status_agendamento":
-        const status = item.Consulta?.status || item.status_agendamento;
+        // Se o agendamento está cancelado, sempre mostrar "Cancelado"
+        // caso contrário, mostrar o status da consulta ou do agendamento
+        const status = item.status_agendamento === 'Cancelado' 
+          ? 'Cancelado' 
+          : (item.Consulta?.status || item.status_agendamento);
         return getStatusChip(status);
       default:
         return "";
@@ -122,6 +126,7 @@ export function SelecaoAgendamento() {
           setSortDescriptor={setSortDescriptor}
           isUpdating={isUpdating}
           updateConsulta={updateConsulta}
+          refetch={refetch}
           columns={columns}
           rowsPerPage={rowsPerPage}
         />
