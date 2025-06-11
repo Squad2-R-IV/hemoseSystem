@@ -1,8 +1,8 @@
-# AGENTS.md - HemoseSystem
+# AGENTS.md - Siamhe - Sistema Ambulatorial do Hemose
 
 ## 📋 Visão Geral do Projeto
 
-O HemoseSystem é um sistema completo de gestão hospitalar desenvolvido para o Porto Digital, composto por:
+O Siamhe - Sistema Ambulatorial do Hemose é um sistema completo de gestão hospitalar desenvolvido para o Porto Digital, composto por:
 
 - **Backend** (`/back`): API REST em Node.js + TypeScript + Prisma + MySQL
 - **Frontend** (`/front`): Interface em React Router 7 + TypeScript + HeroUI

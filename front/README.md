@@ -1,10 +1,10 @@
-# HemoseSystem - Frontend
+# Siamhe - Frontend
 
 Sistema de gestão hospitalar moderno desenvolvido para o projeto Porto Digital. Frontend construído com React Router 7, TypeScript e HeroUI para uma experiência de usuário moderna e responsiva.
 
 ## 🏥 Sobre o Projeto
 
-O HemoseSystem é um sistema completo de gestão hospitalar que oferece funcionalidades para:
+O Siamhe é um sistema completo de gestão hospitalar que oferece funcionalidades para:
 
 - **Recepção**: Cadastro de pacientes, agendamentos e check-ins
 - **Atendimento Médico**: Consultas, anamneses, evoluções médicas

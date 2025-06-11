@@ -1,8 +1,8 @@
-# Siahme Backend
+# Siamhe Backend
 
 ## Visão Geral
 
-O HemoseSystem é um sistema completo de gerenciamento médico desenvolvido para facilitar o acompanhamento de pacientes, agendamentos, consultas médicas, exames e registros hospitalares. O backend foi construído utilizando tecnologias modernas e seguindo padrões de arquitetura limpa.
+O Siamhe- Sistema Ambulatorial do Hemose é um sistema completo de gerenciamento médico desenvolvido para facilitar o acompanhamento de pacientes, agendamentos, consultas médicas, exames e registros hospitalares. O backend foi construído utilizando tecnologias modernas e seguindo padrões de arquitetura limpa.
 
 ## 🏗️ Arquitetura e Tecnologias
 

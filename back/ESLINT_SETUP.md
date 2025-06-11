@@ -1,4 +1,4 @@
-# ESLint Configuration for HemoseSystem Backend
+# ESLint Configuration for Siamhe Backend
 
 ## Overview
 ESLint has been successfully configured for this TypeScript Node.js backend project with comprehensive linting rules and automatic fixing capabilities.

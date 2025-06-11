@@ -130,7 +130,8 @@ export function Home() {
   return (
     <div className="container mx-auto p-6 max-w-7xl">
       <div className="text-center mb-12">
-        <h1 className="text-3xl font-bold mb-2">Bem-vindo ao HemoseSystem</h1>
+        <h1 className="text-3xl font-bold mb-2">Bem-vindo ao Siamhe</h1>
+        <h2 className="text-xl text-gray-700 mb-4"> O Sistema Ambulatorial do Hemose</h2>
         <p className="text-gray-600">Selecione um módulo para começar</p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
