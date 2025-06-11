@@ -21,7 +21,7 @@ import type { CreateAltaMedicaDto } from "~/Dtos/AltaMedica/CreateAltaMedicaDto"
 import type { ReadCondutaDto } from "~/Dtos/Conduta/ReadCondutaDto";
 import type { ReadConsultaDto } from "~/Dtos/Consulta/ReadConsultaDto";
 import { status_consulta_enum } from "~/utils/enums/enums";
-import getUserIdFromLocalStorage from "~/utils/helper/getUserIdFromLocalStorage";
+import { useAuth } from "~/contexts/AuthContext";
 
 interface ConsultaActionButtonsProps {
   consultaId: number;
@@ -40,7 +40,7 @@ export default function ConsultaActionButtons({
   agendamento,
   onRefetch,
 }: ConsultaActionButtonsProps) {
-  const userId = getUserIdFromLocalStorage();
+  const { userId } = useAuth();
 
   // Disclosure hooks for modals
   const {
@@ -190,7 +190,7 @@ export default function ConsultaActionButtons({
         onClose={onPrescricaoModalClose}
         condutas={condutas}
         onAddConduta={handleCreateConduta}
-        userId={userId}
+        userId={userId || ""}
         consultaId={consultaId}
       />
       <AltaMedicaModalWrapper
@@ -198,7 +198,7 @@ export default function ConsultaActionButtons({
         onClose={onAltaMedicaModalClose}
         consultaId={consultaId}
         consultaStatus={consulta.status}
-        userId={userId}
+        userId={userId || ""}
         onCreateAltaMedica={handleCreateAltaMedica}
       />
 

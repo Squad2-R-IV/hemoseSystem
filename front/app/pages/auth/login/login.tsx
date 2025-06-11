@@ -8,11 +8,13 @@ import logoDark from "@/assets/images/logo.svg";
 import { addToast } from "@heroui/react";
 import { useLoginMutation } from "~/services/siahme-api.service";
 import { useNavigate } from "react-router";
+import { useAuth } from "~/contexts/AuthContext";
 
 export function Login() {
   const [isSelected, setIsSelected] = React.useState(false);
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
+  const { login: setAuthToken } = useAuth();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,12 +34,13 @@ export function Login() {
       }
 
       if (response.token) {
+        setAuthToken(response.token);
         addToast({
           title: "Sucesso",
           description: "Login realizado com sucesso",
           color: "success",
         });
-        navigate("/home", { viewTransition: true }); // Redirect to /home after successful login
+        navigate("/home", { viewTransition: true });
       }
     } catch (error) {
       const err = error as { status?: number };

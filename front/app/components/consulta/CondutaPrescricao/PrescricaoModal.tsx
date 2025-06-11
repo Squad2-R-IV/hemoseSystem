@@ -6,7 +6,7 @@ import type { ReadCondutaDto } from "~/Dtos/Conduta/ReadCondutaDto";
 import type { CreateCondutaDto } from "~/Dtos/Conduta/CreateCondutaDto";
 import { useCreateAdministracaoCondutaMutation, useGetAdministracaoCondutasByCondutaIdQuery } from "~/services/api";
 import { CreateAdministracaoCondutaDto } from "~/Dtos/AdministracaoConduta/CreateAdministracaoCondutaDto";
-import getUserIdFromLocalStorage from "~/utils/helper/getUserIdFromLocalStorage";
+import { useAuth } from "~/contexts/AuthContext";
 import { CheckCircleIcon, CheckIcon } from "@phosphor-icons/react";
 
 interface PrescricaoModalProps {
@@ -27,6 +27,7 @@ export default function PrescricaoModal({
     consultaId,
 }: PrescricaoModalProps) {
     // Filter and pagination state
+    const { userId: currentUserId } = useAuth();
     const [filterColumn, setFilterColumn] = useState("conduta");
     const [filterValue, setFilterValue] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
@@ -35,7 +36,7 @@ export default function PrescricaoModal({
     const [selectedConduta, setSelectedConduta] = useState<string>("");
     const [condutaFormData, setCondutaFormData] = useState<CreateCondutaDto>({
         id_consulta: consultaId,
-        id_funcionario: userId,
+        id_funcionario: currentUserId || "",
         conduta: "",
     });
 
@@ -143,7 +144,6 @@ export default function PrescricaoModal({
         if (!selectedCondutaForAdmin) return;
 
         try {
-            const currentUserId = getUserIdFromLocalStorage();
             if (!currentUserId) {
                 console.error("User ID not found");
                 return;

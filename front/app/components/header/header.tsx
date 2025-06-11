@@ -13,6 +13,7 @@ import {
 } from "@heroui/react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import Logo from "../../assets/images/logo.svg";
+import { useAuth } from "~/contexts/AuthContext";
 
 export const SiamheLogo = () => {
   return (
@@ -29,6 +30,7 @@ interface HeaderProps {
 }
 
 export default function Header({ onMenuToggle }: HeaderProps) {
+  const { userId, logout } = useAuth();
   return (
     <Navbar className="shadow-md" maxWidth="full" >
       <NavbarContent justify="start">
@@ -62,7 +64,7 @@ export default function Header({ onMenuToggle }: HeaderProps) {
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem key="profile" className="h-14 gap-2">
               <p className="font-semibold">Signed in as</p>
-              <p className="font-semibold">zoey@example.com</p>
+              <p className="font-semibold">{userId}</p>
             </DropdownItem>
             <DropdownItem key="settings">My Settings</DropdownItem>
             <DropdownItem key="team_settings">Team Settings</DropdownItem>
@@ -70,7 +72,7 @@ export default function Header({ onMenuToggle }: HeaderProps) {
             <DropdownItem key="system">System</DropdownItem>
             <DropdownItem key="configurations">Configurations</DropdownItem>
             <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-            <DropdownItem key="logout" color="danger">
+            <DropdownItem key="logout" color="danger" onClick={logout}>
               Log Out
             </DropdownItem>
           </DropdownMenu>

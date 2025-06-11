@@ -12,6 +12,7 @@ import "./app.css";
 import { HeroUIProvider, ToastProvider } from "@heroui/react";
 import { store } from "./store";
 import { Provider } from 'react-redux'
+import { AuthProvider } from "./contexts/AuthContext";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -49,7 +50,9 @@ export default function App() {
     <Provider store={store}>
       <HeroUIProvider>
         <ToastProvider placement="top-right" />
-        <Outlet />
+        <AuthProvider>
+          <Outlet />
+        </AuthProvider>
       </HeroUIProvider>
     </Provider>
   );

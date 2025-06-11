@@ -8,13 +8,13 @@ import EvolucaoMedicaSection from "~/components/consulta/EvolucaoMedicaSection";
 import EvolucaoEnfermagemSection from "~/components/consulta/EvolucaoEnfermagemSection";
 import { getStatusChip } from "~/utils/status";
 import { useConsultaData } from "~/hooks/useConsultaData";
-import getUserIdFromLocalStorage from "~/utils/helper/getUserIdFromLocalStorage";
+import { useAuth } from "~/contexts/AuthContext";
 
 export default function ConsultaRoute() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const consultaId = Number(id);
-  const userId = getUserIdFromLocalStorage();
+  const { userId } = useAuth();
   
   const {
     consulta,
@@ -59,7 +59,7 @@ export default function ConsultaRoute() {
           
           <EvolucaoEnfermagemSection
             consultaId={consultaId}
-            funcionarioId={userId}
+            funcionarioId={userId || ""}
           />
         </div>
         
