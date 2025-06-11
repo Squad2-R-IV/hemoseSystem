@@ -3,7 +3,7 @@ import EvolucaoMedicaContainer from "~/components/consulta/EvolucaoMedica/Evoluc
 import { useCreateEvolucaoMedicaMutation } from "~/services/siahme-api.service";
 import type { CreateEvolucaoMedicaDto } from "~/Dtos/EvolucaoMedica/CreateEvolucaoMedicaDto";
 import type { ReadEvolucaoMedicaDto } from "~/Dtos/EvolucaoMedica/ReadEvolucaoMedicaDto";
-import getUserIdFromLocalStorage from "~/utils/helper/getUserIdFromLocalStorage";
+import { useAuth } from "~/contexts/AuthContext";
 
 interface EvolucaoMedicaSectionProps {
   evolucoesMedicas?: ReadEvolucaoMedicaDto[];
@@ -17,7 +17,7 @@ export default function EvolucaoMedicaSection({
   onRefetch,
 }: EvolucaoMedicaSectionProps) {
   const [createEvolucaoMedica] = useCreateEvolucaoMedicaMutation();
-  const userId = getUserIdFromLocalStorage();
+  const { userId } = useAuth();
 
   const handleCreateEvolucaoMedica = async (evolucaoMedicaData: CreateEvolucaoMedicaDto) => {
     try {
@@ -33,7 +33,7 @@ export default function EvolucaoMedicaSection({
       <EvolucaoMedicaContainer
         evolucoesMedicas={evolucoesMedicas}
         onAddEvolucaoMedica={handleCreateEvolucaoMedica}
-        userId={userId}
+        userId={userId || ""}
         consultaId={consultaId}
         MAX_EVOLUCAO_LENGTH={150}
       />

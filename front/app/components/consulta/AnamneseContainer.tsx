@@ -5,7 +5,7 @@ import CreateAnamneseModal from "~/components/ambulatorio/CreateAnamneseModal";
 import { useCreateAnamneseMutation } from "~/services/siahme-api.service";
 import type { CreateAnamneseDto } from "~/Dtos/Anamnese/CreateAnamneseDto";
 import type { ReadAnamneseDto } from "~/Dtos/Anamnese/ReadAnamneseDto";
-import getUserIdFromLocalStorage from "~/utils/helper/getUserIdFromLocalStorage";
+import { useAuth } from "~/contexts/AuthContext";
 
 interface AnamneseContainerProps {
   anamnese?: ReadAnamneseDto;
@@ -20,7 +20,7 @@ export default function AnamneseContainer({
 }: AnamneseContainerProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [createAnamnese] = useCreateAnamneseMutation();
-  const userId = getUserIdFromLocalStorage();
+  const { userId } = useAuth();
 
   const [formData, setFormData] = useState<CreateAnamneseDto>(() => ({
     id_consulta: 0,
@@ -49,7 +49,7 @@ export default function AnamneseContainer({
       const anamneseData = {
         ...formData,
         id_consulta: consultaId,
-        id_funcionario: userId,
+        id_funcionario: userId || "",
       };
       
       await createAnamnese(anamneseData).unwrap();
